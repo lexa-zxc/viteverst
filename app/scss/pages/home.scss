@@ -15,3 +15,14 @@
     max-width: 30rem;
   }
 }
+
+.test{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 1rem;
+  .item{
+    background-color: #1a1a1a;
+    
+  }
+}

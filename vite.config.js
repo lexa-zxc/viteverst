@@ -1025,7 +1025,8 @@ function createConfig(minify = false, imageOptimization = false) {
               'not dead',
               'ie >= 10'
             ],
-            grid: true, // Полная поддержка CSS Grid Layout
+            grid: false, // Отключаем префиксы для Grid Layout
+            flexbox: false, // Отключаем префиксы для Flexbox
             cascade: true, // Красивое форматирование префиксов
             // Включаем все префиксы для тестирования
             remove: false
