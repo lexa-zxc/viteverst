@@ -5,10 +5,10 @@
   "description": "Vite с поддержкой директив @@include",
   "type": "module",
   "scripts": {
-    "dev": "vite --open",
+    "dev": "vite --open --host",
     "build": "vite build --mode production",
     "build-min": "vite build --mode production-min",
-    "preview": "vite preview --open"
+    "preview": "vite preview --open --host"
   },
   "devDependencies": {
     "imagemin": "^8.0.1",
