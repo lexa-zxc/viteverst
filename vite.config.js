@@ -16,7 +16,7 @@ const PATHS = {
   vendor: resolve(__dirname, `${APP_DIR}/vendor`),
   files: resolve(__dirname, `${APP_DIR}/files`),
   fonts: resolve(__dirname, `${APP_DIR}/fonts`),
-  html: resolve(__dirname, `${APP_DIR}/html`)
+  html: resolve(__dirname, `${APP_DIR}/html`),
 };
 
 // Алиасы для HTML и JS
@@ -26,7 +26,7 @@ const ALIASES = {
   '@img': 'img',
   '@utils': 'js/utils',
   '@vendor': 'vendor',
-  '@files': 'files'
+  '@files': 'files',
 };
 
 // Алиасы для SCSS
@@ -36,7 +36,7 @@ const SCSS_ALIASES = {
   '@scss': '../scss',
   '@css': '../css',
   '@vendor': '../vendor',
-  '@files': '../files'
+  '@files': '../files',
 };
 
 /**
@@ -46,7 +46,7 @@ const fsUtils = {
   // Рекурсивное копирование директории
   copyDir(src, dest) {
     if (!fs.existsSync(src)) return;
-    
+
     if (!fs.existsSync(dest)) {
       fs.mkdirSync(dest, { recursive: true });
     }
@@ -70,8 +70,8 @@ const fsUtils = {
     if (!fs.existsSync(PATHS.app)) return entries;
 
     fs.readdirSync(PATHS.app)
-      .filter(file => file.endsWith('.html'))
-      .forEach(file => {
+      .filter((file) => file.endsWith('.html'))
+      .forEach((file) => {
         const name = file.replace('.html', '');
         entries[name] = resolve(PATHS.app, file);
       });
@@ -82,7 +82,9 @@ const fsUtils = {
   // Проверка является ли файл изображением
   isImageFile(filename) {
     const ext = extname(filename).toLowerCase();
-    return ['.jpg', '.jpeg', '.png', '.gif', '.svg', '.webp', '.ico'].includes(ext);
+    return ['.jpg', '.jpeg', '.png', '.gif', '.svg', '.webp', '.ico'].includes(
+      ext
+    );
   },
 
   // Форматирование размера файла
@@ -98,11 +100,11 @@ const fsUtils = {
 
     for (const file of files) {
       const fullPath = join(dir, file.name);
-      
+
       if (file.isDirectory()) {
         this.findAllImages(fullPath, fileList);
       } else if (
-        this.isImageFile(file.name) && 
+        this.isImageFile(file.name) &&
         !file.name.toLowerCase().endsWith('.svg')
       ) {
         fileList.push(fullPath);
@@ -110,7 +112,7 @@ const fsUtils = {
     }
 
     return fileList;
-  }
+  },
 };
 
 /**
@@ -129,7 +131,7 @@ const plugins = {
             try {
               const basePath = parentPath || dirname(filename);
               let adjustedPath = filePath;
-              
+
               if (
                 !filePath.includes('/') &&
                 !isAbsolute(filePath) &&
@@ -166,7 +168,8 @@ const plugins = {
           // Обработка всех @@include в строке
           function processIncludes(content, currentPath = null) {
             let result = content;
-            const includeRegex = /@@include\(['"]([^'"]+)['"](,\s*({[^}]+}))?\)/g;
+            const includeRegex =
+              /@@include\(['"]([^'"]+)['"](,\s*({[^}]+}))?\)/g;
 
             let match;
             let lastIndex = 0;
@@ -182,7 +185,7 @@ const plugins = {
                   params = JSON.parse(paramsStr.replace(/^\s*,\s*/, ''));
                 }
 
-                // Получаем содержимое файла 
+                // Получаем содержимое файла
                 const content = getFileContent(filePath, params, currentPath);
 
                 // Заменяем только текущее совпадение
@@ -191,7 +194,10 @@ const plugins = {
                 // Сбрасываем lastIndex и начинаем поиск заново
                 includeRegex.lastIndex = 0;
               } catch (error) {
-                console.error('Ошибка при обработке вложенного @@include:', error);
+                console.error(
+                  'Ошибка при обработке вложенного @@include:',
+                  error
+                );
                 includeRegex.lastIndex = lastIndex + 1;
               }
             }
@@ -220,7 +226,7 @@ const plugins = {
         Object.keys(aliases).forEach((alias) => {
           const escapedAlias = alias.replace('@', '\\@');
           const aliasRegex = new RegExp(
-            `(src|href|url)=["']${escapedAlias}/([^"']+)["']`,
+            `(src|href|url|poster|data-src|data-background)=["']${escapedAlias}/([^"']+)["']`,
             'g'
           );
           result = result.replace(aliasRegex, (match, attr, path) => {
@@ -236,26 +242,26 @@ const plugins = {
   // Копирование ресурсов в dist
   copyResources(type) {
     const typeConfig = {
-      images: { 
-        src: PATHS.img, 
+      images: {
+        src: PATHS.img,
         dest: join(PATHS.dist, 'img'),
-        logMessage: 'Изображения скопированы'
+        logMessage: 'Изображения скопированы',
       },
       vendor: {
-        src: PATHS.vendor, 
+        src: PATHS.vendor,
         dest: join(PATHS.dist, 'vendor'),
-        logMessage: 'Файлы vendor скопированы'
+        logMessage: 'Файлы vendor скопированы',
       },
       fonts: {
-        src: PATHS.fonts, 
+        src: PATHS.fonts,
         dest: join(PATHS.dist, 'fonts'),
-        logMessage: 'Шрифты скопированы'
+        logMessage: 'Шрифты скопированы',
       },
       files: {
-        src: PATHS.files, 
+        src: PATHS.files,
         dest: join(PATHS.dist, 'files'),
-        logMessage: 'Файлы из директории files скопированы'
-      }
+        logMessage: 'Файлы из директории files скопированы',
+      },
     };
 
     const config = typeConfig[type];
@@ -273,7 +279,7 @@ const plugins = {
         } catch (error) {
           console.error(`Ошибка при копировании ${type}:`, error);
         }
-      }
+      },
     };
   },
 
@@ -288,8 +294,8 @@ const plugins = {
           if (!fs.existsSync(cssDir)) return;
 
           fs.readdirSync(cssDir)
-            .filter(file => file.endsWith('.css'))
-            .forEach(cssFile => {
+            .filter((file) => file.endsWith('.css'))
+            .forEach((cssFile) => {
               const cssPath = join(cssDir, cssFile);
               let cssContent = fs.readFileSync(cssPath, 'utf-8');
 
@@ -306,7 +312,7 @@ const plugins = {
         } catch (error) {
           console.error('Ошибка при исправлении путей к шрифтам:', error);
         }
-      }
+      },
     };
   },
 
@@ -317,10 +323,11 @@ const plugins = {
       apply: 'build',
       closeBundle: async () => {
         try {
-          const htmlFiles = fs.readdirSync(PATHS.dist)
-            .filter(file => file.endsWith('.html'));
+          const htmlFiles = fs
+            .readdirSync(PATHS.dist)
+            .filter((file) => file.endsWith('.html'));
 
-          htmlFiles.forEach(htmlFile => {
+          htmlFiles.forEach((htmlFile) => {
             const htmlPath = resolve(PATHS.dist, htmlFile);
             let htmlContent = fs.readFileSync(htmlPath, 'utf-8');
 
@@ -348,7 +355,7 @@ const plugins = {
         } catch (error) {
           console.error('Ошибка при обработке HTML файлов:', error);
         }
-      }
+      },
     };
   },
 
@@ -359,8 +366,8 @@ const plugins = {
       closeBundle: async () => {
         try {
           fs.readdirSync(PATHS.dist)
-            .filter(file => file.endsWith('.html'))
-            .forEach(htmlFile => {
+            .filter((file) => file.endsWith('.html'))
+            .forEach((htmlFile) => {
               const htmlPath = resolve(PATHS.dist, htmlFile);
               let htmlContent = fs.readFileSync(htmlPath, 'utf-8');
 
@@ -373,11 +380,13 @@ const plugins = {
               fs.writeFileSync(htmlPath, htmlContent);
             });
 
-          console.log('\x1b[32mПути к скриптам исправлены на относительные\x1b[0m');
+          console.log(
+            '\x1b[32mПути к скриптам исправлены на относительные\x1b[0m'
+          );
         } catch (error) {
           // Ошибки не выводим
         }
-      }
+      },
     };
   },
 
@@ -395,8 +404,13 @@ const plugins = {
           }
 
           fs.readdirSync(jsDir)
-            .filter(file => file.startsWith('app') && file.endsWith('.js') && file !== 'app.js')
-            .forEach(file => {
+            .filter(
+              (file) =>
+                file.startsWith('app') &&
+                file.endsWith('.js') &&
+                file !== 'app.js'
+            )
+            .forEach((file) => {
               const filePath = join(jsDir, file);
               const newFilePath = join(jsDir, 'app.js');
 
@@ -409,7 +423,7 @@ const plugins = {
         } catch (error) {
           console.error('Ошибка при переименовании JS файла:', error);
         }
-      }
+      },
     };
   },
 
@@ -427,12 +441,14 @@ const plugins = {
               id: scssEntryPath,
               name: 'styles',
             });
-            console.log('\x1b[32mSCSS обработан как отдельная точка входа\x1b[0m');
+            console.log(
+              '\x1b[32mSCSS обработан как отдельная точка входа\x1b[0m'
+            );
           }
         } catch (error) {
           console.error('Ошибка при создании точки входа для SCSS:', error);
         }
-      }
+      },
     };
   },
 
@@ -448,7 +464,7 @@ const plugins = {
           });
           return [];
         }
-      }
+      },
     };
   },
 
@@ -469,7 +485,9 @@ const plugins = {
           const allImages = fsUtils.findAllImages(imgDistDir);
 
           if (allImages.length === 0) {
-            console.log('\x1b[33mИзображения для оптимизации не найдены\x1b[0m');
+            console.log(
+              '\x1b[33mИзображения для оптимизации не найдены\x1b[0m'
+            );
             return;
           }
 
@@ -545,7 +563,9 @@ const plugins = {
 
             // Информация по каждому изображению
             optimizedImages.forEach((img) => {
-              const originalSizeFormatted = fsUtils.formatFileSize(img.originalSize);
+              const originalSizeFormatted = fsUtils.formatFileSize(
+                img.originalSize
+              );
               const newSizeFormatted = fsUtils.formatFileSize(img.newSize);
               const arrowColor =
                 img.compressionPercent >= 10 ? '\x1b[32m' : '\x1b[33m';
@@ -572,12 +592,14 @@ const plugins = {
             console.log(`\x1b[36mSVG файлы не оптимизировались\x1b[0m`);
             console.log('\x1b[32m---------------------------------\x1b[0m');
           } else {
-            console.log('\x1b[33mИзображения не нуждаются в оптимизации\x1b[0m');
+            console.log(
+              '\x1b[33mИзображения не нуждаются в оптимизации\x1b[0m'
+            );
           }
         } catch (error) {
           console.error('Ошибка при оптимизации изображений:', error);
         }
-      }
+      },
     };
   },
 
@@ -586,64 +608,119 @@ const plugins = {
     return {
       name: 'scss-alias-plugin',
       transform(code, id) {
-        if (id.endsWith('.scss') || id.endsWith('.sass') || id.endsWith('.css')) {
+        if (
+          id.endsWith('.scss') ||
+          id.endsWith('.sass') ||
+          id.endsWith('.css')
+        ) {
           // Заменяем все алиасы в SCSS и CSS файлах
           let result = code;
-          
+
           Object.entries(SCSS_ALIASES).forEach(([alias, path]) => {
             // Поддержка @import "алиас/путь" и @use "алиас/путь"
-            const importRegex = new RegExp(`(@import|@use|@forward)\\s+["'](${alias.replace('@', '')}/[^"']+)["']`, 'g');
-            result = result.replace(importRegex, (match, directive, importPath) => {
-              return `${directive} "${path}/${importPath.replace(`${alias.replace('@', '')}/`, '')}"`;
-            });
-            
+            const importRegex = new RegExp(
+              `(@import|@use|@forward)\\s+["'](${alias.replace(
+                '@',
+                ''
+              )}/[^"']+)["']`,
+              'g'
+            );
+            result = result.replace(
+              importRegex,
+              (match, directive, importPath) => {
+                return `${directive} "${path}/${importPath.replace(
+                  `${alias.replace('@', '')}/`,
+                  ''
+                )}"`;
+              }
+            );
+
             // Поддержка url(алиас/путь)
-            const urlRegex = new RegExp(`url\\(["'](${alias.replace('@', '')}/[^"')]+)["']\\)`, 'g');
+            const urlRegex = new RegExp(
+              `url\\(["'](${alias.replace('@', '')}/[^"')]+)["']\\)`,
+              'g'
+            );
             result = result.replace(urlRegex, (match, url) => {
-              return `url("${path}/${url.replace(`${alias.replace('@', '')}/`, '')}")`;
+              return `url("${path}/${url.replace(
+                `${alias.replace('@', '')}/`,
+                ''
+              )}")`;
             });
-            
+
             // Поддержка url(алиас/путь) без кавычек
-            const urlNoQuotesRegex = new RegExp(`url\\((${alias.replace('@', '')}/[^)]+)\\)`, 'g');
+            const urlNoQuotesRegex = new RegExp(
+              `url\\((${alias.replace('@', '')}/[^)]+)\\)`,
+              'g'
+            );
             result = result.replace(urlNoQuotesRegex, (match, url) => {
-              return `url(${path}/${url.replace(`${alias.replace('@', '')}/`, '')})`;
+              return `url(${path}/${url.replace(
+                `${alias.replace('@', '')}/`,
+                ''
+              )})`;
             });
-            
+
             // Поддержка прямых упоминаний @алиас/путь в любом контексте
-            const fullAliasRegex = new RegExp(`(['"])${alias}\/([^'"]+)(['"])`, 'g');
-            result = result.replace(fullAliasRegex, (match, quote1, filePath, quote2) => {
-              return `${quote1}${path}/${filePath}${quote2}`;
-            });
+            const fullAliasRegex = new RegExp(
+              `(['"])${alias}\/([^'"]+)(['"])`,
+              'g'
+            );
+            result = result.replace(
+              fullAliasRegex,
+              (match, quote1, filePath, quote2) => {
+                return `${quote1}${path}/${filePath}${quote2}`;
+              }
+            );
           });
-          
+
           return { code: result, map: null };
         }
       },
-      
+
       // Добавляем постобработку CSS
       async generateBundle(outputOptions, bundle) {
         // Обрабатываем собранные CSS файлы
-        Object.keys(bundle).forEach(key => {
+        Object.keys(bundle).forEach((key) => {
           const asset = bundle[key];
           if (key.endsWith('.css')) {
             let code = asset.source;
-            
+
             // Исправляем пути в CSS
             // Заменяем абсолютные пути на относительные
-            code = code.replace(/url\(['"]?\/fonts\/([^'")]+)['"]?\)/g, 'url("../fonts/$1")');
-            code = code.replace(/url\(['"]?\/img\/([^'")]+)['"]?\)/g, 'url("../img/$1")');
-            code = code.replace(/url\(['"]?\/scss\/([^'")]+)['"]?\)/g, 'url("../scss/$1")');
-            code = code.replace(/url\(['"]?\/css\/([^'")]+)['"]?\)/g, 'url("../css/$1")');
-            code = code.replace(/url\(['"]?\/vendor\/([^'")]+)['"]?\)/g, 'url("../vendor/$1")');
-            code = code.replace(/url\(['"]?\/files\/([^'")]+)['"]?\)/g, 'url("../files/$1")');
-            
+            code = code.replace(
+              /url\(['"]?\/fonts\/([^'")]+)['"]?\)/g,
+              'url("../fonts/$1")'
+            );
+            code = code.replace(
+              /url\(['"]?\/img\/([^'")]+)['"]?\)/g,
+              'url("../img/$1")'
+            );
+            code = code.replace(
+              /url\(['"]?\/scss\/([^'")]+)['"]?\)/g,
+              'url("../scss/$1")'
+            );
+            code = code.replace(
+              /url\(['"]?\/css\/([^'")]+)['"]?\)/g,
+              'url("../css/$1")'
+            );
+            code = code.replace(
+              /url\(['"]?\/vendor\/([^'")]+)['"]?\)/g,
+              'url("../vendor/$1")'
+            );
+            code = code.replace(
+              /url\(['"]?\/files\/([^'")]+)['"]?\)/g,
+              'url("../files/$1")'
+            );
+
             // Дополнительно заменяем пути без начального слэша (для совместимости)
             Object.entries(SCSS_ALIASES).forEach(([alias, path]) => {
               const folderName = alias.replace('@', '');
-              const urlRegex = new RegExp(`url\\(['"]?${folderName}\/([^'")]+)['"]?\\)`, 'g');
+              const urlRegex = new RegExp(
+                `url\\(['"]?${folderName}\/([^'")]+)['"]?\\)`,
+                'g'
+              );
               code = code.replace(urlRegex, `url("${path}/$1")`);
             });
-            
+
             asset.source = code;
           }
         });
@@ -658,12 +735,12 @@ const plugins = {
             const varName = alias.replace('@', '$') + '-path';
             additionalCode += `${varName}: "${path}";\n`;
           });
-          
+
           return additionalCode + source;
-        }
-      }
+        },
+      },
     };
-  }
+  },
 };
 
 /**
@@ -684,7 +761,7 @@ function createConfig(minify = false, imageOptimization = false) {
     plugins.processHtml(),
     plugins.fixScriptPaths(),
     plugins.renameJs(),
-    plugins.htmlReload()
+    plugins.htmlReload(),
   ];
 
   return {
@@ -720,7 +797,7 @@ function createConfig(minify = false, imageOptimization = false) {
       },
     },
     publicDir: '../public',
-    plugins: imageOptimization 
+    plugins: imageOptimization
       ? [...basePlugins, plugins.imageOptimization()]
       : basePlugins,
     resolve: {
@@ -742,10 +819,13 @@ function createConfig(minify = false, imageOptimization = false) {
             warn: () => {},
           },
           // Добавляем глобальные переменные со всеми алиасами для использования в SCSS
-          additionalData: Object.entries(SCSS_ALIASES).map(([alias, path]) => {
-            const varName = alias.replace('@', '$') + '-path';
-            return `${varName}: "${path}";`;
-          }).join('\n') + '\n'
+          additionalData:
+            Object.entries(SCSS_ALIASES)
+              .map(([alias, path]) => {
+                const varName = alias.replace('@', '$') + '-path';
+                return `${varName}: "${path}";`;
+              })
+              .join('\n') + '\n',
         },
       },
     },
@@ -760,7 +840,7 @@ export default defineConfig(({ mode }) => {
     case 'development':
       return createConfig(false, false); // Без минификации для режима разработки
     case 'production-min':
-      return createConfig(true, true);   // С минификацией и оптимизацией изображений
+      return createConfig(true, true); // С минификацией и оптимизацией изображений
     case 'production':
       return createConfig(false, false); // Без минификации для стандартной сборки
     default:
