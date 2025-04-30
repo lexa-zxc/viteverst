@@ -133,7 +133,7 @@ npm run preview
 
 ```bash
 # Клонирование репозитория
-git clone <url-репозитория>
+git clone https://github.com/lexa-zxc/viteverst.git
 
 # Установка зависимостей
 npm install
@@ -295,7 +295,7 @@ The project implements the following features:
 
 ```bash
 # Clone repository
-git clone <repository-url>
+git clone https://github.com/lexa-zxc/viteverst.git
 
 # Install dependencies
 npm install
