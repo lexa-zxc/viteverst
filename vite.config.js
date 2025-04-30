@@ -386,7 +386,9 @@ function createFixScriptPaths() {
           fs.writeFileSync(htmlPath, htmlContent);
         });
 
-        console.log(`\x1b[32mПути к скриптам исправлены на относительные\x1b[0m`);
+        console.log(
+          `\x1b[32mПути к скриптам исправлены на относительные\x1b[0m`
+        );
       } catch (error) {
         // Ошибки не выводим
       }
@@ -490,8 +492,218 @@ function findHtmlEntries() {
   return entries;
 }
 
+// Функция для проверки расширения файла изображения
+function isImageFile(filename) {
+  const ext = path.extname(filename).toLowerCase();
+  return ['.jpg', '.jpeg', '.png', '.gif', '.svg', '.webp', '.ico'].includes(
+    ext
+  );
+}
+
+// Функция для форматирования размера файла в читаемом формате
+function formatFileSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
+// Создаем плагин для оптимизации изображений
+function createImageOptimizationPlugin() {
+  return {
+    name: 'optimize-images-plugin',
+    apply: 'build',
+    enforce: 'post',
+    closeBundle: async () => {
+      try {
+        // Получаем путь к папке с изображениями в dist
+        const imgDistDir = path.resolve(__dirname, 'dist/img');
+
+        // Проверяем существование папки
+        if (!fs.existsSync(imgDistDir)) {
+          return;
+        }
+
+        console.log(`\x1b[32mНачинаем оптимизацию изображений...\x1b[0m`);
+
+        // Рекурсивно ищем все изображения
+        function findAllImages(dir, fileList = []) {
+          const files = fs.readdirSync(dir, { withFileTypes: true });
+
+          for (const file of files) {
+            const fullPath = path.join(dir, file.name);
+
+            if (file.isDirectory()) {
+              findAllImages(fullPath, fileList);
+            } else if (
+              isImageFile(file.name) &&
+              !file.name.toLowerCase().endsWith('.svg')
+            ) {
+              // Исключаем SVG файлы из списка для оптимизации
+              fileList.push(fullPath);
+            }
+          }
+
+          return fileList;
+        }
+
+        // Находим все изображения (кроме SVG)
+        const allImages = findAllImages(imgDistDir);
+
+        if (allImages.length === 0) {
+          console.log(`\x1b[33mИзображения для оптимизации не найдены\x1b[0m`);
+          return;
+        }
+
+        // Импортируем модули для оптимизации
+        const imagemin = (await import('imagemin')).default;
+        const imageminMozjpeg = (await import('imagemin-mozjpeg')).default;
+        const imageminPngquant = (await import('imagemin-pngquant')).default;
+        const imageminGifsicle = (await import('imagemin-gifsicle')).default;
+
+        // Статистика оптимизации
+        let totalOriginalSize = 0;
+        let totalOptimizedSize = 0;
+        let optimizedImages = [];
+
+        // Оптимизируем изображения
+        for (const imagePath of allImages) {
+          const imageExt = path.extname(imagePath).toLowerCase();
+          let plugins = [];
+
+          // Подбираем плагины в зависимости от типа файла (кроме SVG)
+          if (['.jpg', '.jpeg'].includes(imageExt)) {
+            plugins.push(imageminMozjpeg({ quality: 80 }));
+          } else if (imageExt === '.png') {
+            plugins.push(imageminPngquant({ quality: [0.6, 0.8] }));
+          } else if (imageExt === '.gif') {
+            plugins.push(imageminGifsicle({ optimizationLevel: 7 }));
+          }
+
+          // Если есть плагины для оптимизации
+          if (plugins.length > 0) {
+            try {
+              // Получаем исходный размер файла
+              const originalSize = fs.statSync(imagePath).size;
+              totalOriginalSize += originalSize;
+
+              // Получаем содержимое файла
+              const fileBuffer = fs.readFileSync(imagePath);
+
+              // Оптимизируем изображение
+              const optimizedBuffer = await imagemin.buffer(fileBuffer, {
+                plugins: plugins,
+              });
+
+              // Записываем оптимизированное изображение
+              fs.writeFileSync(imagePath, optimizedBuffer);
+
+              // Получаем новый размер
+              const newSize = fs.statSync(imagePath).size;
+              totalOptimizedSize += newSize;
+
+              // Вычисляем процент сжатия
+              const compressionPercent = Math.round(
+                (1 - newSize / originalSize) * 100
+              );
+
+              // Добавляем информацию в статистику
+              optimizedImages.push({
+                name: path.basename(imagePath),
+                originalSize,
+                newSize,
+                compressionPercent,
+              });
+            } catch (error) {
+              console.error(
+                `Ошибка при оптимизации ${path.basename(imagePath)}:`,
+                error
+              );
+            }
+          }
+        }
+
+        // Выводим статистику оптимизации
+        if (optimizedImages.length > 0) {
+          console.log('\n\x1b[32m----- Статистика оптимизации -----\x1b[0m');
+
+          // Выводим информацию по каждому изображению
+          optimizedImages.forEach((img) => {
+            const originalSizeFormatted = formatFileSize(img.originalSize);
+            const newSizeFormatted = formatFileSize(img.newSize);
+            const arrowColor =
+              img.compressionPercent >= 10 ? '\x1b[32m' : '\x1b[33m'; // Зеленый или желтый
+
+            console.log(
+              `\x1b[36m${img.name}\x1b[0m: ${originalSizeFormatted} ${arrowColor}→\x1b[0m ${newSizeFormatted} (\x1b[32m-${img.compressionPercent}%\x1b[0m)`
+            );
+          });
+
+          // Общая статистика
+          const totalSaved = totalOriginalSize - totalOptimizedSize;
+          const totalPercent = Math.round(
+            (1 - totalOptimizedSize / totalOriginalSize) * 100
+          );
+
+          console.log(
+            `\n\x1b[36mОбщая экономия:\x1b[0m ${formatFileSize(
+              totalSaved
+            )} (\x1b[32m-${totalPercent}%\x1b[0m)`
+          );
+          console.log(
+            `\x1b[36mОбработано изображений:\x1b[0m ${optimizedImages.length}`
+          );
+          console.log(`\x1b[36mSVG файлы не оптимизировались\x1b[0m`);
+          console.log('\x1b[32m---------------------------------\x1b[0m');
+        } else {
+          console.log(`\x1b[33mИзображения не нуждаются в оптимизации\x1b[0m`);
+        }
+      } catch (error) {
+        console.error('Ошибка при оптимизации изображений:', error);
+      }
+    },
+  };
+}
+
 // Функция для создания конфигурации с разными настройками минификации
-function createConfig(minify = true) {
+function createConfig(minify = true, imageOptimization = false) {
+  const plugins = [
+    sassGlobImports(),
+    createFileIncludePlugin(),
+    createHtmlAliasPlugin({
+      '@scss': 'scss',
+      '@js': 'js',
+      '@img': 'img',
+      '@utils': 'js/utils',
+      '@vendor': 'vendor',
+    }),
+    createScssEntryPlugin(),
+    createCopyImagesPlugin(),
+    createCopyVendorPlugin(),
+    createCopyFontsPlugin(),
+    createFixFontPaths(),
+    createNoCorsAttributes(),
+    createFixScriptPaths(),
+    createRenameJsPlugin(),
+    // Плагин для перезагрузки страницы при изменении HTML
+    {
+      name: 'html-reload',
+      handleHotUpdate({ file, server }) {
+        if (file.endsWith('.html')) {
+          server.ws.send({
+            type: 'full-reload',
+            path: '*',
+          });
+          return [];
+        }
+      },
+    },
+  ];
+
+  // Добавляем плагин оптимизации изображений, если он включен
+  if (imageOptimization) {
+    plugins.push(createImageOptimizationPlugin());
+  }
+
   return {
     root: 'app',
     build: {
@@ -525,38 +737,7 @@ function createConfig(minify = true) {
       },
     },
     publicDir: '../public',
-    plugins: [
-      sassGlobImports(),
-      createFileIncludePlugin(),
-      createHtmlAliasPlugin({
-        '@scss': 'scss',
-        '@js': 'js',
-        '@img': 'img',
-        '@utils': 'js/utils',
-        '@vendor': 'vendor',
-      }),
-      createScssEntryPlugin(),
-      createCopyImagesPlugin(),
-      createCopyVendorPlugin(),
-      createCopyFontsPlugin(),
-      createFixFontPaths(),
-      createNoCorsAttributes(),
-      createFixScriptPaths(),
-      createRenameJsPlugin(),
-      // Плагин для перезагрузки страницы при изменении HTML
-      {
-        name: 'html-reload',
-        handleHotUpdate({ file, server }) {
-          if (file.endsWith('.html')) {
-            server.ws.send({
-              type: 'full-reload',
-              path: '*',
-            });
-            return [];
-          }
-        },
-      },
-    ],
+    plugins: plugins,
     resolve: {
       alias: {
         '@utils': resolve(__dirname, 'app/js/utils'),
@@ -583,16 +764,16 @@ function createConfig(minify = true) {
 // Экспортируем конфигурацию в зависимости от переменной окружения
 export default defineConfig(({ mode }) => {
   console.log(`\x1b[32mРежим сборки: ${mode}\x1b[0m`);
-  
+
   // Используем разные настройки в зависимости от режима
   if (mode === 'development') {
-    return createConfig(false); // Без минификации для режима разработки
+    return createConfig(false, false); // Без минификации для режима разработки
   } else if (mode === 'production-min') {
-    return createConfig(true); // С минификацией
+    return createConfig(true, true); // С минификацией и оптимизацией изображений
   } else if (mode === 'production') {
-    return createConfig(false); // Без минификации для стандартной сборки
+    return createConfig(false, false); // Без минификации для стандартной сборки
   }
-  
+
   // По умолчанию - без минификации
-  return createConfig(false);
+  return createConfig(false, false);
 });
