@@ -1,0 +1,17 @@
+{
+  "name": "vite-include",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Vite с поддержкой директив @@include",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --open",
+    "build": "vite build",
+    "preview": "vite preview --open"
+  },
+  "devDependencies": {
+    "sass": "1.87.0",
+    "vite": "6.3.4",
+    "vite-plugin-sass-glob-import": "5.0.0"
+  }
+}

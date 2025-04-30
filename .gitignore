@@ -1,0 +1,42 @@
+# Зависимости
+node_modules
+package-lock.json
+.pnp
+.pnp.js
+
+# Сборка
+dist
+dist-ssr
+build
+
+# Локальные файлы
+*.local
+
+# Логи
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Редакторы
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Кэш
+.vite
+.cache
+.temp
+
+# Запрет на отслеживание кэша браузера
+.cache
+.temp 

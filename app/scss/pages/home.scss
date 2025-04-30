@@ -1,0 +1,14 @@
+.home {
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+  span {
+    font-size: 6rem;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+}
