@@ -139,6 +139,57 @@ const fsUtils = {
   }
 };
 
+// Функция для экранирования тегов code и pre
+function escapeCodeAndPre(html) {
+  // Функция для кодирования содержимого тегов code и pre
+  const escapeContent = (content) => {
+    return Buffer.from(content).toString('base64');
+  };
+
+  // Функция для маркировки тегов
+  const markTags = (html) => {
+    // Маркируем код внутри pre>code
+    return html.replace(
+      /(<pre[^>]*>)(\s*)(<code[^>]*>)([\s\S]*?)(<\/code>)(\s*)(<\/pre>)/gi,
+      (match, preBefore, wsBeforeCode, codeBefore, content, codeAfter, wsAfterCode, preAfter) => {
+        const escapedContent = escapeContent(content);
+        return `${preBefore}${wsBeforeCode}${codeBefore}<!-- VITE_IGNORE_START -->${escapedContent}<!-- VITE_IGNORE_END -->${codeAfter}${wsAfterCode}${preAfter}`;
+      }
+    );
+  };
+
+  return markTags(html);
+}
+
+// Функция для восстановления экранированного кода
+function unescapeCodeAndPre(html) {
+  return html.replace(
+    /<!-- VITE_IGNORE_START -->([^<]*)<!-- VITE_IGNORE_END -->/g,
+    (match, encodedContent) => {
+      try {
+        return Buffer.from(encodedContent, 'base64').toString();
+      } catch (e) {
+        console.error('Ошибка декодирования:', e);
+        return encodedContent;
+      }
+    }
+  );
+}
+
+// Оборачиваем все плагины, обрабатывающие HTML
+function wrapHtmlProcessor(originalFunc) {
+  return function(html, ...args) {
+    // Экранируем код перед обработкой
+    const escapedHtml = escapeCodeAndPre(html);
+    
+    // Обрабатываем HTML, игнорируя экранированные участки
+    const resultHtml = originalFunc.apply(this, [escapedHtml, ...args]);
+    
+    // Восстанавливаем экранированный код
+    return unescapeCodeAndPre(resultHtml);
+  };
+}
+
 /**
  * Плагины для Vite
  */
@@ -189,44 +240,84 @@ const plugins = {
             }
           }
 
-          // Обработка всех @@include в строке
+          // Обработка всех @@include в строке, игнорируя игнорируемые части
           function processIncludes(content, currentPath = null) {
-            let result = content;
-            const includeRegex = /@@include\(['"]([^'"]+)['"](,\s*({[^}]+}))?\)/g;
-
-            let match;
+            // Разбиваем контент на части (ignored и не ignored)
+            const parts = [];
+            const regex = /<!-- VITE_IGNORE_START -->[\s\S]*?<!-- VITE_IGNORE_END -->/g;
             let lastIndex = 0;
+            let match;
 
-            while ((match = includeRegex.exec(result)) !== null) {
-              try {
-                lastIndex = includeRegex.lastIndex;
-                const [fullMatch, filePath, _, paramsStr] = match;
-
-                // Парсим параметры, если они есть
-                let params = {};
-                if (paramsStr) {
-                  params = JSON.parse(paramsStr.replace(/^\s*,\s*/, ''));
+            // Собираем все игнорируемые части
+            while ((match = regex.exec(content)) !== null) {
+              // Добавляем часть до игнорируемого участка
+              if (match.index > lastIndex) {
+                parts.push({
+                  text: content.substring(lastIndex, match.index),
+                  ignore: false
+                });
+              }
+              
+              // Добавляем игнорируемый участок
+              parts.push({
+                text: match[0],
+                ignore: true
+              });
+              
+              lastIndex = match.index + match[0].length;
+            }
+            
+            // Добавляем оставшуюся часть после последнего игнорируемого участка
+            if (lastIndex < content.length) {
+              parts.push({
+                text: content.substring(lastIndex),
+                ignore: false
+              });
+            }
+            
+            // Обрабатываем только не игнорируемые части
+            for (let i = 0; i < parts.length; i++) {
+              if (!parts[i].ignore) {
+                let part = parts[i].text;
+                const includeRegex = /@@include\(['"]([^'"]+)['"](,\s*({[^}]+}))?\)/g;
+                
+                let includeMatch;
+                while ((includeMatch = includeRegex.exec(part)) !== null) {
+                  try {
+                    const [fullMatch, filePath, _, paramsStr] = includeMatch;
+                    
+                    // Парсим параметры, если они есть
+                    let params = {};
+                    if (paramsStr) {
+                      params = JSON.parse(paramsStr.replace(/^\s*,\s*/, ''));
+                    }
+                    
+                    // Получаем содержимое файла
+                    const fileContent = getFileContent(filePath, params, currentPath);
+                    
+                    // Заменяем в текущей части
+                    part = part.replace(fullMatch, fileContent);
+                    
+                    // Сбрасываем индекс для нового поиска
+                    includeRegex.lastIndex = 0;
+                  } catch (error) {
+                    console.error('Ошибка при обработке вложенного @@include:', error);
+                  }
                 }
-
-                // Получаем содержимое файла 
-                const content = getFileContent(filePath, params, currentPath);
-
-                // Заменяем только текущее совпадение
-                result = result.replace(fullMatch, content);
-
-                // Сбрасываем lastIndex и начинаем поиск заново
-                includeRegex.lastIndex = 0;
-              } catch (error) {
-                console.error('Ошибка при обработке вложенного @@include:', error);
-                includeRegex.lastIndex = lastIndex + 1;
+                
+                // Сохраняем обработанную часть
+                parts[i].text = part;
               }
             }
-
-            return result;
+            
+            // Собираем все части обратно
+            return parts.map(part => part.text).join('');
           }
 
-          // Запускаем обработку включений
-          return processIncludes(html);
+          // Экранируем код и обрабатываем включения
+          const escapedHtml = escapeCodeAndPre(html);
+          const processedHtml = processIncludes(escapedHtml);
+          return unescapeCodeAndPre(processedHtml);
         },
       },
     };
@@ -237,7 +328,9 @@ const plugins = {
     return {
       name: 'vite:html-alias',
       transformIndexHtml(html) {
-        let result = html;
+        // Экранируем код
+        const escapedHtml = escapeCodeAndPre(html);
+        let result = escapedHtml;
 
         // Заменяем абсолютные пути CSS/JS на относительные без ./
         result = result.replace(/(href|src)=["']\/([^"']+)["']/g, '$1="$2"');
@@ -285,7 +378,8 @@ const plugins = {
           return `style="${before}background: url(${quote1}${path}${quote2})${after}"`;
         });
 
-        return result;
+        // Восстанавливаем экранированный код
+        return unescapeCodeAndPre(result);
       },
     };
   },
@@ -493,6 +587,9 @@ const plugins = {
             const htmlPath = resolve(PATHS.dist, htmlFile);
             let htmlContent = fs.readFileSync(htmlPath, 'utf-8');
 
+            // Экранируем код в тегах code и pre
+            htmlContent = escapeCodeAndPre(htmlContent);
+
             // Удаление лишних атрибутов и исправление путей
             htmlContent = htmlContent
               .replace(/crossorigin/g, '')
@@ -542,6 +639,9 @@ const plugins = {
               return match;
             });
 
+            // Восстанавливаем экранированный код
+            htmlContent = unescapeCodeAndPre(htmlContent);
+
             fs.writeFileSync(htmlPath, htmlContent);
           });
 
@@ -565,11 +665,17 @@ const plugins = {
               const htmlPath = resolve(PATHS.dist, htmlFile);
               let htmlContent = fs.readFileSync(htmlPath, 'utf-8');
 
+              // Экранируем код в тегах code и pre
+              htmlContent = escapeCodeAndPre(htmlContent);
+
               // Удаляем ./ из всех путей
               htmlContent = htmlContent.replace(
                 /(src|href)=["']\.\/([^"']+)["']/g,
                 '$1="$2"'
               );
+
+              // Восстанавливаем экранированный код
+              htmlContent = unescapeCodeAndPre(htmlContent);
 
               fs.writeFileSync(htmlPath, htmlContent);
             });

@@ -53,7 +53,7 @@ html {
 
 html,
 body {
-  scrollbar-gutter: stable;
+  // scrollbar-gutter: stable;
 }
 
 //============================== REM АДАПТИВКА (БЕЗ JS) ==============================//
@@ -99,6 +99,7 @@ body {
   height: 100%;
   min-width: 320px;
 }
+
 body {
   color: var(--text-color);
   line-height: $lineheight;

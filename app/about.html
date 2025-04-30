@@ -1,8 +1,11 @@
 @@include('html/header.html',{"title":"О сборке - ViteVerst"})
+<div class="about__progress">
+  <div class="about__progress-bar" id="scrollProgress"></div>
+</div>
 <section class="about">
   <div class="container">
     <div class="about__area">
-      <h1 class="h1">🚀 ViteVerst - ультимативная сборка для верстки на Vite</h1>
+      <h1 class="h1">🚀 <a href="index.html">ViteVerst</a> - ультимативная сборка для верстки на Vite</h1>
 
       <div class="about__badges">
         <img src="https://img.shields.io/badge/Vite-6.3.4-purple?style=flat-square&logo=vite" alt="Vite">
@@ -174,6 +177,187 @@ npm run dev</code></pre>
         <span class="about__tag">vite-file-include</span>
         <span class="about__tag">верстка</span>
         <span class="about__tag">сборка для верстки</span>
+        <span class="about__tag">frontend</span>
+        <span class="about__tag">html-components</span>
+        <span class="about__tag">scss</span>
+        <span class="about__tag">sass</span>
+        <span class="about__tag">web-dev</span>
+        <span class="about__tag">imagemin</span>
+        <span class="about__tag">multi-page</span>
+        <span class="about__tag">web-optimization</span>
+      </div>
+      
+      <div class="about__divider"></div>
+      
+      <h1 class="h1">🚀 <a href="index.html">ViteVerst</a> - Ultimate Vite Setup for HTML/CSS Development</h1>
+      
+      <div class="about__badges">
+        <img src="https://img.shields.io/badge/Vite-6.3.4-purple?style=flat-square&logo=vite" alt="Vite">
+        <img src="https://img.shields.io/badge/SCSS-Support-pink?style=flat-square&logo=sass" alt="SCSS">
+        <img src="https://img.shields.io/badge/Image_Optimization-Yes-green?style=flat-square" alt="Optimization">
+        <img src="https://img.shields.io/badge/HTML_Includes-Yes-blue?style=flat-square" alt="HTML Includes">
+      </div>
+      
+      <p>A modern <strong>ultra-fast</strong> setup for website development based on Vite with support for file inclusion directives (@@include), like in Gulp, but <strong>100 times faster</strong>! Forget about long compilation times - get instant results.</p>
+      
+      <h2 class="h2">✨ Key Features</h2>
+      <ul class="about__list">
+        <li><strong>Lightning-fast</strong> development, instant Hot Reload</li>
+        <li><strong>@@include support</strong> - work with components without frameworks</li>
+        <li><strong>Path aliases</strong> (@scss, @js, @img) - no more confusion with ../../../../</li>
+        <li><strong>Automatic optimization</strong> of images, CSS, and JS</li>
+        <li><strong>Multi-threaded processing</strong> of resources - fast builds even for large projects</li>
+        <li><strong>No Webpack or Gulp</strong> - only modern and fast Vite</li>
+        <li><strong>Clear structure</strong> of the project for convenient development</li>
+        <li><strong>Support for multi-page</strong> sites out of the box</li>
+      </ul>
+      
+      <h2 class="h2">🔥 Why Better Than Gulp?</h2>
+      <ul class="about__list">
+        <li><strong>10-100x faster</strong> development server startup</li>
+        <li><strong>Instant</strong> application of changes thanks to ESM</li>
+        <li><strong>Native support</strong> for SCSS, PostCSS out of the box</li>
+        <li><strong>No long chains</strong> of .pipe().pipe().pipe()...</li>
+        <li><strong>Fewer dependencies</strong>, fewer problems with outdated plugins</li>
+        <li><strong>Simple configuration</strong> and extensibility</li>
+      </ul>
+      
+      <h2 class="h2">Usage</h2>
+      
+      <h3 class="h3">Running the Project</h3>
+      <div class="about__code">
+        <pre><code># Development mode
+npm run dev
+
+# Build project without minification (for debugging)
+npm run build
+
+# Build project with minification and image optimization (for production)
+npm run build-min
+
+# Preview the built project
+npm run preview</code></pre>
+      </div>
+      
+      <h3 class="h3">Include Directives</h3>
+      <p>You can use the following directives in HTML files:</p>
+      
+      <h4>Simple Include</h4>
+      <div class="about__code">
+        <pre><code>@@include('html/header.html')</code></pre>
+      </div>
+      
+      <h4>Include with Parameters</h4>
+      <div class="about__code">
+        <pre><code>@@include('html/header.html', {"title":"Home Page"})</code></pre>
+      </div>
+      
+      <p>In the <code>header.html</code> file, you can use parameters with the <code>@@parameter_name</code> syntax. For example:</p>
+      <div class="about__code">
+        <pre><code>&lt;title&gt;@@title&lt;/title&gt;</code></pre>
+      </div>
+      
+      <h3 class="h3">Resource Paths</h3>
+      <p>You can use special prefixes to specify paths to resources:</p>
+      
+      <div class="about__code">
+        <pre><code>&lt;link rel="stylesheet" href="@scss/main.scss"&gt;
+&lt;script src="@js/app.js"&gt;&lt;/script&gt;
+&lt;img src="@img/logo.png"&gt;
+&lt;script src="@vendor/jquery/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script type="module" src="@utils/helper.js"&gt;&lt;/script&gt;
+&lt;a href="@files/documents/sample.pdf"&gt;Download document&lt;/a&gt;</code></pre>
+      </div>
+      
+      <p>These prefixes will be automatically converted to appropriate paths during the build.</p>
+      
+      <h2 class="h2">📁 Project Structure</h2>
+      <ul class="about__list">
+        <li><code>app/</code> - source files
+          <ul>
+            <li><code>html/</code> - HTML components for inclusion</li>
+            <li><code>scss/</code> - SCSS styles</li>
+            <li><code>js/</code> - JavaScript files</li>
+            <li><code>img/</code> - images</li>
+            <li><code>fonts/</code> - fonts</li>
+            <li><code>vendor/</code> - third-party libraries</li>
+            <li><code>files/</code> - downloadable files (documents, archives, etc.)</li>
+          </ul>
+        </li>
+        <li><code>dist/</code> - compiled project</li>
+        <li><code>public/</code> - static files that are copied to the build without changes</li>
+      </ul>
+      
+      <h2 class="h2">🛠 Build Features</h2>
+      <p>The project implements the following features:</p>
+      <ul class="about__list">
+        <li>⚡ Processing @@include directives in HTML files</li>
+        <li>🔄 Resource path transformation (@scss, @js, @img, @files, etc.)</li>
+        <li>📦 Automatic copying of images, files, and vendor files to dist</li>
+        <li>🌐 Vendor prefixes via Autoprefixer</li>
+        <li>📱 Sorting and combining media queries</li>
+        <li>🚄 Parallel resource processing for optimal build speed</li>
+        <li>🔥 Hot reload when HTML files change</li>
+      </ul>
+      
+      <h3 class="h3">In standard production build (build):</h3>
+      <ul class="about__list">
+        <li>Removal of crossorigin and type="module" attributes</li>
+        <li>Adding defer attribute to scripts</li>
+        <li>Replacing scss connections with css/app.css</li>
+        <li>Fixed file names (app.js and app.css) without hashes</li>
+      </ul>
+      
+      <h3 class="h3">In minified production build (build-min):</h3>
+      <ul class="about__list">
+        <li>All the benefits of the standard build</li>
+        <li>HTML, CSS, and JavaScript minification</li>
+        <li>Automatic optimization of raster images:
+          <ul>
+            <li>JPEG/JPG: compression with 80% quality preservation</li>
+            <li>PNG: optimization with 60-80% quality settings</li>
+            <li>GIF: optimization with level 7</li>
+            <li>SVG: not optimized (to preserve their structure and functionality)</li>
+          </ul>
+        </li>
+      </ul>
+      
+      <h2 class="h2">⚙️ Installation</h2>
+      <div class="about__code">
+        <pre><code># Clone repository
+git clone https://github.com/lexa-zxc/viteverst.git
+
+# Install dependencies
+npm install
+
+# Start development mode
+npm run dev</code></pre>
+      </div>
+      
+      <h2 class="h2">💡 Who Is This Setup For?</h2>
+      <ul class="about__list">
+        <li><strong>HTML/CSS developers</strong> who want to speed up their workflow</li>
+        <li><strong>Frontend developers</strong> who work with multi-page sites</li>
+        <li><strong>Web studios</strong> that need a reliable setup for HTML/CSS development</li>
+        <li><strong>Anyone tired</strong> of Gulp's slow performance and Webpack's complexity</li>
+      </ul>
+      
+      <h2 class="h2">📋 Requirements</h2>
+      <ul class="about__list">
+        <li>Node.js >= 16</li>
+        <li>npm or yarn</li>
+      </ul>
+      
+      <h2 class="h2">🏷️ Tags</h2>
+      <div class="about__tags">
+        <span class="about__tag">vite</span>
+        <span class="about__tag">vite-config</span>
+        <span class="about__tag">vite-for-html</span>
+        <span class="about__tag">html-include</span>
+        <span class="about__tag">file-include</span>
+        <span class="about__tag">vite-file-include</span>
+        <span class="about__tag">html-css</span>
+        <span class="about__tag">frontend-build</span>
         <span class="about__tag">frontend</span>
         <span class="about__tag">html-components</span>
         <span class="about__tag">scss</span>

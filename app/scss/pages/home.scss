@@ -16,7 +16,8 @@
   font-size: 10rem;
   font-weight: 700;
   @media (max-width: 767px) {
-    font-size: 50px;
+    font-size: calc(var(--indexSize) * 12);
+    margin-bottom: calc(var(--indexSize) * 5);
   }
 }
 
@@ -28,6 +29,10 @@
   font-weight: 500;
   background: var(--text-color);
   color: var(--bg-color);
+  @media (max-width: 767px) {
+    font-size: calc(var(--indexSize) * 2.5);
+    padding: calc(var(--indexSize) * 2.5) calc(var(--indexSize) * 4);
+  }
   &:hover {
     background: lighten(#1a1a1a, 10%);
     color: #fff;

@@ -7,7 +7,7 @@ import '@utils/wrapperFade.js';
 // Импортируем функцию анимации текста
 import { animateText } from '@utils/splitAnimationText.js';
 
-// Импортируем функцию анимации текста
+// Импортируем курсор
 import '@utils/cursor.js';
 
 // Импортируем модуль переключения тем
@@ -16,7 +16,7 @@ import { toggleThemeByTime } from '@utils/themeToggle.js';
 document.addEventListener('DOMContentLoaded', () => {
   // Инициализируем переключение темы
   toggleThemeByTime();
-  
+
   // Анимируем заголовок
   animateText('.home__name');
 
@@ -37,4 +37,28 @@ document.addEventListener('DOMContentLoaded', () => {
     ease: gsap_ease,
     delay: 0.4,
   });
+
+  // Прогресс-бар скролла для страницы about
+  const scrollProgress = document.getElementById('scrollProgress');
+  if (scrollProgress) {
+    // Функция для плавного обновления прогресс-бара
+    function updateProgressBar() {
+      // Рассчитываем процент прокрутки страницы
+      const scrollTop =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      const scrollHeight =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      const scrollPercentage = (scrollTop / scrollHeight) * 100;
+
+      // Обновляем ширину прогресс-бара
+      scrollProgress.style.width = scrollPercentage + '%';
+
+      // Продолжаем анимацию
+      requestAnimationFrame(updateProgressBar);
+    }
+
+    // Запускаем анимацию прогресс-бара
+    requestAnimationFrame(updateProgressBar);
+  }
 });

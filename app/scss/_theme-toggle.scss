@@ -1,13 +1,13 @@
 .theme-toggle {
   position: fixed;
-  top: 4rem;
-  right: 4rem;
+  top: 7rem;
+  right: 7rem;
   z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 4rem;
-  height: 4rem;
+  width: 6rem;
+  height: 6rem;
   border-radius: 50%;
   background-color: var(--text-color);
   box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.1);
@@ -15,8 +15,8 @@
   transition: background-color 0.3s ease;
 
   &__icon {
-    width: 2rem;
-    height: 2rem;
+    width: 3rem;
+    height: 3rem;
     fill: var(--bg-color);
     transition: transform 0.3s ease, fill 0.3s ease;
   }
@@ -31,14 +31,14 @@
   }
 
   @media (max-width: 767px) {
-    top: 1.5rem;
-    right: 1.5rem;
-    width: 3.5rem;
-    height: 3.5rem;
+    top: 3rem;
+    right: 2rem;
+    width: 4rem;
+    height: 4rem;
 
     &__icon {
-      width: 1.8rem;
-      height: 1.8rem;
+      width: 2rem;
+      height: 2rem;
     }
   }
 }
