@@ -7,6 +7,9 @@ import os from 'node:os';
 import { cpus } from 'node:os';
 import { exec } from 'child_process';
 import { promisify } from 'util';
+// PostCSS плагины
+import autoprefixer from 'autoprefixer';
+import postcssSortMediaQueries from 'postcss-sort-media-queries';
 
 // Преобразуем exec в Promise
 const execAsync = promisify(exec);
@@ -1009,6 +1012,32 @@ function createConfig(minify = false, imageOptimization = false) {
           }).join('\n') + '\n'
         },
       },
+      // Настройки PostCSS
+      postcss: {
+        plugins: [
+          // Автоматическое добавление вендорных префиксов
+          autoprefixer({
+            // Список поддерживаемых браузеров (добавим больше старых браузеров для тестирования)
+            overrideBrowserslist: [
+              'last 4 versions',
+              '> 0.5%',
+              'Firefox ESR',
+              'not dead',
+              'ie >= 10'
+            ],
+            grid: true, // Полная поддержка CSS Grid Layout
+            cascade: true, // Красивое форматирование префиксов
+            // Включаем все префиксы для тестирования
+            remove: false
+          }),
+          
+          // Группировка и сортировка медиа-запросов
+          postcssSortMediaQueries({
+            // Сортировка от мобильных к десктопным (mobile-first)
+            sort: 'mobile-first'
+          })
+        ]
+      }
     },
   };
 }
