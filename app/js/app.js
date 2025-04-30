@@ -37,41 +37,4 @@ document.addEventListener('DOMContentLoaded', () => {
     ease: gsap_ease,
     delay: 0.4,
   });
-  
-  // Добавляем кнопки копирования к блокам кода на странице about
-  if (document.querySelector('.about')) {
-    initCodeCopy();
-  }
 });
-
-// Функция для добавления кнопок копирования к блокам кода
-function initCodeCopy() {
-  const codeBlocks = document.querySelectorAll('.about__code');
-  
-  codeBlocks.forEach(block => {
-    // Создаем кнопку копирования
-    const copyButton = document.createElement('button');
-    copyButton.className = 'about__code-copy';
-    copyButton.innerHTML = 'Копировать';
-    
-    // Добавляем кнопку в блок кода
-    block.appendChild(copyButton);
-    
-    // Добавляем обработчик события для копирования
-    copyButton.addEventListener('click', () => {
-      const code = block.querySelector('code').innerText;
-      
-      // Копируем текст в буфер обмена
-      navigator.clipboard.writeText(code).then(() => {
-        copyButton.innerHTML = 'Скопировано!';
-        
-        // Возвращаем обратно текст кнопки через 2 секунды
-        setTimeout(() => {
-          copyButton.innerHTML = 'Копировать';
-        }, 2000);
-      }).catch(err => {
-        console.error('Не удалось скопировать текст: ', err);
-      });
-    });
-  });
-}
