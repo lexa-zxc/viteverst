@@ -468,6 +468,60 @@ function createScssEntryPlugin() {
   };
 }
 
+// Создаем плагин для копирования files директории
+function createCopyFilesPlugin() {
+  return {
+    name: 'copy-files-plugin',
+    apply: 'build',
+    closeBundle: async () => {
+      try {
+        // Исходная директория files
+        const filesSrcDir = path.resolve(__dirname, 'app/files');
+        // Целевая директория files в dist
+        const filesDestDir = path.resolve(__dirname, 'dist/files');
+
+        // Проверяем существование директории files
+        if (!fs.existsSync(filesSrcDir)) {
+          return;
+        }
+
+        // Создаем директорию для files в dist, если она не существует
+        if (!fs.existsSync(filesDestDir)) {
+          fs.mkdirSync(filesDestDir, { recursive: true });
+        }
+
+        // Рекурсивная функция для копирования файлов
+        function copyDir(src, dest) {
+          const entries = fs.readdirSync(src, { withFileTypes: true });
+
+          for (const entry of entries) {
+            const srcPath = path.join(src, entry.name);
+            const destPath = path.join(dest, entry.name);
+
+            if (entry.isDirectory()) {
+              // Создаем поддиректорию
+              if (!fs.existsSync(destPath)) {
+                fs.mkdirSync(destPath, { recursive: true });
+              }
+              // Рекурсивно копируем содержимое
+              copyDir(srcPath, destPath);
+            } else {
+              // Копируем файл
+              fs.copyFileSync(srcPath, destPath);
+            }
+          }
+        }
+
+        // Копируем всю директорию files
+        copyDir(filesSrcDir, filesDestDir);
+        console.log(`\x1b[32mФайлы из директории files скопированы\x1b[0m`);
+      } catch (error) {
+        console.error('Ошибка при копировании files:', error);
+      }
+    }
+  };
+}
+
 // Функция для автоматического поиска HTML файлов в корне папки app
 function findHtmlEntries() {
   const appDir = path.resolve(__dirname, 'app');
@@ -675,11 +729,13 @@ function createConfig(minify = true, imageOptimization = false) {
       '@img': 'img',
       '@utils': 'js/utils',
       '@vendor': 'vendor',
+      '@files': 'files',
     }),
     createScssEntryPlugin(),
     createCopyImagesPlugin(),
     createCopyVendorPlugin(),
     createCopyFontsPlugin(),
+    createCopyFilesPlugin(),
     createFixFontPaths(),
     createNoCorsAttributes(),
     createFixScriptPaths(),
@@ -745,6 +801,7 @@ function createConfig(minify = true, imageOptimization = false) {
         '@scss': resolve(__dirname, 'app/scss'),
         '@img': resolve(__dirname, 'app/img'),
         '@vendor': resolve(__dirname, 'app/vendor'),
+        '@files': resolve(__dirname, 'app/files'),
       },
     },
     css: {
