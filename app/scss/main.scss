@@ -9,6 +9,9 @@
 // Базовые стили проекта
 @import 'base';
 
+// Стили для переключателя темы
+@import 'theme-toggle';
+
 // Подключение стилей отдельных блоков
 @import 'header';
 @import 'footer';

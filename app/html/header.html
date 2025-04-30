@@ -12,6 +12,41 @@
 </head>
 
 <body>
+
+  <div class="cursor">
+    <!-- Курсор -->
+    <div class="cursor">
+      <div class="cursor__circle cursor__circle--big ">
+        <svg height="60" width="60">
+          <circle id="bigCircle" cx="30" cy="30" r="18" stroke-width="0.8"></circle>
+        </svg>
+      </div>
+
+      <div class="cursor__circle cursor__circle--small">
+        <svg height="10" width="10">
+          <circle id="smallCircle" cx="4" cy="4" r="3" stroke-width="0"></circle>
+        </svg>
+      </div>
+
+      <div class="cursor__plus">
+        <svg class="cursor__plus--area" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M12.5,1.87037037 L12.5,11.4993704 L22.5,11.5 L22.5,12.5 L12.5,12.4993704 L12.5,22.1296296 L11.5,22.1296296 L11.5,12.4993704 L1.5,12.5 L1.5,11.5 L11.5,11.4993704 L11.5,1.87037037 L12.5,1.87037037 Z" />
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Переключатель темы -->
+  <div class="theme-toggle hoverable-area" id="themeToggle">
+    <svg class="theme-toggle__icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7C9.23858 7 7 9.23858 7 12C7 14.7614 9.23858 17 12 17Z" />
+      <path d="M12 1V3M12 21V23M23 12H21M3 12H1M20.5 3.5L19 5M5 19L3.5 20.5M20.5 20.5L19 19M5 5L3.5 3.5"
+        stroke-linecap="round" />
+    </svg>
+  </div>
+
   <div class="wrapper">
     <header></header>
     <main class="main">

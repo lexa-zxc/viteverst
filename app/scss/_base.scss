@@ -2,9 +2,9 @@
 //========================= НАСТРОЙКИ МАКЕТА =========================//
 //=====================================================================//
 
-$accent: #5ab16f;
+$accent: #1a1a1a;
 $fontSize: 1.8rem;
-$textcolor: #3c3f4d;
+$textcolor: #1a1a1a;
 $lineheight: 1.2;
 $fontFamily: Gilroy, sans-serif;
 $systemfont: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
@@ -37,6 +37,13 @@ $systemfont: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
   --accent: #714bf1;
   --zIndexHeader: 1000;
   --zIndexModal: 9999;
+
+  /* Цвета для светлой темы (по умолчанию) */
+  --bg-color: #ffffff;
+  --text-color: #1a1a1a;
+  --cursor-color: #dedede;
+  --cursor-big-fill: transparent;
+  --cursor-small-fill: #dedede;
 }
 
 html {
@@ -93,14 +100,26 @@ body {
   min-width: 320px;
 }
 body {
-  color: $textcolor;
+  color: var(--text-color);
   line-height: $lineheight;
   font-family: $fontFamily;
   font-size: $fontSize;
+  background-color: var(--bg-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
   //text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Переменные для темной темы */
+body.dark {
+  --bg-color: #121212;
+  --text-color: #f1f1f1;
+  --cursor-color: #444444;
+  --cursor-big-fill: transparent;
+  --cursor-small-fill: #444444;
+}
+
 input,
 button,
 textarea {
@@ -136,9 +155,9 @@ body.lock {
   // Прижимаем footer
   > main {
     flex: 1 1 auto;
-    @media (max-width: 767px) {
-      padding-top: 60px;
-    }
+    // @media (max-width: 767px) {
+    //   padding-top: 60px;
+    // }
   }
 }
 
@@ -1176,4 +1195,52 @@ svg {
     background-color: #d6d6d7;
     outline: none;
   }
+}
+
+.cursor {
+  pointer-events: none;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+
+  &__circle {
+    position: fixed;
+    top: 0;
+    left: 0;
+    mix-blend-mode: difference;
+    z-index: 999999;
+    transform: translateX(-50%) translateY(-50%);
+    &--big {
+      stroke: #dedede;
+      fill: transparent;
+      mix-blend-mode: difference;
+      transform: translateX(-50%) translateY(-50%);
+    }
+    &--small {
+      fill: #dedede;
+      mix-blend-mode: difference;
+      transform: translateX(-50%) translateY(-50%);
+    }
+  }
+
+  &__plus {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999999;
+    stroke: transparent;
+    fill: transparent;
+    mix-blend-mode: normal;
+    transform: translateX(-50%) translateY(-50%);
+    &--area {
+      stroke: transparent;
+      width: 1.8rem;
+      height: 1.8rem;
+    }
+  }
+}
+
+.hoverable-area {
+  cursor: none;
 }
