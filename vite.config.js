@@ -19,12 +19,16 @@ function createFileIncludePlugin() {
             // Если в пути нет директории html, и нет абсолютного пути, и базовый путь не содержит html
             // предполагаем что надо искать в директории html
             let adjustedPath = filePath;
-            if (!filePath.includes('/') && !path.isAbsolute(filePath) && !basePath.includes('html')) {
+            if (
+              !filePath.includes('/') &&
+              !path.isAbsolute(filePath) &&
+              !basePath.includes('html')
+            ) {
               adjustedPath = `html/${filePath}`;
             }
-            
+
             const fullPath = path.resolve(basePath, adjustedPath);
-            
+
             if (!fs.existsSync(fullPath)) {
               console.error(`Файл не найден: ${fullPath}`);
               return `<!-- Ошибка: файл не найден ${filePath} -->`;
@@ -53,41 +57,44 @@ function createFileIncludePlugin() {
         function processIncludes(content, currentPath = null) {
           let result = content;
           const includeRegex = /@@include\(['"]([^'"]+)['"](,\s*({[^}]+}))?\)/g;
-          
+
           let match;
           let lastIndex = 0;
-          
+
           while ((match = includeRegex.exec(result)) !== null) {
             try {
               lastIndex = includeRegex.lastIndex;
               const [fullMatch, filePath, _, paramsStr] = match;
-              
+
               // Парсим параметры, если они есть
               let params = {};
               if (paramsStr) {
                 params = JSON.parse(paramsStr.replace(/^\s*,\s*/, ''));
               }
-              
+
               // Получаем содержимое файла (уже с обработанными вложенными include)
               const content = getFileContent(filePath, params, currentPath);
-              
+
               // Заменяем только текущее совпадение
               result = result.replace(fullMatch, content);
-              
+
               // Сбрасываем lastIndex и начинаем поиск заново
               includeRegex.lastIndex = 0;
             } catch (error) {
-              console.error('Ошибка при обработке вложенного @@include:', error);
+              console.error(
+                'Ошибка при обработке вложенного @@include:',
+                error
+              );
               includeRegex.lastIndex = lastIndex + 1;
             }
           }
-          
+
           return result;
         }
-        
+
         // Запускаем обработку включений
         return processIncludes(html);
-      }
+      },
     },
   };
 }
@@ -168,11 +175,11 @@ function createCopyImagesPlugin() {
 
         // Копируем все изображения
         copyDir(imgSrcDir, imgDestDir);
-        console.log('\x1b[36mImages copied\x1b[0m');
+        console.log(`\x1b[32mИзображения скопированы\x1b[0m`);
       } catch (error) {
         console.error('Ошибка при копировании изображений:', error);
       }
-    }
+    },
   };
 }
 
@@ -222,11 +229,11 @@ function createCopyVendorPlugin() {
 
         // Копируем всю директорию vendor
         copyDir(vendorSrcDir, vendorDestDir);
-        console.log('\x1b[36mVendor files copied\x1b[0m');
+        console.log(`\x1b[32mФайлы vendor скопированы\x1b[0m`);
       } catch (error) {
         console.error('Ошибка при копировании vendor:', error);
       }
-    }
+    },
   };
 }
 
@@ -247,7 +254,7 @@ function createCopyFontsPlugin() {
         }
 
         const fontFiles = fs.readdirSync(fontsSrcDir);
-        fontFiles.forEach(file => {
+        fontFiles.forEach((file) => {
           if (/\.(woff2?|eot|ttf|otf)$/i.test(file)) {
             fs.copyFileSync(
               path.join(fontsSrcDir, file),
@@ -255,12 +262,12 @@ function createCopyFontsPlugin() {
             );
           }
         });
-        
+
         console.log('\x1b[32mШрифты скопированы\x1b[0m');
       } catch (error) {
         console.error('Ошибка при копировании шрифтов:', error);
       }
-    }
+    },
   };
 }
 
@@ -274,26 +281,28 @@ function createFixFontPaths() {
         const cssDir = path.resolve(__dirname, 'dist/css');
         if (!fs.existsSync(cssDir)) return;
 
-        const cssFiles = fs.readdirSync(cssDir).filter(file => file.endsWith('.css'));
-        
-        cssFiles.forEach(cssFile => {
+        const cssFiles = fs
+          .readdirSync(cssDir)
+          .filter((file) => file.endsWith('.css'));
+
+        cssFiles.forEach((cssFile) => {
           const cssPath = path.join(cssDir, cssFile);
           let cssContent = fs.readFileSync(cssPath, 'utf-8');
-          
+
           // Исправляем пути к шрифтам с сохранением форматирования
           cssContent = cssContent.replace(
-            /url\(['"]?\/fonts\/([^'")]+)['"]?\)/g, 
+            /url\(['"]?\/fonts\/([^'")]+)['"]?\)/g,
             'url("../fonts/$1")'
           );
-          
+
           fs.writeFileSync(cssPath, cssContent);
         });
-        
+
         console.log('\x1b[32mПути к шрифтам исправлены\x1b[0m');
       } catch (error) {
         console.error('Ошибка при исправлении путей к шрифтам:', error);
       }
-    }
+    },
   };
 }
 
@@ -321,19 +330,19 @@ function createNoCorsAttributes() {
 
           // Удаляем атрибут type="module" из JS
           htmlContent = htmlContent.replace(/type="module"/g, '');
-          
+
           // Заменяем пути к JS файлам, убирая хэши и добавляя атрибут defer
           htmlContent = htmlContent.replace(
             /<script[^>]*src="([^"]*\/)?js\/[^"]*\.js[^"]*"[^>]*>(<\/script>)?/g,
             '<script defer src="js/app.js"></script>'
           );
-          
+
           // Заменяем пути к CSS файлам, убирая хэши
           htmlContent = htmlContent.replace(
             /<link[^>]*href="([^"]*\/)?css\/[^"]*\.css[^"]*"[^>]*>/g,
             '<link rel="stylesheet" href="css/app.css">'
           );
-          
+
           // Заменяем подключение всех scss файлов на css/app.css
           htmlContent = htmlContent.replace(
             /<link[^>]*href="([^"]*\/)?scss\/[^"]*\.scss"[^>]*>/g,
@@ -342,8 +351,8 @@ function createNoCorsAttributes() {
 
           fs.writeFileSync(htmlPath, htmlContent);
         });
-        
-        console.log('\x1b[36mHTML attributes fixed\x1b[0m');
+
+        console.log(`\x1b[32mАтрибуты HTML исправлены\x1b[0m`);
       } catch (error) {
         console.error('Ошибка при обработке HTML файлов:', error);
       }
@@ -369,12 +378,15 @@ function createFixScriptPaths() {
           let htmlContent = fs.readFileSync(htmlPath, 'utf-8');
 
           // Удаляем ./ из всех путей
-          htmlContent = htmlContent.replace(/(src|href)=["']\.\/([^"']+)["']/g, '$1="$2"');
+          htmlContent = htmlContent.replace(
+            /(src|href)=["']\.\/([^"']+)["']/g,
+            '$1="$2"'
+          );
 
           fs.writeFileSync(htmlPath, htmlContent);
         });
 
-        console.log('\x1b[36mHTML paths fixed\x1b[0m');
+        console.log(`\x1b[32mПути к скриптам исправлены на относительные\x1b[0m`);
       } catch (error) {
         // Ошибки не выводим
       }
@@ -391,36 +403,40 @@ function createRenameJsPlugin() {
       try {
         const distDir = path.resolve(__dirname, 'dist');
         const jsDir = path.resolve(distDir, 'js');
-        
+
         if (!fs.existsSync(jsDir)) {
           fs.mkdirSync(jsDir, { recursive: true });
           return;
         }
-        
+
         // Получаем список всех JS файлов в директории js
-        const jsFiles = fs.readdirSync(jsDir).filter(file => 
-          file.startsWith('app') && file.endsWith('.js') && file !== 'app.js'
-        );
-        
+        const jsFiles = fs
+          .readdirSync(jsDir)
+          .filter(
+            (file) =>
+              file.startsWith('app') &&
+              file.endsWith('.js') &&
+              file !== 'app.js'
+          );
+
         // Если существует app3.js, переименовываем его в app.js
-        jsFiles.forEach(file => {
+        jsFiles.forEach((file) => {
           const filePath = path.resolve(jsDir, file);
           const newFilePath = path.resolve(jsDir, 'app.js');
-          
+
           // Если app.js уже существует, удаляем его
           if (fs.existsSync(newFilePath)) {
             fs.unlinkSync(newFilePath);
           }
-          
+
           // Переименовываем файл
           fs.renameSync(filePath, newFilePath);
-          console.log(`\x1b[32mФайл ${file} переименован в app.js\x1b[0m`);
+          // console.log(`\x1b[32mФайл ${file} переименован в app.js\x1b[0m`);
         });
-        
       } catch (error) {
         console.error('Ошибка при переименовании JS файла:', error);
       }
-    }
+    },
   };
 }
 
@@ -437,14 +453,16 @@ function createScssEntryPlugin() {
           this.emitFile({
             type: 'chunk',
             id: scssEntryPath,
-            name: 'styles'
+            name: 'styles',
           });
-          console.log('\x1b[32mSCSS обработан как отдельная точка входа\x1b[0m');
+          console.log(
+            '\x1b[32mSCSS обработан как отдельная точка входа\x1b[0m'
+          );
         }
       } catch (error) {
         console.error('Ошибка при создании точки входа для SCSS:', error);
       }
-    }
+    },
   };
 }
 
@@ -452,14 +470,14 @@ function createScssEntryPlugin() {
 function findHtmlEntries() {
   const appDir = path.resolve(__dirname, 'app');
   const entries = {};
-  
+
   // Проверяем, существует ли директория
   if (fs.existsSync(appDir)) {
     // Получаем список файлов в директории
     const files = fs.readdirSync(appDir);
-    
+
     // Находим все HTML файлы в корне директории app
-    files.forEach(file => {
+    files.forEach((file) => {
       if (file.endsWith('.html')) {
         // Получаем имя файла без расширения
         const name = file.replace('.html', '');
@@ -468,7 +486,7 @@ function findHtmlEntries() {
       }
     });
   }
-  
+
   return entries;
 }
 
@@ -482,7 +500,7 @@ export default defineConfig({
       input: {
         ...findHtmlEntries(),
         app: resolve(__dirname, 'app/js/app.js'),
-        styles: resolve(__dirname, 'app/scss/main.scss')
+        styles: resolve(__dirname, 'app/scss/main.scss'),
       },
       output: {
         entryFileNames: 'js/app.js',
@@ -500,8 +518,8 @@ export default defineConfig({
           }
           return 'assets/[name][extname]';
         },
-      }
-    }
+      },
+    },
   },
   publicDir: '../public',
   plugins: [
