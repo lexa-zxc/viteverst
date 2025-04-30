@@ -1,6 +1,31 @@
-# Vite с поддержкой @@include
+# 🚀 ViteVerst - ультимативная сборка для верстки на Vite
 
-Проект на Vite с поддержкой директив включения файлов, аналогичных тем, что используются в gulp-file-include.
+![Vite](https://img.shields.io/badge/Vite-6.3.4-purple?style=flat-square&logo=vite)
+![SCSS](https://img.shields.io/badge/SCSS-Support-pink?style=flat-square&logo=sass)
+![Optimization](https://img.shields.io/badge/Image_Optimization-Yes-green?style=flat-square)
+![HTML Includes](https://img.shields.io/badge/HTML_Includes-Yes-blue?style=flat-square)
+
+Современная **сверхбыстрая** сборка для верстки сайтов на базе Vite с поддержкой директив включения файлов (@@include), как в Gulp, но в **100 раз быстрее**! Забудьте о длительной компиляции - получите мгновенный результат.
+
+## ✨ Ключевые особенности
+
+- **Молниеносная скорость** разработки, моментальный Hot Reload
+- **Поддержка @@include** - работайте с компонентами без фреймворков
+- **Алиасы для путей** (@scss, @js, @img) - никакой путаницы с ../../../../
+- **Автоматическая оптимизация** изображений, CSS и JS
+- **Многопоточная обработка** ресурсов - быстрая сборка даже для больших проектов
+- **Никакого Webpack или Gulp** - только современный и быстрый Vite
+- **Понятная структура** проекта для удобной верстки
+- **Поддержка многостраничных** сайтов из коробки
+
+## 🔥 Почему лучше чем Gulp?
+
+- **В 10-100 раз быстрее** запуск сервера разработки
+- **Мгновенное** применение изменений благодаря ESM
+- **Нативная поддержка** SCSS, PostCSS из коробки
+- **Никаких длинных цепочек** .pipe().pipe().pipe()...
+- **Меньше зависимостей**, меньше проблем с устареванием плагинов
+- **Простая конфигурация** и расширяемость
 
 ## Использование
 
@@ -53,7 +78,21 @@ npm run preview
 
 Эти префиксы будут автоматически преобразованы в соответствующие пути при сборке.
 
-## Структура проекта
+### SCSS алиасы
+
+В SCSS файлах также доступны алиасы для импорта:
+
+```scss
+// Импорт с алиасами
+@import "@scss/variables"; 
+@import "@scss/mixins";
+
+.element {
+  background-image: url("@img/background.jpg");
+}
+```
+
+## 📁 Структура проекта
 
 - `app/` - исходные файлы проекта
   - `html/` - HTML компоненты для включения
@@ -66,25 +105,217 @@ npm run preview
 - `dist/` - собранный проект
 - `public/` - статические файлы, которые копируются в сборку без изменений
 
-## Особенности сборки
+## 🛠 Особенности сборки
 
 В проекте реализованы следующие функции:
-- Обработка директив @@include в HTML файлах
-- Преобразование путей к ресурсам (@scss, @js, @img, @files и др.)
-- Автоматическое копирование изображений, файлов и vendor-файлов в dist
-- Вендорные префиксы через Autoprefixer
-- Сортировка и объединение медиа-запросов
-- Параллельная обработка ресурсов для оптимальной скорости сборки
-- В стандартной production-сборке (build):
+- ⚡ Обработка директив @@include в HTML файлах
+- 🔄 Преобразование путей к ресурсам (@scss, @js, @img, @files и др.)
+- 📦 Автоматическое копирование изображений, файлов и vendor-файлов в dist
+- 🌐 Вендорные префиксы через Autoprefixer
+- 📱 Сортировка и объединение медиа-запросов
+- 🚄 Параллельная обработка ресурсов для оптимальной скорости сборки
+- 🔥 Горячая перезагрузка при изменении HTML файлов
+- 📂 В стандартной production-сборке (build):
   - Удаление атрибутов crossorigin и type="module"
   - Добавление атрибута defer для скриптов
   - Замена подключений scss на css/app.css
   - Фиксированные имена файлов (app.js и app.css) без хешей
-- В минифицированной production-сборке (build-min):
+- 🚀 В минифицированной production-сборке (build-min):
   - Все преимущества стандартной сборки
   - Минификация HTML, CSS и JavaScript
   - Автоматическая оптимизация растровых изображений:
     - JPEG/JPG: сжатие с сохранением 80% качества
     - PNG: оптимизация с настройками качества 60-80%
     - GIF: оптимизация с уровнем 7
-    - SVG: не оптимизируются (для сохранения их структуры и функциональности) 
+    - SVG: не оптимизируются (для сохранения их структуры и функциональности)
+    
+## ⚙️ Установка
+
+```bash
+# Клонирование репозитория
+git clone <url-репозитория>
+
+# Установка зависимостей
+npm install
+
+# Запуск режима разработки
+npm run dev
+```
+
+## 💡 Для кого эта сборка?
+
+- **Верстальщикам**, которые хотят ускорить свой рабочий процесс
+- **Frontend-разработчикам**, которые работают с многостраничными сайтами
+- **Web-студиям**, которым нужна надежная сборка для верстки
+- **Всем, кто устал** от медленной работы Gulp и сложности Webpack
+
+## 📋 Требования
+
+- Node.js >= 16
+- npm или yarn
+
+## 🏷️ Теги
+
+`vite` `vite-config` `vite-for-html` `html-include` `file-include` `vite-file-include` `верстка` `сборка для верстки` `frontend` `html-components` `scss` `sass` `web-dev` `imagemin` `multi-page` `web-optimization`
+
+---
+
+# 🚀 ViteVerst - Ultimate Vite Setup for HTML/CSS Development
+
+![Vite](https://img.shields.io/badge/Vite-6.3.4-purple?style=flat-square&logo=vite)
+![SCSS](https://img.shields.io/badge/SCSS-Support-pink?style=flat-square&logo=sass)
+![Optimization](https://img.shields.io/badge/Image_Optimization-Yes-green?style=flat-square)
+![HTML Includes](https://img.shields.io/badge/HTML_Includes-Yes-blue?style=flat-square)
+
+A modern **ultra-fast** setup for website development based on Vite with support for file inclusion directives (@@include), like in Gulp, but **100 times faster**! Forget about long compilation times - get instant results.
+
+## ✨ Key Features
+
+- **Lightning-fast** development, instant Hot Reload
+- **@@include support** - work with components without frameworks
+- **Path aliases** (@scss, @js, @img) - no more confusion with ../../../../
+- **Automatic optimization** of images, CSS, and JS
+- **Multi-threaded processing** of resources - fast builds even for large projects
+- **No Webpack or Gulp** - only modern and fast Vite
+- **Clear structure** of the project for convenient development
+- **Support for multi-page** sites out of the box
+
+## 🔥 Why Better Than Gulp?
+
+- **10-100x faster** development server startup
+- **Instant** application of changes thanks to ESM
+- **Native support** for SCSS, PostCSS out of the box
+- **No long chains** of .pipe().pipe().pipe()...
+- **Fewer dependencies**, fewer problems with outdated plugins
+- **Simple configuration** and extensibility
+
+## Usage
+
+### Running the Project
+```bash
+# Development mode
+npm run dev
+
+# Build project without minification (for debugging)
+npm run build
+
+# Build project with minification and image optimization (for production)
+npm run build-min
+
+# Preview the built project
+npm run preview
+```
+
+### Include Directives
+
+You can use the following directives in HTML files:
+
+#### Simple Include
+```html
+@@include('html/header.html')
+```
+
+#### Include with Parameters
+```html
+@@include('html/header.html', {"title":"Home Page"})
+```
+
+In the `header.html` file, you can use parameters with the `@@parameter_name` syntax. For example:
+```html
+<title>@@title</title>
+```
+
+### Resource Paths
+
+You can use special prefixes to specify paths to resources:
+
+```html
+<link rel="stylesheet" href="@scss/main.scss">
+<script src="@js/app.js"></script>
+<img src="@img/logo.png">
+<script src="@vendor/jquery/jquery.min.js"></script>
+<script type="module" src="@utils/helper.js"></script>
+<a href="@files/documents/sample.pdf">Download document</a>
+```
+
+These prefixes will be automatically converted to appropriate paths during the build.
+
+### SCSS Aliases
+
+Aliases are also available in SCSS files for imports:
+
+```scss
+// Imports with aliases
+@import "@scss/variables"; 
+@import "@scss/mixins";
+
+.element {
+  background-image: url("@img/background.jpg");
+}
+```
+
+## 📁 Project Structure
+
+- `app/` - source files
+  - `html/` - HTML components for inclusion
+  - `scss/` - SCSS styles
+  - `js/` - JavaScript files
+  - `img/` - images
+  - `fonts/` - fonts
+  - `vendor/` - third-party libraries
+  - `files/` - downloadable files (documents, archives, etc.)
+- `dist/` - compiled project
+- `public/` - static files that are copied to the build without changes
+
+## 🛠 Build Features
+
+The project implements the following features:
+- ⚡ Processing @@include directives in HTML files
+- 🔄 Resource path transformation (@scss, @js, @img, @files, etc.)
+- 📦 Automatic copying of images, files, and vendor files to dist
+- 🌐 Vendor prefixes via Autoprefixer
+- 📱 Sorting and combining media queries
+- 🚄 Parallel resource processing for optimal build speed
+- 🔥 Hot reload when HTML files change
+- 📂 In standard production build (build):
+  - Removal of crossorigin and type="module" attributes
+  - Adding defer attribute to scripts
+  - Replacing scss connections with css/app.css
+  - Fixed file names (app.js and app.css) without hashes
+- 🚀 In minified production build (build-min):
+  - All the benefits of the standard build
+  - HTML, CSS, and JavaScript minification
+  - Automatic optimization of raster images:
+    - JPEG/JPG: compression with 80% quality preservation
+    - PNG: optimization with 60-80% quality settings
+    - GIF: optimization with level 7
+    - SVG: not optimized (to preserve their structure and functionality)
+    
+## ⚙️ Installation
+
+```bash
+# Clone repository
+git clone <repository-url>
+
+# Install dependencies
+npm install
+
+# Start development mode
+npm run dev
+```
+
+## 💡 Who Is This Setup For?
+
+- **HTML/CSS developers** who want to speed up their workflow
+- **Frontend developers** who work with multi-page sites
+- **Web studios** that need a reliable setup for HTML/CSS development
+- **Anyone tired** of Gulp's slow performance and Webpack's complexity
+
+## 📋 Requirements
+
+- Node.js >= 16
+- npm or yarn
+
+## 🏷️ Tags
+
+`vite` `vite-config` `vite-for-html` `html-include` `file-include` `vite-file-include` `html-css` `frontend-build` `frontend` `html-components` `scss` `sass` `web-dev` `imagemin` `multi-page` `web-optimization` 

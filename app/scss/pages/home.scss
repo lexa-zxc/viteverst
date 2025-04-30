@@ -16,13 +16,12 @@
   }
 }
 
-.test{
+.test {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 1rem;
-  .item{
+  .item {
     background-color: #1a1a1a;
-    
   }
 }

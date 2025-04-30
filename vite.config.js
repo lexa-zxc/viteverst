@@ -1019,11 +1019,7 @@ function createConfig(minify = false, imageOptimization = false) {
           autoprefixer({
             // Список поддерживаемых браузеров (добавим больше старых браузеров для тестирования)
             overrideBrowserslist: [
-              'last 4 versions',
-              '> 0.5%',
-              'Firefox ESR',
-              'not dead',
-              'ie >= 10'
+              'last 5 versions',
             ],
             grid: false, // Отключаем префиксы для Grid Layout
             flexbox: false, // Отключаем префиксы для Flexbox
