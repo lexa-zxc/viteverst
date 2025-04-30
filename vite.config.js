@@ -490,88 +490,109 @@ function findHtmlEntries() {
   return entries;
 }
 
-export default defineConfig({
-  root: 'app',
-  build: {
-    outDir: '../dist',
-    emptyOutDir: true,
-    manifest: false,
-    rollupOptions: {
-      input: {
-        ...findHtmlEntries(),
-        app: resolve(__dirname, 'app/js/app.js'),
-        styles: resolve(__dirname, 'app/scss/main.scss'),
-      },
-      output: {
-        entryFileNames: 'js/app.js',
-        chunkFileNames: 'js/[name].js',
-        assetFileNames: (assetInfo) => {
-          const extType = assetInfo.name.split('.').at(1);
-          if (/css/i.test(extType)) {
-            return 'css/app.css';
-          }
-          if (/png|jpe?g|gif|svg|webp|ico/i.test(extType)) {
-            return 'img/[name][extname]';
-          }
-          if (/woff|woff2|eot|ttf|otf/i.test(extType)) {
-            return 'fonts/[name][extname]';
-          }
-          return 'assets/[name][extname]';
+// Функция для создания конфигурации с разными настройками минификации
+function createConfig(minify = true) {
+  return {
+    root: 'app',
+    build: {
+      outDir: '../dist',
+      emptyOutDir: true,
+      manifest: false,
+      minify: minify ? 'esbuild' : false, // Включаем или отключаем минификацию
+      rollupOptions: {
+        input: {
+          ...findHtmlEntries(),
+          app: resolve(__dirname, 'app/js/app.js'),
+          styles: resolve(__dirname, 'app/scss/main.scss'),
+        },
+        output: {
+          entryFileNames: 'js/app.js',
+          chunkFileNames: 'js/[name].js',
+          assetFileNames: (assetInfo) => {
+            const extType = assetInfo.name.split('.').at(1);
+            if (/css/i.test(extType)) {
+              return 'css/app.css';
+            }
+            if (/png|jpe?g|gif|svg|webp|ico/i.test(extType)) {
+              return 'img/[name][extname]';
+            }
+            if (/woff|woff2|eot|ttf|otf/i.test(extType)) {
+              return 'fonts/[name][extname]';
+            }
+            return 'assets/[name][extname]';
+          },
         },
       },
     },
-  },
-  publicDir: '../public',
-  plugins: [
-    sassGlobImports(),
-    createFileIncludePlugin(),
-    createHtmlAliasPlugin({
-      '@scss': 'scss',
-      '@js': 'js',
-      '@img': 'img',
-      '@utils': 'js/utils',
-      '@vendor': 'vendor',
-    }),
-    createScssEntryPlugin(),
-    createCopyImagesPlugin(),
-    createCopyVendorPlugin(),
-    createCopyFontsPlugin(),
-    createFixFontPaths(),
-    createNoCorsAttributes(),
-    createFixScriptPaths(),
-    createRenameJsPlugin(),
-    // Плагин для перезагрузки страницы при изменении HTML
-    {
-      name: 'html-reload',
-      handleHotUpdate({ file, server }) {
-        if (file.endsWith('.html')) {
-          server.ws.send({
-            type: 'full-reload',
-            path: '*',
-          });
-          return [];
-        }
+    publicDir: '../public',
+    plugins: [
+      sassGlobImports(),
+      createFileIncludePlugin(),
+      createHtmlAliasPlugin({
+        '@scss': 'scss',
+        '@js': 'js',
+        '@img': 'img',
+        '@utils': 'js/utils',
+        '@vendor': 'vendor',
+      }),
+      createScssEntryPlugin(),
+      createCopyImagesPlugin(),
+      createCopyVendorPlugin(),
+      createCopyFontsPlugin(),
+      createFixFontPaths(),
+      createNoCorsAttributes(),
+      createFixScriptPaths(),
+      createRenameJsPlugin(),
+      // Плагин для перезагрузки страницы при изменении HTML
+      {
+        name: 'html-reload',
+        handleHotUpdate({ file, server }) {
+          if (file.endsWith('.html')) {
+            server.ws.send({
+              type: 'full-reload',
+              path: '*',
+            });
+            return [];
+          }
+        },
+      },
+    ],
+    resolve: {
+      alias: {
+        '@utils': resolve(__dirname, 'app/js/utils'),
+        '@js': resolve(__dirname, 'app/js'),
+        '@scss': resolve(__dirname, 'app/scss'),
+        '@img': resolve(__dirname, 'app/img'),
+        '@vendor': resolve(__dirname, 'app/vendor'),
       },
     },
-  ],
-  resolve: {
-    alias: {
-      '@utils': resolve(__dirname, 'app/js/utils'),
-      '@js': resolve(__dirname, 'app/js'),
-      '@scss': resolve(__dirname, 'app/scss'),
-      '@img': resolve(__dirname, 'app/img'),
-      '@vendor': resolve(__dirname, 'app/vendor'),
-    },
-  },
-  css: {
-    devSourcemap: true,
-    preprocessorOptions: {
-      scss: {
-        quietDeps: true,
-        logger: {
-          warn: () => {},
+    css: {
+      devSourcemap: true,
+      preprocessorOptions: {
+        scss: {
+          quietDeps: true,
+          logger: {
+            warn: () => {},
+          },
         },
       },
     },
-  },
+  };
+}
+
+// Экспортируем конфигурацию в зависимости от переменной окружения
+export default defineConfig(({ mode }) => {
+  console.log(`\x1b[32mРежим сборки: ${mode}\x1b[0m`);
+  
+  // Используем разные настройки в зависимости от режима
+  if (mode === 'development') {
+    return createConfig(false); // Без минификации для режима разработки
+  } else if (mode === 'production-min') {
+    return createConfig(true); // С минификацией
+  } else if (mode === 'production') {
+    return createConfig(false); // Без минификации для стандартной сборки
+  }
+  
+  // По умолчанию - без минификации
+  return createConfig(false);
 });

@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --open",
-    "build": "vite build",
+    "build": "vite build --mode production",
+    "build-min": "vite build --mode production-min",
     "preview": "vite preview --open"
   },
   "devDependencies": {
