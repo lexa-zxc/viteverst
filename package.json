@@ -1,8 +1,8 @@
 {
-  "name": "vite-include",
+  "name": "viteverst",
   "private": true,
   "version": "0.1.0",
-  "description": "Vite с поддержкой директив @@include",
+  "description": "🚀 Ультимативная сборка для верстки на Vite с поддержкой @@include и оптимизацией ресурсов",
   "type": "module",
   "scripts": {
     "dev": "vite --open --host",
@@ -10,18 +10,46 @@
     "build-min": "vite build --mode production-min",
     "preview": "vite preview --open --host"
   },
+  "keywords": [
+    "vite",
+    "html",
+    "file-include",
+    "html-include",
+    "frontend",
+    "static-site",
+    "multi-page",
+    "scss",
+    "optimization",
+    "vite-plugin",
+    "image-optimization",
+    "boilerplate",
+    "template",
+    "vite-config",
+    "markup",
+    "web-dev"
+  ],
+  "author": "lexa-zxc",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lexa-zxc/viteverst.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lexa-zxc/viteverst/issues"
+  },
+  "homepage": "https://github.com/lexa-zxc/viteverst",
   "devDependencies": {
-    "autoprefixer": "^10.4.21",
-    "imagemin": "^8.0.1",
-    "imagemin-gifsicle": "^7.0.0",
-    "imagemin-mozjpeg": "^10.0.0",
-    "imagemin-pngquant": "^9.0.2",
-    "imagemin-svgo": "^10.0.1",
-    "postcss": "^8.5.3",
-    "postcss-sort-media-queries": "^5.2.0",
+    "autoprefixer": "10.4.21",
+    "imagemin": "8.0.1",
+    "imagemin-gifsicle": "7.0.0",
+    "imagemin-mozjpeg": "10.0.0",
+    "imagemin-pngquant": "9.0.2",
+    "imagemin-svgo": "10.0.1",
+    "postcss": "8.5.3",
+    "postcss-sort-media-queries": "5.2.0",
     "sass": "1.87.0",
     "vite": "6.3.4",
-    "vite-plugin-imagemin": "^0.6.1",
+    "vite-plugin-imagemin": "0.6.1",
     "vite-plugin-sass-glob-import": "5.0.0"
   }
 }
