@@ -4,6 +4,7 @@
 ![SCSS](https://img.shields.io/badge/SCSS-Support-pink?style=flat-square&logo=sass)
 ![Optimization](https://img.shields.io/badge/Image_Optimization-Yes-green?style=flat-square)
 ![HTML Includes](https://img.shields.io/badge/HTML_Includes-Yes-blue?style=flat-square)
+![Adaptive REM](https://img.shields.io/badge/Adaptive_REM-Yes-orange?style=flat-square)
 
 Современная **сверхбыстрая** сборка для верстки сайтов на базе Vite с поддержкой директив включения файлов (@@include), как в Gulp, но в **100 раз быстрее**! Забудьте о длительной компиляции - получите мгновенный результат.
 
@@ -13,6 +14,7 @@
 - **Поддержка @@include** - работайте с компонентами без фреймворков
 - **Алиасы для путей** (@scss, @js, @img) - никакой путаницы с ../../../../
 - **Автоматическая оптимизация** изображений, CSS и JS
+- **Адаптивная система REM** - верстайте без медиа-запросов под любые разрешения
 - **Многопоточная обработка** ресурсов - быстрая сборка даже для больших проектов
 - **Никакого Webpack или Gulp** - только современный и быстрый Vite
 - **Понятная структура** проекта для удобной верстки
@@ -26,6 +28,55 @@
 - **Никаких длинных цепочек** .pipe().pipe().pipe()...
 - **Меньше зависимостей**, меньше проблем с устареванием плагинов
 - **Простая конфигурация** и расширяемость
+
+## 🔄 Адаптивная система REM
+
+В сборке реализована уникальная система адаптивной верстки на основе REM единиц, которая:
+
+- **Исключает необходимость** в медиа-запросах для большинства случаев
+- **Автоматически масштабирует** интерфейс под разные размеры экранов
+- **Точно настраивается** для конкретных диапазонов разрешений
+- **Учитывает не только ширину**, но и высоту экрана для естественного масштабирования
+
+### Как это работает
+
+1. **Интеллектуальное масштабирование**: Скрипт `app/vendor/rem/rem.js` автоматически устанавливает размер шрифта для тега `<html>` в зависимости от разрешения экрана:
+   ```javascript
+   // Примеры коэффициентов масштабирования для разных устройств
+   { minWidth: 2560, maxWidth: Infinity, coefficient: 10.8 }, // 2K+ разрешения
+   { minWidth: 1600, maxWidth: 2560, coefficient: 10.8 }, // Десктоп (стандартный)
+   { minWidth: 1400, maxWidth: 1600, coefficient: 12.5 }, // Большие ноутбуки
+   // ...и т.д. для других размеров экранов
+   ```
+
+2. **Использование в CSS**: Просто используйте rem вместо px:
+   ```css
+   .button {
+     padding: 1.5rem 2rem; /* Будет автоматически масштабироваться */
+     font-size: 1rem;
+     margin-bottom: 2rem;
+   }
+   ```
+
+3. **Проверка адаптивности**: Просто растяните окно браузера или измените масштаб, чтобы увидеть, как все элементы интерфейса масштабируются пропорционально без единого медиа-запроса.
+
+4. **Точная настройка**: Вы можете легко изменить коэффициенты масштабирования в файле `app/vendor/rem/rem.js` для разных диапазонов разрешений.
+
+### Преимущества перед медиа-запросами
+
+- **Меньше кода**: Нет необходимости писать десятки медиа-запросов для разных разрешений
+- **Естественное масштабирование**: Все элементы масштабируются пропорционально и плавно
+- **Легкость поддержки**: Изменения в одном файле влияют на всю адаптивность сайта
+- **Отзывчивость**: Сайт выглядит хорошо даже на нестандартных разрешениях и при изменении масштаба
+
+### Советы по тестированию
+
+- **Растяните окно браузера** горизонтально и вертикально, чтобы увидеть, как все элементы масштабируются
+- **Измените масштаб страницы** (Ctrl+/- или колесико мыши с Ctrl), чтобы проверить различные размеры экрана
+- **Проверьте на 2K+ мониторах** или измените масштаб для симуляции таких разрешений
+- **Используйте инструменты разработчика** для инспектирования стилей и проверки, что все элементы используют rem
+
+> **Примечание**: Для очень специфичных элементов и мобильных устройств все еще рекомендуется использовать точечные медиа-запросы, но основная адаптивность достигается без них.
 
 ## Использование
 
@@ -166,6 +217,7 @@ npm run dev
 ![SCSS](https://img.shields.io/badge/SCSS-Support-pink?style=flat-square&logo=sass)
 ![Optimization](https://img.shields.io/badge/Image_Optimization-Yes-green?style=flat-square)
 ![HTML Includes](https://img.shields.io/badge/HTML_Includes-Yes-blue?style=flat-square)
+![Adaptive REM](https://img.shields.io/badge/Adaptive_REM-Yes-orange?style=flat-square)
 
 A modern **ultra-fast** setup for website development based on Vite with support for file inclusion directives (@@include), like in Gulp, but **100 times faster**! Forget about long compilation times - get instant results.
 
@@ -175,6 +227,7 @@ A modern **ultra-fast** setup for website development based on Vite with support
 - **@@include support** - work with components without frameworks
 - **Path aliases** (@scss, @js, @img) - no more confusion with ../../../../
 - **Automatic optimization** of images, CSS, and JS
+- **Adaptive REM system** - build responsive websites without media queries for any resolution
 - **Multi-threaded processing** of resources - fast builds even for large projects
 - **No Webpack or Gulp** - only modern and fast Vite
 - **Clear structure** of the project for convenient development
@@ -188,6 +241,55 @@ A modern **ultra-fast** setup for website development based on Vite with support
 - **No long chains** of .pipe().pipe().pipe()...
 - **Fewer dependencies**, fewer problems with outdated plugins
 - **Simple configuration** and extensibility
+
+## 🔄 Adaptive REM System
+
+The build implements a unique adaptive layout system based on REM units, which:
+
+- **Eliminates the need** for media queries in most cases
+- **Automatically scales** the interface for different screen sizes
+- **Can be precisely configured** for specific resolution ranges
+- **Takes into account not only width** but also screen height for natural scaling
+
+### How It Works
+
+1. **Intelligent scaling**: The `app/vendor/rem/rem.js` script automatically sets the font size for the `<html>` tag based on screen resolution:
+   ```javascript
+   // Examples of scaling coefficients for different devices
+   { minWidth: 2560, maxWidth: Infinity, coefficient: 10.8 }, // 2K+ resolutions
+   { minWidth: 1600, maxWidth: 2560, coefficient: 10.8 }, // Desktop (standard)
+   { minWidth: 1400, maxWidth: 1600, coefficient: 12.5 }, // Large laptops
+   // ...and so on for other screen sizes
+   ```
+
+2. **Usage in CSS**: Simply use rem instead of px:
+   ```css
+   .button {
+     padding: 1.5rem 2rem; /* Will automatically scale */
+     font-size: 1rem;
+     margin-bottom: 2rem;
+   }
+   ```
+
+3. **Testing adaptivity**: Just stretch the browser window or change the zoom level to see how all interface elements scale proportionally without a single media query.
+
+4. **Fine-tuning**: You can easily change the scaling coefficients in `app/vendor/rem/rem.js` for different resolution ranges.
+
+### Advantages Over Media Queries
+
+- **Less code**: No need to write dozens of media queries for different resolutions
+- **Natural scaling**: All elements scale proportionally and smoothly
+- **Easy maintenance**: Changes in one file affect the entire site adaptivity
+- **Responsiveness**: The site looks good even on non-standard resolutions and when zooming
+
+### Testing Tips
+
+- **Stretch the browser window** horizontally and vertically to see how all elements scale
+- **Change the page zoom** (Ctrl+/- or mouse wheel with Ctrl) to test different screen sizes
+- **Check on 2K+ monitors** or change zoom to simulate such resolutions
+- **Use developer tools** to inspect styles and verify that all elements use rem
+
+> **Note**: For very specific elements and mobile devices, it's still recommended to use targeted media queries, but the main adaptivity is achieved without them.
 
 ## Usage
 

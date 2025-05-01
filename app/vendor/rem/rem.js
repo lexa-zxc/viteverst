@@ -1,53 +1,70 @@
+/**
+ * REM калькулятор - адаптивно меняет размер шрифта в зависимости от разрешения экрана
+ */
+
 // Исходное разрешение
-const initialResolution = 1920 * 1080;
-const htmlElement = document.querySelector('html');
+const INITIAL_RESOLUTION = 1920 * 1080;
+const HTML_ELEMENT = document.querySelector('html');
 
-// Функция для рассчета размера шрифта
-function calculateFontSize(windowWidth, windowHeight) {
-  return 10.8 * calculateSqrt(windowWidth, windowHeight);
-}
+// Коэффициенты для разных разрешений экрана
+const FONT_SIZE_COEFFICIENTS = [
+  { minWidth: 2560, maxWidth: Infinity, coefficient: 10.8 }, // 2K+ разрешения
+  { minWidth: 1600, maxWidth: 2560, coefficient: 10.8 }, // Десктоп (стандартный)
+  { minWidth: 1400, maxWidth: 1600, coefficient: 12.5 }, // Большие ноутбуки
+  { minWidth: 1300, maxWidth: 1400, coefficient: 13.5 }, // Стандартные ноутбуки
+  { minWidth: 1200, maxWidth: 1300, coefficient: 13.0 }, // Маленькие ноутбуки
+  { minWidth: 1100, maxWidth: 1200, coefficient: 13.0 }, // Большие планшеты (альбомная)
+  { minWidth: 960, maxWidth: 1100, coefficient: 12.0 }, // Средние планшеты
+  { minWidth: 767, maxWidth: 960, coefficient: 10.0 }, // Маленькие планшеты
+  { minWidth: 0, maxWidth: 767, coefficient: null }, // Мобильные (сброс до 10px)
+];
 
-// Функция для вычисления квадратного корня
+/**
+ * Вычисляет коэффициент масштабирования на основе отношения к исходному разрешению
+ * @param {number} windowWidth - Ширина окна браузера
+ * @param {number} windowHeight - Высота окна браузера
+ * @returns {number} - Коэффициент масштабирования
+ */
 function calculateSqrt(windowWidth, windowHeight) {
-  return Math.sqrt((windowWidth * windowHeight) / initialResolution);
+  return Math.sqrt((windowWidth * windowHeight) / INITIAL_RESOLUTION);
 }
 
-// Функция для применения размера шрифта к элементу
+/**
+ * Применяет рассчитанный размер шрифта к HTML элементу
+ * @param {number} fontSize - Размер шрифта в пикселях
+ */
 function applyFontSize(fontSize) {
-  fontSize = fontSize.toFixed(1); // Округляем до одного знака после запятой
-  htmlElement.style.fontSize = `${fontSize}px`;
+  HTML_ELEMENT.style.fontSize = `${fontSize.toFixed(1)}px`;
 }
 
-// Функция для обработки изменения размера окна
+/**
+ * Обработчик изменения размера окна
+ */
 function handleResize() {
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;
-  let fontSize = calculateFontSize(windowWidth, windowHeight);
 
-  if (windowWidth < 1600) {
-    fontSize = 12.5 * calculateSqrt(windowWidth, windowHeight); // Большие ноуты
-  }
-  if (windowWidth < 1400) {
-    fontSize = 13.5 * calculateSqrt(windowWidth, windowHeight); // Маленькие ноуты
-  }
-  if (windowWidth < 1300) {
-    fontSize = 13 * calculateSqrt(windowWidth, windowHeight); // Супер мини ноуты
-  }
-  if (windowWidth < 1200) {
-    fontSize = 13 * calculateSqrt(windowWidth, windowHeight); // Большие планшеты
-  }
-  if (windowWidth < 1100) {
-    fontSize = 12 * calculateSqrt(windowWidth, windowHeight); // Большие планшеты
-  }
-  if (windowWidth < 960) {
-    fontSize = 10 * calculateSqrt(windowWidth, windowHeight); // Маленькине планшеты
-  }
+  // Для мобильных устройств используем фиксированный размер шрифта
   if (windowWidth <= 767) {
-    fontSize = 10; // Сбрасываем размер шрифта к 10px на мобильных устройствах
+    applyFontSize(10);
+    return;
   }
+
+  // Находим подходящий коэффициент для текущего разрешения
+  const { coefficient } = FONT_SIZE_COEFFICIENTS.find(
+    ({ minWidth, maxWidth }) =>
+      windowWidth >= minWidth && windowWidth < maxWidth
+  );
+
+  // Рассчитываем размер шрифта
+  const scaleFactor = calculateSqrt(windowWidth, windowHeight);
+  const fontSize = coefficient * scaleFactor;
 
   applyFontSize(fontSize);
 }
 
-handleResize(); // Не дожидаемся загрузки всех элементв и сразу вызываем (что-бы не было артефактов)
-window.addEventListener('resize', handleResize); // Слушатель события изменения размера окна
+// Применяем размер шрифта сразу (до загрузки всех элементов)
+handleResize();
+
+// Обновляем размер шрифта при изменении размера окна
+window.addEventListener('resize', handleResize);
