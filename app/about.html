@@ -16,8 +16,21 @@
       </div>
 
       <p>Современная <strong>сверхбыстрая</strong> сборка для верстки сайтов на базе Vite с поддержкой директив
-        включения файлов (@@include), как в Gulp, но в <strong>100 раз быстрее</strong>! Забудьте о длительной
+        включения файлов (@@include), как в Gulp, но в <strong>10-100x раз быстрее</strong>! Забудьте о длительной
         компиляции - получите мгновенный результат.</p>
+
+      <h2 class="h2">✨ Ключевые особенности</h2>
+      <ul class="about__list">
+        <li><strong>Молниеносная скорость</strong> разработки, моментальный Hot Reload</li>
+        <li><strong>Поддержка @@include</strong> - работайте с компонентами без фреймворков</li>
+        <li><strong>Алиасы для путей</strong> (@scss, @js, @img) - никакой путаницы с ../../../../</li>
+        <li><strong>Автоматическая оптимизация</strong> изображений, CSS и JS</li>
+        <li><strong>Адаптивная система REM</strong> - верстайте без медиа-запросов под любые разрешения</li>
+        <li><strong>Многопоточная обработка</strong> ресурсов - быстрая сборка даже для больших проектов</li>
+        <li><strong>Никакого Webpack или Gulp</strong> - только современный и быстрый Vite</li>
+        <li><strong>Понятная структура</strong> проекта для удобной верстки</li>
+        <li><strong>Поддержка многостраничных</strong> сайтов из коробки</li>
+      </ul>
 
       <h2 class="h2">💡 Для кого эта сборка?</h2>
       <ul class="about__list">
@@ -163,6 +176,81 @@ preview   # эквивалентно npm run preview</code></pre>
           масштаба</li>
       </ul>
 
+      <h2 class="h2">Использование</h2>
+
+      <h3 class="h3">Запуск проекта</h3>
+      <div class="about__code">
+        <pre><code># Режим разработки (также можно использовать dev.bat или просто команду dev)
+npm run dev
+
+# Сборка проекта без минификации (также build.bat или команда build)
+npm run build
+
+# Сборка проекта с минификацией и оптимизацией изображений (build-min.bat или команда build-min)
+npm run build-min
+
+# Предпросмотр собранного проекта (preview.bat или команда preview)
+npm run preview</code></pre>
+      </div>
+
+      <h3 class="h3">Директивы включения</h3>
+      <p>В HTML файлах можно использовать следующие директивы:</p>
+
+      <h4>Простое включение</h4>
+      <div class="about__code">
+        <pre><code>@@include('html/header.html')</code></pre>
+      </div>
+
+      <h4>Включение с параметрами</h4>
+      <div class="about__code">
+        <pre><code>@@include('html/header.html', {"title":"Главная страница"})</code></pre>
+      </div>
+
+      <p>В файле <code>header.html</code> можно использовать параметры через синтаксис <code>@@имя_параметра</code>. Например:</p>
+      <div class="about__code">
+        <pre><code>&lt;title&gt;@@title&lt;/title&gt;</code></pre>
+      </div>
+
+      <h3 class="h3">Пути к ресурсам</h3>
+      <p>Вы можете использовать специальные префиксы для указания путей к ресурсам:</p>
+
+      <div class="about__code">
+        <pre><code>&lt;link rel="stylesheet" href="@scss/main.scss"&gt;
+&lt;script src="@js/app.js"&gt;&lt;/script&gt;
+&lt;img src="@img/logo.png"&gt;
+&lt;script src="@vendor/jquery/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script type="module" src="@utils/helper.js"&gt;&lt;/script&gt;
+&lt;a href="@files/documents/sample.pdf"&gt;Скачать документ&lt;/a&gt;</code></pre>
+      </div>
+
+      <p>Эти префиксы будут автоматически преобразованы в соответствующие пути при сборке.</p>
+
+      <h3 class="h3">SCSS алиасы</h3>
+      <p>В SCSS файлах также доступны алиасы для импорта:</p>
+
+      <div class="about__code">
+        <pre><code>// Импорт с алиасами
+@import "@scss/variables"; 
+@import "@scss/mixins";
+
+.element {
+  background-image: url("@img/background.jpg");
+}</code></pre>
+      </div>
+
+      <h2 class="h2">🔥 Почему лучше чем Gulp?</h2>
+      <ul class="about__list">
+        <li><strong>В 10-100 раз быстрее</strong> запуск сервера разработки</li>
+        <li><strong>Мгновенное</strong> применение изменений благодаря ESM</li>
+        <li><strong>Нативная поддержка</strong> SCSS, PostCSS из коробки</li>
+        <li><strong>Никаких длинных цепочек</strong> .pipe().pipe().pipe()...</li>
+        <li><strong>Меньше зависимостей</strong>, меньше проблем с устареванием плагинов</li>
+        <li><strong>Простая конфигурация</strong> и расширяемость</li>
+      </ul>
+
+      <h2 class="h2">🎉 Приятного кодинга!</h2>
+      <p>Надеемся, что эта сборка сделает вашу работу не только эффективнее, но и приятнее! Если у вас есть идеи по улучшению сборки или вы нашли ошибку - создайте issue или присылайте pull request.</p>
+
       <h2 class="h2">📋 Требования</h2>
       <ul class="about__list">
         <li>Node.js >= 16</li>
@@ -208,8 +296,21 @@ preview   # эквивалентно npm run preview</code></pre>
       </div>
 
       <p>A modern <strong>ultra-fast</strong> setup for website development based on Vite with support for file
-        inclusion directives (@@include), like in Gulp, but <strong>100 times faster</strong>! Forget about long
+        inclusion directives (@@include), like in Gulp, but <strong>10-100x times faster</strong>! Forget about long
         compilation times - get instant results.</p>
+
+      <h2 class="h2">✨ Key Features</h2>
+      <ul class="about__list">
+        <li><strong>Lightning-fast</strong> development, instant Hot Reload</li>
+        <li><strong>@@include support</strong> - work with components without frameworks</li>
+        <li><strong>Path aliases</strong> (@scss, @js, @img) - no more confusion with ../../../../</li>
+        <li><strong>Automatic optimization</strong> of images, CSS, and JS</li>
+        <li><strong>Adaptive REM system</strong> - build responsive websites without media queries for any resolution</li>
+        <li><strong>Multi-threaded processing</strong> of resources - fast builds even for large projects</li>
+        <li><strong>No Webpack or Gulp</strong> - only modern and fast Vite</li>
+        <li><strong>Clear structure</strong> of the project for convenient development</li>
+        <li><strong>Support for multi-page</strong> sites out of the box</li>
+      </ul>
 
       <h2 class="h2">💡 Who Is This Setup For?</h2>
       <ul class="about__list">
@@ -383,8 +484,7 @@ npm run preview</code></pre>
         <pre><code>@@include('html/header.html', {"title":"Home Page"})</code></pre>
       </div>
 
-      <p>In the <code>header.html</code> file, you can use parameters with the <code>@@parameter_name</code> syntax. For
-        example:</p>
+      <p>In the <code>header.html</code> file, you can use parameters with the <code>@@parameter_name</code> syntax. For example:</p>
       <div class="about__code">
         <pre><code>&lt;title&gt;@@title&lt;/title&gt;</code></pre>
       </div>
@@ -403,31 +503,37 @@ npm run preview</code></pre>
 
       <p>These prefixes will be automatically converted to appropriate paths during the build.</p>
 
-      <h2 class="h2">🏷️ Теги</h2>
-      <div class="about__tags">
-        <span class="about__tag">vite</span>
-        <span class="about__tag">vite-config</span>
-        <span class="about__tag">vite-for-html</span>
-        <span class="about__tag">html-include</span>
-        <span class="about__tag">file-include</span>
-        <span class="about__tag">vite-file-include</span>
-        <span class="about__tag">html-css</span>
-        <span class="about__tag">frontend-build</span>
-        <span class="about__tag">frontend</span>
-        <span class="about__tag">html-components</span>
-        <span class="about__tag">scss</span>
-        <span class="about__tag">sass</span>
-        <span class="about__tag">web-dev</span>
-        <span class="about__tag">imagemin</span>
-        <span class="about__tag">multi-page</span>
-        <span class="about__tag">web-optimization</span>
-        <span class="about__tag">adaptive-rem</span>
-        <span class="about__tag">responsive</span>
-        <span class="about__tag">no-media-queries</span>
-        <span class="about__tag">fluid-layout</span>
-        <span class="about__tag">rem-based</span>
-        <span class="about__tag">auto-adaptive</span>
+      <h3 class="h3">SCSS Aliases</h3>
+      <p>Aliases are also available in SCSS files for imports:</p>
+
+      <div class="about__code">
+        <pre><code>// Imports with aliases
+@import "@scss/variables"; 
+@import "@scss/mixins";
+
+.element {
+  background-image: url("@img/background.jpg");
+}</code></pre>
       </div>
+
+      <h2 class="h2">🔥 Why Better Than Gulp?</h2>
+      <ul class="about__list">
+        <li><strong>10-100x faster</strong> development server startup</li>
+        <li><strong>Instant</strong> application of changes thanks to ESM</li>
+        <li><strong>Native support</strong> for SCSS, PostCSS out of the box</li>
+        <li><strong>No long chains</strong> of .pipe().pipe().pipe()...</li>
+        <li><strong>Fewer dependencies</strong>, fewer problems with outdated plugins</li>
+        <li><strong>Simple configuration</strong> and extensibility</li>
+      </ul>
+
+      <h2 class="h2">🎉 Happy Coding!</h2>
+      <p>We hope this setup will make your work not only more efficient but also more enjoyable! If you have ideas for improving the setup or you find a bug - create an issue or send a pull request.</p>
+
+      <h2 class="h2">📋 Requirements</h2>
+      <ul class="about__list">
+        <li>Node.js >= 16</li>
+        <li>npm or yarn</li>
+      </ul>
 
       <h2 class="h2">🏷️ Tags</h2>
       <div class="about__tags">
@@ -454,25 +560,6 @@ npm run preview</code></pre>
         <span class="about__tag">rem-based</span>
         <span class="about__tag">auto-adaptive</span>
       </div>
-
-      <h2 class="h2">🔥 Почему лучше чем Gulp?</h2>
-      <ul class="about__list">
-        <li><strong>В 10-100 раз быстрее</strong> запуск сервера разработки</li>
-        <li><strong>Мгновенное</strong> применение изменений благодаря ESM</li>
-        <li><strong>Нативная поддержка</strong> SCSS, PostCSS из коробки</li>
-        <li><strong>Никаких длинных цепочек</strong> .pipe().pipe().pipe()...</li>
-        <li><strong>Меньше зависимостей</strong>, меньше проблем с устареванием плагинов</li>
-        <li><strong>Простая конфигурация</strong> и расширяемость</li>
-      </ul>
-
-      <h2 class="h2">🎉 Приятного кодинга!</h2>
-      <p>Надеемся, что эта сборка сделает вашу работу не только эффективнее, но и приятнее! Если у вас есть идеи по улучшению сборки или вы нашли ошибку - создайте issue или присылайте pull request.</p>
-
-      <h2 class="h2">📋 Требования</h2>
-      <ul class="about__list">
-        <li>Node.js >= 16</li>
-        <li>npm или yarn</li>
-      </ul>
     </div>
   </div>
 </section>
