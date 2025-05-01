@@ -11,7 +11,7 @@ const FONT_SIZE_COEFFICIENTS = [
   { minWidth: 2560, maxWidth: Infinity, coefficient: 10.8 }, // 2K+ разрешения
   { minWidth: 1600, maxWidth: 2560, coefficient: 10.8 }, // Десктоп (стандартный)
   { minWidth: 1400, maxWidth: 1600, coefficient: 12.5 }, // Большие ноутбуки
-  { minWidth: 1300, maxWidth: 1400, coefficient: 13.5 }, // Стандартные ноутбуки
+  { minWidth: 1300, maxWidth: 1400, coefficient: 12 }, // Стандартные ноутбуки
   { minWidth: 1200, maxWidth: 1300, coefficient: 13.0 }, // Маленькие ноутбуки
   { minWidth: 1100, maxWidth: 1200, coefficient: 13.0 }, // Большие планшеты (альбомная)
   { minWidth: 960, maxWidth: 1100, coefficient: 12.0 }, // Средние планшеты

@@ -1,0 +1,78 @@
+.rem {
+}
+.rem__area {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8rem;
+  @media (max-width: 767px) {
+    flex-direction: column;
+    gap: calc(var(--indexSize) * 15);
+  }
+}
+.rem__block {
+  width: 54rem;
+  height: 54rem;
+  background: #1f1f1f;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 50%;
+  text-align: center;
+  box-shadow: 20px 10px 50px 0 rgba(34, 60, 80, 0.2);
+  will-change: transform;
+  animation-name: spin;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-duration: 5s;
+  flex: 0 0 auto;
+  transform-origin: center;
+  @media (max-width: 767px) {
+    width: calc(var(--indexSize) * 60);
+    height: calc(var(--indexSize) * 60);
+  }
+}
+
+@keyframes spin {
+  from {
+    -webkit-transform: rotate(0) translate(0, 0);
+    transform: rotate(0) translate(0, 0);
+  }
+
+  50% {
+    -webkit-transform: rotate(180deg) translate(20px, -20px);
+    transform: rotate(180deg) translate(20px, -20px);
+  }
+
+  to {
+    -webkit-transform: rotate(360deg) translate(0, 0);
+    transform: rotate(360deg) translate(0, 0);
+  }
+}
+
+.rem__text {
+  font-size: 5rem;
+  color: #fff;
+  font-weight: 700;
+  @media (max-width: 767px) {
+    font-size: calc(var(--indexSize) * 6);
+  }
+}
+
+body.dark {
+  .rem__block {
+    background: #fff;
+    color: #1f1f1f;
+  }
+  .rem__text {
+    color: #1f1f1f;
+  }
+}
+
+.rem__instructions {
+  max-width: 50rem;
+  @media (max-width: 767px) {
+    font-size: calc(var(--indexSize) * 2);
+  }
+}

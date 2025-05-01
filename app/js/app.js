@@ -50,6 +50,11 @@ function initHomePage() {
     opacity: 0,
   });
 
+  gsap.set('.home__link-rem', {
+    y: '1rem',
+    opacity: 0,
+  });
+
   // Анимируем ссылку
   gsap.to('.home__link', {
     y: '0',
@@ -57,6 +62,14 @@ function initHomePage() {
     duration: 0.2,
     ease: gsap_ease,
     delay: 0.4,
+  });
+
+  gsap.to('.home__link-rem', {
+    y: '0',
+    opacity: 1,
+    duration: 0.1,
+    ease: gsap_ease,
+    delay: 0.6,
   });
 }
 

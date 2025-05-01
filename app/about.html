@@ -8,10 +8,11 @@
       <h1 class="h1">🚀 <a href="index.html">ViteVerst</a> - ультимативная сборка для верстки на Vite</h1>
 
       <div class="about__badges">
-        <img src="https://img.shields.io/badge/Vite-6.3.4-purple?style=flat-square&logo=vite" alt="Vite">
-        <img src="https://img.shields.io/badge/SCSS-Support-pink?style=flat-square&logo=sass" alt="SCSS">
-        <img src="https://img.shields.io/badge/Image_Optimization-Yes-green?style=flat-square" alt="Optimization">
-        <img src="https://img.shields.io/badge/HTML_Includes-Yes-blue?style=flat-square" alt="HTML Includes">
+        <img src="@img/Vite-6.3.svg" alt="Vite">
+        <img src="@img/SCSS-Support-pink.svg" alt="SCSS">
+        <img src="@img/Image_Optimization-Yes-green.svg" alt="Optimization">
+        <img src="@img/HTML_Includes-Yes-blue.svg" alt="HTML Includes">
+        <img src="@img/Adaptive_REM-Yes-orange.svg" alt="Adaptive REM">
       </div>
 
       <p>Современная <strong>сверхбыстрая</strong> сборка для верстки сайтов на базе Vite с поддержкой директив
@@ -24,10 +25,66 @@
         <li><strong>Поддержка @@include</strong> - работайте с компонентами без фреймворков</li>
         <li><strong>Алиасы для путей</strong> (@scss, @js, @img) - никакой путаницы с ../../../../</li>
         <li><strong>Автоматическая оптимизация</strong> изображений, CSS и JS</li>
+        <li><strong>Адаптивная система REM</strong> - верстайте без медиа-запросов под любые разрешения</li>
         <li><strong>Многопоточная обработка</strong> ресурсов - быстрая сборка даже для больших проектов</li>
         <li><strong>Никакого Webpack или Gulp</strong> - только современный и быстрый Vite</li>
         <li><strong>Понятная структура</strong> проекта для удобной верстки</li>
         <li><strong>Поддержка многостраничных</strong> сайтов из коробки</li>
+      </ul>
+
+      <h2 class="h2">🔄 Адаптивная система REM</h2>
+      <p>В сборке реализована уникальная система адаптивной верстки на основе REM единиц, которая:</p>
+      <ul class="about__list">
+        <li><strong>Исключает необходимость</strong> в медиа-запросах для большинства случаев</li>
+        <li><strong>Автоматически масштабирует</strong> интерфейс под разные размеры экранов</li>
+        <li><strong>Точно настраивается</strong> для конкретных диапазонов разрешений</li>
+        <li><strong>Учитывает не только ширину</strong>, но и высоту экрана для естественного масштабирования</li>
+        <li><strong>Упрощает расчеты</strong>: базовое значение настроено так, что 1rem = 10px для удобства верстки</li>
+      </ul>
+
+      <h3 class="h3">Как это работает</h3>
+      <p>1. <strong>Интеллектуальное масштабирование</strong>: Скрипт <code>app/vendor/rem/rem.js</code> автоматически
+        устанавливает размер шрифта для тега <code>&lt;html&gt;</code> в зависимости от разрешения экрана:</p>
+      <div class="about__code">
+        <pre><code>// Примеры коэффициентов масштабирования для разных устройств
+{ minWidth: 2560, maxWidth: Infinity, coefficient: 10.8 }, // 2K+ разрешения
+{ minWidth: 1600, maxWidth: 2560, coefficient: 10.8 }, // Десктоп (стандартный)
+{ minWidth: 1400, maxWidth: 1600, coefficient: 12.5 }, // Большие ноутбуки
+// ...и т.д. для других размеров экранов</code></pre>
+      </div>
+
+      <p>2. <strong>Удобный перевод из PX в REM</strong>: Система настроена так, что на стандартных разрешениях
+        <strong>1rem ≈ 10px</strong>, что делает расчеты предельно простыми:</p>
+      <div class="about__code">
+        <pre><code>/* Вместо этого */
+.button {
+  padding: 15px 20px; /* px */
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+/* Пишем так */
+.button {
+  padding: 1.5rem 2rem; /* 15px 20px */
+  font-size: 1.6rem; /* 16px */
+  margin-bottom: 2rem; /* 20px */
+}</code></pre>
+      </div>
+
+      <p>3. <strong>Проверка адаптивности</strong>: Просто растяните окно браузера или измените масштаб, чтобы увидеть,
+        как все элементы интерфейса масштабируются пропорционально без единого медиа-запроса. <a
+          href="rem.html">Демонстрация на примере</a>.</p>
+
+      <p>4. <strong>Точная настройка</strong>: Вы можете легко изменить коэффициенты масштабирования в файле
+        <code>app/vendor/rem/rem.js</code> для разных диапазонов разрешений.</p>
+
+      <h3 class="h3">Преимущества перед медиа-запросами</h3>
+      <ul class="about__list">
+        <li><strong>Меньше кода</strong>: Нет необходимости писать десятки медиа-запросов для разных разрешений</li>
+        <li><strong>Естественное масштабирование</strong>: Все элементы масштабируются пропорционально и плавно</li>
+        <li><strong>Легкость поддержки</strong>: Изменения в одном файле влияют на всю адаптивность сайта</li>
+        <li><strong>Отзывчивость</strong>: Сайт выглядит хорошо даже на нестандартных разрешениях и при изменении
+          масштаба</li>
       </ul>
 
       <h2 class="h2">🔥 Почему лучше чем Gulp?</h2>
@@ -186,32 +243,90 @@ npm run dev</code></pre>
         <span class="about__tag">multi-page</span>
         <span class="about__tag">web-optimization</span>
       </div>
-      
+
       <div class="about__divider"></div>
-      
+
       <h1 class="h1">🚀 <a href="index.html">ViteVerst</a> - Ultimate Vite Setup for HTML/CSS Development</h1>
-      
+
       <div class="about__badges">
-        <img src="https://img.shields.io/badge/Vite-6.3.4-purple?style=flat-square&logo=vite" alt="Vite">
-        <img src="https://img.shields.io/badge/SCSS-Support-pink?style=flat-square&logo=sass" alt="SCSS">
-        <img src="https://img.shields.io/badge/Image_Optimization-Yes-green?style=flat-square" alt="Optimization">
-        <img src="https://img.shields.io/badge/HTML_Includes-Yes-blue?style=flat-square" alt="HTML Includes">
+        <img src="@img/Vite-6.3.svg" alt="Vite">
+        <img src="@img/SCSS-Support-pink.svg" alt="SCSS">
+        <img src="@img/Image_Optimization-Yes-green.svg" alt="Optimization">
+        <img src="@img/HTML_Includes-Yes-blue.svg" alt="HTML Includes">
+        <img src="@img/Adaptive_REM-Yes-orange.svg" alt="Adaptive REM">
       </div>
-      
-      <p>A modern <strong>ultra-fast</strong> setup for website development based on Vite with support for file inclusion directives (@@include), like in Gulp, but <strong>100 times faster</strong>! Forget about long compilation times - get instant results.</p>
-      
+
+      <p>A modern <strong>ultra-fast</strong> setup for website development based on Vite with support for file
+        inclusion directives (@@include), like in Gulp, but <strong>100 times faster</strong>! Forget about long
+        compilation times - get instant results.</p>
+
       <h2 class="h2">✨ Key Features</h2>
       <ul class="about__list">
         <li><strong>Lightning-fast</strong> development, instant Hot Reload</li>
         <li><strong>@@include support</strong> - work with components without frameworks</li>
         <li><strong>Path aliases</strong> (@scss, @js, @img) - no more confusion with ../../../../</li>
         <li><strong>Automatic optimization</strong> of images, CSS, and JS</li>
+        <li><strong>Adaptive REM system</strong> - build responsive websites without media queries for any resolution
+        </li>
         <li><strong>Multi-threaded processing</strong> of resources - fast builds even for large projects</li>
         <li><strong>No Webpack or Gulp</strong> - only modern and fast Vite</li>
         <li><strong>Clear structure</strong> of the project for convenient development</li>
         <li><strong>Support for multi-page</strong> sites out of the box</li>
       </ul>
-      
+
+      <h2 class="h2">🔄 Adaptive REM System</h2>
+      <p>The build implements a unique adaptive layout system based on REM units, which:</p>
+      <ul class="about__list">
+        <li><strong>Eliminates the need</strong> for media queries in most cases</li>
+        <li><strong>Automatically scales</strong> the interface for different screen sizes</li>
+        <li><strong>Can be precisely configured</strong> for specific resolution ranges</li>
+        <li><strong>Takes into account not only width</strong> but also screen height for natural scaling</li>
+        <li><strong>Simplifies calculations</strong>: base value is set so that 1rem = 10px for easy development</li>
+      </ul>
+
+      <h3 class="h3">How It Works</h3>
+      <p>1. <strong>Intelligent scaling</strong>: The <code>app/vendor/rem/rem.js</code> script automatically sets the
+        font size for the <code>&lt;html&gt;</code> tag based on screen resolution:</p>
+      <div class="about__code">
+        <pre><code>// Examples of scaling coefficients for different devices
+{ minWidth: 2560, maxWidth: Infinity, coefficient: 10.8 }, // 2K+ resolutions
+{ minWidth: 1600, maxWidth: 2560, coefficient: 10.8 }, // Desktop (standard)
+{ minWidth: 1400, maxWidth: 1600, coefficient: 12.5 }, // Large laptops
+// ...and so on for other screen sizes</code></pre>
+      </div>
+
+      <p>2. <strong>Easy conversion from PX to REM</strong>: The system is configured so that on standard resolutions
+        <strong>1rem ≈ 10px</strong>, which makes calculations extremely simple:</p>
+      <div class="about__code">
+        <pre><code>/* Instead of this */
+.button {
+  padding: 15px 20px; /* px */
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+/* Write like this */
+.button {
+  padding: 1.5rem 2rem; /* 15px 20px */
+  font-size: 1.6rem; /* 16px */
+  margin-bottom: 2rem; /* 20px */
+}</code></pre>
+      </div>
+
+      <p>3. <strong>Testing adaptivity</strong>: Just stretch the browser window or change the zoom level to see how all
+        interface elements scale proportionally without a single media query. <a href="rem.html">See demo</a>.</p>
+
+      <p>4. <strong>Fine-tuning</strong>: You can easily change the scaling coefficients in
+        <code>app/vendor/rem/rem.js</code> for different resolution ranges.</p>
+
+      <h3 class="h3">Advantages Over Media Queries</h3>
+      <ul class="about__list">
+        <li><strong>Less code</strong>: No need to write dozens of media queries for different resolutions</li>
+        <li><strong>Natural scaling</strong>: All elements scale proportionally and smoothly</li>
+        <li><strong>Easy maintenance</strong>: Changes in one file affect the entire site adaptivity</li>
+        <li><strong>Responsiveness</strong>: The site looks good even on non-standard resolutions and when zooming</li>
+      </ul>
+
       <h2 class="h2">🔥 Why Better Than Gulp?</h2>
       <ul class="about__list">
         <li><strong>10-100x faster</strong> development server startup</li>
@@ -221,9 +336,9 @@ npm run dev</code></pre>
         <li><strong>Fewer dependencies</strong>, fewer problems with outdated plugins</li>
         <li><strong>Simple configuration</strong> and extensibility</li>
       </ul>
-      
+
       <h2 class="h2">Usage</h2>
-      
+
       <h3 class="h3">Running the Project</h3>
       <div class="about__code">
         <pre><code># Development mode
@@ -238,28 +353,29 @@ npm run build-min
 # Preview the built project
 npm run preview</code></pre>
       </div>
-      
+
       <h3 class="h3">Include Directives</h3>
       <p>You can use the following directives in HTML files:</p>
-      
+
       <h4>Simple Include</h4>
       <div class="about__code">
         <pre><code>@@include('html/header.html')</code></pre>
       </div>
-      
+
       <h4>Include with Parameters</h4>
       <div class="about__code">
         <pre><code>@@include('html/header.html', {"title":"Home Page"})</code></pre>
       </div>
-      
-      <p>In the <code>header.html</code> file, you can use parameters with the <code>@@parameter_name</code> syntax. For example:</p>
+
+      <p>In the <code>header.html</code> file, you can use parameters with the <code>@@parameter_name</code> syntax. For
+        example:</p>
       <div class="about__code">
         <pre><code>&lt;title&gt;@@title&lt;/title&gt;</code></pre>
       </div>
-      
+
       <h3 class="h3">Resource Paths</h3>
       <p>You can use special prefixes to specify paths to resources:</p>
-      
+
       <div class="about__code">
         <pre><code>&lt;link rel="stylesheet" href="@scss/main.scss"&gt;
 &lt;script src="@js/app.js"&gt;&lt;/script&gt;
@@ -268,9 +384,9 @@ npm run preview</code></pre>
 &lt;script type="module" src="@utils/helper.js"&gt;&lt;/script&gt;
 &lt;a href="@files/documents/sample.pdf"&gt;Download document&lt;/a&gt;</code></pre>
       </div>
-      
+
       <p>These prefixes will be automatically converted to appropriate paths during the build.</p>
-      
+
       <h2 class="h2">📁 Project Structure</h2>
       <ul class="about__list">
         <li><code>app/</code> - source files
@@ -287,7 +403,7 @@ npm run preview</code></pre>
         <li><code>dist/</code> - compiled project</li>
         <li><code>public/</code> - static files that are copied to the build without changes</li>
       </ul>
-      
+
       <h2 class="h2">🛠 Build Features</h2>
       <p>The project implements the following features:</p>
       <ul class="about__list">
@@ -299,7 +415,7 @@ npm run preview</code></pre>
         <li>🚄 Parallel resource processing for optimal build speed</li>
         <li>🔥 Hot reload when HTML files change</li>
       </ul>
-      
+
       <h3 class="h3">In standard production build (build):</h3>
       <ul class="about__list">
         <li>Removal of crossorigin and type="module" attributes</li>
@@ -307,7 +423,7 @@ npm run preview</code></pre>
         <li>Replacing scss connections with css/app.css</li>
         <li>Fixed file names (app.js and app.css) without hashes</li>
       </ul>
-      
+
       <h3 class="h3">In minified production build (build-min):</h3>
       <ul class="about__list">
         <li>All the benefits of the standard build</li>
@@ -321,7 +437,7 @@ npm run preview</code></pre>
           </ul>
         </li>
       </ul>
-      
+
       <h2 class="h2">⚙️ Installation</h2>
       <div class="about__code">
         <pre><code># Clone repository
@@ -333,7 +449,7 @@ npm install
 # Start development mode
 npm run dev</code></pre>
       </div>
-      
+
       <h2 class="h2">💡 Who Is This Setup For?</h2>
       <ul class="about__list">
         <li><strong>HTML/CSS developers</strong> who want to speed up their workflow</li>
@@ -341,13 +457,13 @@ npm run dev</code></pre>
         <li><strong>Web studios</strong> that need a reliable setup for HTML/CSS development</li>
         <li><strong>Anyone tired</strong> of Gulp's slow performance and Webpack's complexity</li>
       </ul>
-      
+
       <h2 class="h2">📋 Requirements</h2>
       <ul class="about__list">
         <li>Node.js >= 16</li>
         <li>npm or yarn</li>
       </ul>
-      
+
       <h2 class="h2">🏷️ Tags</h2>
       <div class="about__tags">
         <span class="about__tag">vite</span>

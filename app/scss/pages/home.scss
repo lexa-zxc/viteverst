@@ -38,3 +38,17 @@
     color: #fff;
   }
 }
+
+.home__link-rem {
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+  font-size: 2.2rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-top: 3rem;
+  color: var(--text-color);
+  @media (max-width: 767px) {
+    font-size: calc(var(--indexSize) * 2.5);
+    margin-top: calc(var(--indexSize) * 3);
+  }
+}
