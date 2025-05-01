@@ -8,6 +8,8 @@
 
 Современная **сверхбыстрая** сборка для верстки сайтов на базе Vite с поддержкой директив включения файлов (@@include), как в Gulp, но в **100 раз быстрее**! Забудьте о длительной компиляции - получите мгновенный результат.
 
+🌐 **[Демо-сайт сборки](https://web-2112.ru/vite/)**
+
 ## ✨ Ключевые особенности
 
 - **Молниеносная скорость** разработки, моментальный Hot Reload
@@ -229,6 +231,8 @@ npm run dev
 ![Adaptive REM](https://img.shields.io/badge/Adaptive_REM-Yes-orange?style=flat-square)
 
 A modern **ultra-fast** setup for website development based on Vite with support for file inclusion directives (@@include), like in Gulp, but **100 times faster**! Forget about long compilation times - get instant results.
+
+🌐 **[Demo Site](https://web-2112.ru/vite/)**
 
 ## ✨ Key Features
 
