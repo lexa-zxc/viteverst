@@ -216,7 +216,7 @@ npm run dev
 
 ## 🏷️ Теги
 
-`vite` `vite-config` `vite-for-html` `html-include` `file-include` `vite-file-include` `верстка` `сборка для верстки` `frontend` `html-components` `scss` `sass` `web-dev` `imagemin` `multi-page` `web-optimization`
+`vite` `vite-config` `vite-for-html` `html-include` `file-include` `vite-file-include` `верстка` `сборка для верстки` `frontend` `html-components` `scss` `sass` `web-dev` `imagemin` `multi-page` `web-optimization` `adaptive-rem` `responsive` `no-media-queries` `fluid-layout` `rem-based` `auto-adaptive`
 
 ---
 
@@ -438,4 +438,4 @@ npm run dev
 
 ## 🏷️ Tags
 
-`vite` `vite-config` `vite-for-html` `html-include` `file-include` `vite-file-include` `html-css` `frontend-build` `frontend` `html-components` `scss` `sass` `web-dev` `imagemin` `multi-page` `web-optimization` 
+`vite` `vite-config` `vite-for-html` `html-include` `file-include` `vite-file-include` `html-css` `frontend-build` `frontend` `html-components` `scss` `sass` `web-dev` `imagemin` `multi-page` `web-optimization` `adaptive-rem` `responsive` `no-media-queries` `fluid-layout` `rem-based` `auto-adaptive` 
