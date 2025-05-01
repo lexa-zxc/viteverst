@@ -33,19 +33,19 @@ function toggleTheme() {
   }, 1000);
 }
 
-// Инициализация при загрузке страницы
-document.addEventListener('DOMContentLoaded', () => {
-  // Устанавливаем тему в зависимости от текущего времени
-  toggleThemeByTime();
-
+// Инициализация проверки времени с интервалом
+function initThemeInterval() {
   // Проверяем время каждую минуту для автоматического переключения темы
   setInterval(toggleThemeByTime, 60000);
+}
 
+// Инициализация кнопки переключения темы
+function initThemeToggleButton() {
   // Добавляем обработчик клика для кнопки переключения темы
   const themeToggleBtn = document.getElementById('themeToggle');
   if (themeToggleBtn) {
     themeToggleBtn.addEventListener('click', toggleTheme);
   }
-});
+}
 
-export { toggleTheme, toggleThemeByTime };
+export { toggleTheme, toggleThemeByTime, initThemeInterval, initThemeToggleButton };

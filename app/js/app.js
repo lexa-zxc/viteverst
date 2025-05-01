@@ -1,5 +1,5 @@
 // Импортируем константы
-import { device_width, gsap_ease } from '@utils/constats.js';
+import { device_width, gsap_ease } from '@utils/constants.js';
 
 // Импортируем анимацию wrapper
 import '@utils/wrapperFade.js';
@@ -8,28 +8,49 @@ import '@utils/wrapperFade.js';
 import { animateText } from '@utils/splitAnimationText.js';
 
 // Импортируем курсор
-import '@utils/cursor.js';
+import { initCursor } from '@utils/cursor.js';
 
 // Импортируем модуль переключения тем
-import { toggleThemeByTime } from '@utils/themeToggle.js';
+import {
+  toggleThemeByTime,
+  initThemeInterval,
+  initThemeToggleButton,
+} from '@utils/themeToggle.js';
 
+// Инициализируем приложение при загрузке DOM
 document.addEventListener('DOMContentLoaded', () => {
   // Инициализируем переключение темы
   toggleThemeByTime();
+  initThemeInterval();
+  initThemeToggleButton();
+
+  // Инициализируем курсор
+  initCursor();
+
+  // Инициализируем страницы
+  initHomePage();
+  initAboutPage();
+});
+
+/**
+ * Инициализация домашней страницы
+ */
+function initHomePage() {
+  const home = document.querySelector('.home');
+  if (!home) return;
 
   // Анимируем заголовок
   animateText('.home__name');
 
   // Анимируем дату с задержкой
-  setTimeout(() => {
-    animateText('.home__2112');
-  }, 150);
+  setTimeout(() => animateText('.home__2112'), 150);
 
   gsap.set('.home__link', {
     y: '1rem',
     opacity: 0,
   });
 
+  // Анимируем ссылку
   gsap.to('.home__link', {
     y: '0',
     opacity: 1,
@@ -37,28 +58,40 @@ document.addEventListener('DOMContentLoaded', () => {
     ease: gsap_ease,
     delay: 0.4,
   });
+}
 
-  // Прогресс-бар скролла для страницы about
+/**
+ * Инициализация страницы about
+ */
+function initAboutPage() {
+  const about = document.querySelector('.about');
+  if (!about) return;
+
+  // Прогресс-бар скролла
+  initScrollProgressBar();
+}
+
+/**
+ * Инициализация прогресс-бара скролла
+ */
+function initScrollProgressBar() {
   const scrollProgress = document.getElementById('scrollProgress');
-  if (scrollProgress) {
-    // Функция для плавного обновления прогресс-бара
-    function updateProgressBar() {
-      // Рассчитываем процент прокрутки страницы
-      const scrollTop =
-        document.documentElement.scrollTop || document.body.scrollTop;
-      const scrollHeight =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
-      const scrollPercentage = (scrollTop / scrollHeight) * 100;
+  if (!scrollProgress) return;
 
-      // Обновляем ширину прогресс-бара
-      scrollProgress.style.width = scrollPercentage + '%';
+  // Запускаем анимацию прогресс-бара
+  requestAnimationFrame(function updateProgressBar() {
+    // Рассчитываем процент прокрутки страницы
+    const scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    const scrollPercentage = (scrollTop / scrollHeight) * 100;
 
-      // Продолжаем анимацию
-      requestAnimationFrame(updateProgressBar);
-    }
+    // Обновляем ширину прогресс-бара
+    scrollProgress.style.width = scrollPercentage + '%';
 
-    // Запускаем анимацию прогресс-бара
+    // Продолжаем анимацию
     requestAnimationFrame(updateProgressBar);
-  }
-});
+  });
+}

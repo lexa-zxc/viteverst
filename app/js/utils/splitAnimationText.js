@@ -1,5 +1,5 @@
 // Импортируем константы
-import { device_width, gsap_ease } from '@utils/constats.js';
+import { device_width, gsap_ease } from '@utils/constants.js';
 
 /**
  * Анимирует текст, разбивая его на символы

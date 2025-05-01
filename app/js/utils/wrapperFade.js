@@ -1,5 +1,5 @@
 // Импортируем константы
-import { device_width } from '@utils/constats.js';
+import { device_width } from '@utils/constants.js';
 
 //======== Анимация wrapper при загрузке страницы =========//
 gsap.to('.wrapper', {
