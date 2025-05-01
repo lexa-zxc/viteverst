@@ -19,6 +19,14 @@
         включения файлов (@@include), как в Gulp, но в <strong>100 раз быстрее</strong>! Забудьте о длительной
         компиляции - получите мгновенный результат.</p>
 
+      <h2 class="h2">💡 Для кого эта сборка?</h2>
+      <ul class="about__list">
+        <li><strong>Верстальщикам</strong>, которые хотят ускорить свой рабочий процесс</li>
+        <li><strong>Frontend-разработчикам</strong>, которые работают с многостраничными сайтами</li>
+        <li><strong>Web-студиям</strong>, которым нужна надежная сборка для верстки</li>
+        <li><strong>Всем, кто устал</strong> от медленной работы Gulp и сложности Webpack</li>
+      </ul>
+
       <h2 class="h2">✨ Ключевые особенности</h2>
       <ul class="about__list">
         <li><strong>Молниеносная скорость</strong> разработки, моментальный Hot Reload</li>
@@ -30,6 +38,16 @@
         <li><strong>Никакого Webpack или Gulp</strong> - только современный и быстрый Vite</li>
         <li><strong>Понятная структура</strong> проекта для удобной верстки</li>
         <li><strong>Поддержка многостраничных</strong> сайтов из коробки</li>
+      </ul>
+
+      <h2 class="h2">🔥 Почему лучше чем Gulp?</h2>
+      <ul class="about__list">
+        <li><strong>В 10-100 раз быстрее</strong> запуск сервера разработки</li>
+        <li><strong>Мгновенное</strong> применение изменений благодаря ESM</li>
+        <li><strong>Нативная поддержка</strong> SCSS, PostCSS из коробки</li>
+        <li><strong>Никаких длинных цепочек</strong> .pipe().pipe().pipe()...</li>
+        <li><strong>Меньше зависимостей</strong>, меньше проблем с устареванием плагинов</li>
+        <li><strong>Простая конфигурация</strong> и расширяемость</li>
       </ul>
 
       <h2 class="h2">🔄 Адаптивная система REM</h2>
@@ -54,7 +72,8 @@
       </div>
 
       <p>2. <strong>Удобный перевод из PX в REM</strong>: Система настроена так, что на стандартных разрешениях
-        <strong>1rem ≈ 10px</strong>, что делает расчеты предельно простыми:</p>
+        <strong>1rem ≈ 10px</strong>, что делает расчеты предельно простыми:
+      </p>
       <div class="about__code">
         <pre><code>/* Вместо этого */
 .button {
@@ -76,7 +95,8 @@
           href="rem.html">Демонстрация на примере</a>.</p>
 
       <p>4. <strong>Точная настройка</strong>: Вы можете легко изменить коэффициенты масштабирования в файле
-        <code>app/vendor/rem/rem.js</code> для разных диапазонов разрешений.</p>
+        <code>app/vendor/rem/rem.js</code> для разных диапазонов разрешений.
+      </p>
 
       <h3 class="h3">Преимущества перед медиа-запросами</h3>
       <ul class="about__list">
@@ -86,66 +106,6 @@
         <li><strong>Отзывчивость</strong>: Сайт выглядит хорошо даже на нестандартных разрешениях и при изменении
           масштаба</li>
       </ul>
-
-      <h2 class="h2">🔥 Почему лучше чем Gulp?</h2>
-      <ul class="about__list">
-        <li><strong>В 10-100 раз быстрее</strong> запуск сервера разработки</li>
-        <li><strong>Мгновенное</strong> применение изменений благодаря ESM</li>
-        <li><strong>Нативная поддержка</strong> SCSS, PostCSS из коробки</li>
-        <li><strong>Никаких длинных цепочек</strong> .pipe().pipe().pipe()...</li>
-        <li><strong>Меньше зависимостей</strong>, меньше проблем с устареванием плагинов</li>
-        <li><strong>Простая конфигурация</strong> и расширяемость</li>
-      </ul>
-
-      <h2 class="h2">Использование</h2>
-
-      <h3 class="h3">Запуск проекта</h3>
-      <div class="about__code">
-        <pre><code># Режим разработки
-npm run dev
-
-# Сборка проекта без минификации (для отладки)
-npm run build
-
-# Сборка проекта с минификацией и оптимизацией изображений (для продакшн)
-npm run build-min
-
-# Предпросмотр собранного проекта
-npm run preview</code></pre>
-      </div>
-
-      <h3 class="h3">Директивы включения</h3>
-      <p>В HTML файлах можно использовать следующие директивы:</p>
-
-      <h4>Простое включение</h4>
-      <div class="about__code">
-        <pre><code>@@include('html/header.html')</code></pre>
-      </div>
-
-      <h4>Включение с параметрами</h4>
-      <div class="about__code">
-        <pre><code>@@include('html/header.html', {"title":"Главная страница"})</code></pre>
-      </div>
-
-      <p>В файле <code>header.html</code> можно использовать параметры через синтаксис <code>@@имя_параметра</code>.
-        Например:</p>
-      <div class="about__code">
-        <pre><code>&lt;title&gt;@@title&lt;/title&gt;</code></pre>
-      </div>
-
-      <h3 class="h3">Пути к ресурсам</h3>
-      <p>Вы можете использовать специальные префиксы для указания путей к ресурсам:</p>
-
-      <div class="about__code">
-        <pre><code>&lt;link rel="stylesheet" href="@scss/main.scss"&gt;
-&lt;script src="@js/app.js"&gt;&lt;/script&gt;
-&lt;img src="@img/logo.png"&gt;
-&lt;script src="@vendor/jquery/jquery.min.js"&gt;&lt;/script&gt;
-&lt;script type="module" src="@utils/helper.js"&gt;&lt;/script&gt;
-&lt;a href="@files/documents/sample.pdf"&gt;Скачать документ&lt;/a&gt;</code></pre>
-      </div>
-
-      <p>Эти префиксы будут автоматически преобразованы в соответствующие пути при сборке.</p>
 
       <h2 class="h2">📁 Структура проекта</h2>
       <ul class="about__list">
@@ -210,14 +170,6 @@ npm install
 npm run dev</code></pre>
       </div>
 
-      <h2 class="h2">💡 Для кого эта сборка?</h2>
-      <ul class="about__list">
-        <li><strong>Верстальщикам</strong>, которые хотят ускорить свой рабочий процесс</li>
-        <li><strong>Frontend-разработчикам</strong>, которые работают с многостраничными сайтами</li>
-        <li><strong>Web-студиям</strong>, которым нужна надежная сборка для верстки</li>
-        <li><strong>Всем, кто устал</strong> от медленной работы Gulp и сложности Webpack</li>
-      </ul>
-
       <h2 class="h2">📋 Требования</h2>
       <ul class="about__list">
         <li>Node.js >= 16</li>
@@ -266,6 +218,14 @@ npm run dev</code></pre>
         inclusion directives (@@include), like in Gulp, but <strong>100 times faster</strong>! Forget about long
         compilation times - get instant results.</p>
 
+      <h2 class="h2">💡 Who Is This Setup For?</h2>
+      <ul class="about__list">
+        <li><strong>HTML/CSS developers</strong> who want to speed up their workflow</li>
+        <li><strong>Frontend developers</strong> who work with multi-page sites</li>
+        <li><strong>Web studios</strong> that need a reliable setup for HTML/CSS development</li>
+        <li><strong>Anyone tired</strong> of Gulp's slow performance and Webpack's complexity</li>
+      </ul>
+
       <h2 class="h2">✨ Key Features</h2>
       <ul class="about__list">
         <li><strong>Lightning-fast</strong> development, instant Hot Reload</li>
@@ -278,6 +238,16 @@ npm run dev</code></pre>
         <li><strong>No Webpack or Gulp</strong> - only modern and fast Vite</li>
         <li><strong>Clear structure</strong> of the project for convenient development</li>
         <li><strong>Support for multi-page</strong> sites out of the box</li>
+      </ul>
+
+      <h2 class="h2">🔥 Why Better Than Gulp?</h2>
+      <ul class="about__list">
+        <li><strong>10-100x faster</strong> development server startup</li>
+        <li><strong>Instant</strong> application of changes thanks to ESM</li>
+        <li><strong>Native support</strong> for SCSS, PostCSS out of the box</li>
+        <li><strong>No long chains</strong> of .pipe().pipe().pipe()...</li>
+        <li><strong>Fewer dependencies</strong>, fewer problems with outdated plugins</li>
+        <li><strong>Simple configuration</strong> and extensibility</li>
       </ul>
 
       <h2 class="h2">🔄 Adaptive REM System</h2>
@@ -302,7 +272,8 @@ npm run dev</code></pre>
       </div>
 
       <p>2. <strong>Easy conversion from PX to REM</strong>: The system is configured so that on standard resolutions
-        <strong>1rem ≈ 10px</strong>, which makes calculations extremely simple:</p>
+        <strong>1rem ≈ 10px</strong>, which makes calculations extremely simple:
+      </p>
       <div class="about__code">
         <pre><code>/* Instead of this */
 .button {
@@ -323,7 +294,8 @@ npm run dev</code></pre>
         interface elements scale proportionally without a single media query. <a href="rem.html">See demo</a>.</p>
 
       <p>4. <strong>Fine-tuning</strong>: You can easily change the scaling coefficients in
-        <code>app/vendor/rem/rem.js</code> for different resolution ranges.</p>
+        <code>app/vendor/rem/rem.js</code> for different resolution ranges.
+      </p>
 
       <h3 class="h3">Advantages Over Media Queries</h3>
       <ul class="about__list">
@@ -331,16 +303,6 @@ npm run dev</code></pre>
         <li><strong>Natural scaling</strong>: All elements scale proportionally and smoothly</li>
         <li><strong>Easy maintenance</strong>: Changes in one file affect the entire site adaptivity</li>
         <li><strong>Responsiveness</strong>: The site looks good even on non-standard resolutions and when zooming</li>
-      </ul>
-
-      <h2 class="h2">🔥 Why Better Than Gulp?</h2>
-      <ul class="about__list">
-        <li><strong>10-100x faster</strong> development server startup</li>
-        <li><strong>Instant</strong> application of changes thanks to ESM</li>
-        <li><strong>Native support</strong> for SCSS, PostCSS out of the box</li>
-        <li><strong>No long chains</strong> of .pipe().pipe().pipe()...</li>
-        <li><strong>Fewer dependencies</strong>, fewer problems with outdated plugins</li>
-        <li><strong>Simple configuration</strong> and extensibility</li>
       </ul>
 
       <h2 class="h2">Usage</h2>
@@ -455,14 +417,6 @@ npm install
 # Start development mode
 npm run dev</code></pre>
       </div>
-
-      <h2 class="h2">💡 Who Is This Setup For?</h2>
-      <ul class="about__list">
-        <li><strong>HTML/CSS developers</strong> who want to speed up their workflow</li>
-        <li><strong>Frontend developers</strong> who work with multi-page sites</li>
-        <li><strong>Web studios</strong> that need a reliable setup for HTML/CSS development</li>
-        <li><strong>Anyone tired</strong> of Gulp's slow performance and Webpack's complexity</li>
-      </ul>
 
       <h2 class="h2">📋 Requirements</h2>
       <ul class="about__list">
