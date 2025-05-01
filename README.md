@@ -10,6 +10,13 @@
 
 🌐 **[Демо-сайт сборки](https://web-2112.ru/vite/)**
 
+## 💡 Для кого эта сборка?
+
+- **Верстальщикам**, которые хотят ускорить свой рабочий процесс
+- **Frontend-разработчикам**, которые работают с многостраничными сайтами
+- **Web-студиям**, которым нужна надежная сборка для верстки
+- **Всем, кто устал** от медленной работы Gulp и сложности Webpack
+
 ## ✨ Ключевые особенности
 
 - **Молниеносная скорость** разработки, моментальный Hot Reload
@@ -204,13 +211,6 @@ npm install
 npm run dev
 ```
 
-## 💡 Для кого эта сборка?
-
-- **Верстальщикам**, которые хотят ускорить свой рабочий процесс
-- **Frontend-разработчикам**, которые работают с многостраничными сайтами
-- **Web-студиям**, которым нужна надежная сборка для верстки
-- **Всем, кто устал** от медленной работы Gulp и сложности Webpack
-
 ## 📋 Требования
 
 - Node.js >= 16
@@ -233,6 +233,13 @@ npm run dev
 A modern **ultra-fast** setup for website development based on Vite with support for file inclusion directives (@@include), like in Gulp, but **100 times faster**! Forget about long compilation times - get instant results.
 
 🌐 **[Demo Site](https://web-2112.ru/vite/)**
+
+## 💡 Who Is This Setup For?
+
+- **HTML/CSS developers** who want to speed up their workflow
+- **Frontend developers** who work with multi-page sites
+- **Web studios** that need a reliable setup for HTML/CSS development
+- **Anyone tired** of Gulp's slow performance and Webpack's complexity
 
 ## ✨ Key Features
 
@@ -427,13 +434,6 @@ npm install
 # Start development mode
 npm run dev
 ```
-
-## 💡 Who Is This Setup For?
-
-- **HTML/CSS developers** who want to speed up their workflow
-- **Frontend developers** who work with multi-page sites
-- **Web studios** that need a reliable setup for HTML/CSS development
-- **Anyone tired** of Gulp's slow performance and Webpack's complexity
 
 ## 📋 Requirements
 
