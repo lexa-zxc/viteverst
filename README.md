@@ -37,6 +37,7 @@
 - **Автоматически масштабирует** интерфейс под разные размеры экранов
 - **Точно настраивается** для конкретных диапазонов разрешений
 - **Учитывает не только ширину**, но и высоту экрана для естественного масштабирования
+- **Упрощает расчеты**: базовое значение настроено так, что 1rem = 10px для удобства верстки
 
 ### Как это работает
 
@@ -49,12 +50,20 @@
    // ...и т.д. для других размеров экранов
    ```
 
-2. **Использование в CSS**: Просто используйте rem вместо px:
+2. **Удобный перевод из PX в REM**: Система настроена так, что на стандартных разрешениях **1rem ≈ 10px**, что делает расчеты предельно простыми:
    ```css
+   /* Вместо этого */
    .button {
-     padding: 1.5rem 2rem; /* Будет автоматически масштабироваться */
-     font-size: 1rem;
-     margin-bottom: 2rem;
+     padding: 15px 20px; /* px */
+     font-size: 16px;
+     margin-bottom: 20px;
+   }
+   
+   /* Пишем так */
+   .button {
+     padding: 1.5rem 2rem; /* 15px 20px */
+     font-size: 1.6rem; /* 16px */
+     margin-bottom: 2rem; /* 20px */
    }
    ```
 
@@ -250,6 +259,7 @@ The build implements a unique adaptive layout system based on REM units, which:
 - **Automatically scales** the interface for different screen sizes
 - **Can be precisely configured** for specific resolution ranges
 - **Takes into account not only width** but also screen height for natural scaling
+- **Simplifies calculations**: base value is set so that 1rem = 10px for easy development
 
 ### How It Works
 
@@ -262,12 +272,20 @@ The build implements a unique adaptive layout system based on REM units, which:
    // ...and so on for other screen sizes
    ```
 
-2. **Usage in CSS**: Simply use rem instead of px:
+2. **Easy conversion from PX to REM**: The system is configured so that on standard resolutions **1rem ≈ 10px**, which makes calculations extremely simple:
    ```css
+   /* Instead of this */
    .button {
-     padding: 1.5rem 2rem; /* Will automatically scale */
-     font-size: 1rem;
-     margin-bottom: 2rem;
+     padding: 15px 20px; /* px */
+     font-size: 16px;
+     margin-bottom: 20px;
+   }
+   
+   /* Write like this */
+   .button {
+     padding: 1.5rem 2rem; /* 15px 20px */
+     font-size: 1.6rem; /* 16px */
+     margin-bottom: 2rem; /* 20px */
    }
    ```
 
