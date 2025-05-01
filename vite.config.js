@@ -654,7 +654,7 @@ const plugins = {
   },
 
   // Исправление относительных путей в скриптах
-  fixScriptPaths() {
+  fixAssetsPaths() {
     return {
       name: 'fix-script-paths',
       closeBundle: async () => {
@@ -680,9 +680,9 @@ const plugins = {
               fs.writeFileSync(htmlPath, htmlContent);
             });
 
-          console.log('\x1b[32mПути к скриптам исправлены на относительные\x1b[0m');
+          console.log('\x1b[32mПути к ресурсам исправлены (удалены префиксы ./)\x1b[0m');
         } catch (error) {
-          // Ошибки не выводим
+          console.error('Ошибка при исправлении путей к ресурсам:', error);
         }
       }
     };
@@ -1051,7 +1051,7 @@ function createConfig(minify = false, imageOptimization = false) {
     plugins.copyResources('files'),
     plugins.fixFontPaths(),
     plugins.processHtml(),
-    plugins.fixScriptPaths(),
+    plugins.fixAssetsPaths(),
     plugins.renameJs(),
     plugins.htmlReload()
   ];
