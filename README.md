@@ -6,16 +6,9 @@
 ![HTML Includes](https://img.shields.io/badge/HTML_Includes-Yes-blue?style=flat-square)
 ![Adaptive REM](https://img.shields.io/badge/Adaptive_REM-Yes-orange?style=flat-square)
 
-Современная **сверхбыстрая** сборка для верстки сайтов на базе Vite с поддержкой директив включения файлов (@@include), как в Gulp, но в **100 раз быстрее**! Забудьте о длительной компиляции - получите мгновенный результат.
+Современная **сверхбыстрая** сборка для верстки сайтов на базе Vite с поддержкой директив включения файлов (@@include), как в Gulp, но в **10-100x раз быстрее**! Забудьте о длительной компиляции - получите мгновенный результат.
 
 🌐 **[Демо-сайт сборки](https://web-2112.ru/vite/)**
-
-## 💡 Для кого эта сборка?
-
-- **Верстальщикам**, которые хотят ускорить свой рабочий процесс
-- **Frontend-разработчикам**, которые работают с многостраничными сайтами
-- **Web-студиям**, которым нужна надежная сборка для верстки
-- **Всем, кто устал** от медленной работы Gulp и сложности Webpack
 
 ## ✨ Ключевые особенности
 
@@ -29,14 +22,76 @@
 - **Понятная структура** проекта для удобной верстки
 - **Поддержка многостраничных** сайтов из коробки
 
-## 🔥 Почему лучше чем Gulp?
+## 💡 Для кого эта сборка?
 
-- **В 10-100 раз быстрее** запуск сервера разработки
-- **Мгновенное** применение изменений благодаря ESM
-- **Нативная поддержка** SCSS, PostCSS из коробки
-- **Никаких длинных цепочек** .pipe().pipe().pipe()...
-- **Меньше зависимостей**, меньше проблем с устареванием плагинов
-- **Простая конфигурация** и расширяемость
+- **Верстальщикам**, которые хотят ускорить свой рабочий процесс
+- **Frontend-разработчикам**, которые работают с многостраничными сайтами
+- **Web-студиям**, которым нужна надежная сборка для верстки
+- **Всем, кто устал** от медленной работы Gulp и сложности Webpack
+
+## 📁 Структура проекта
+
+- `app/` - исходные файлы проекта
+  - `html/` - HTML компоненты для включения
+  - `scss/` - SCSS стили
+  - `js/` - JavaScript файлы
+  - `img/` - изображения
+  - `fonts/` - шрифты
+  - `vendor/` - сторонние библиотеки
+  - `files/` - файлы для скачивания (документы, архивы и т.д.)
+- `dist/` - собранный проект
+- `public/` - статические файлы, которые копируются в сборку без изменений
+
+## 🛠 Особенности сборки
+
+В проекте реализованы следующие функции:
+- ⚡ Обработка директив @@include в HTML файлах
+- 🔄 Преобразование путей к ресурсам (@scss, @js, @img, @files и др.)
+- 📦 Автоматическое копирование изображений, файлов и vendor-файлов в dist
+- 🌐 Вендорные префиксы через Autoprefixer
+- 📱 Сортировка и объединение медиа-запросов
+- 🚄 Параллельная обработка ресурсов для оптимальной скорости сборки
+- 🔥 Горячая перезагрузка при изменении HTML файлов
+- 📂 В стандартной production-сборке (build):
+  - Удаление атрибутов crossorigin и type="module"
+  - Добавление атрибута defer для скриптов
+  - Замена подключений scss на css/app.css
+  - Фиксированные имена файлов (app.js и app.css) без хешей
+- 🚀 В минифицированной production-сборке (build-min):
+  - Все преимущества стандартной сборки
+  - Минификация HTML, CSS и JavaScript
+  - Автоматическая оптимизация растровых изображений:
+    - JPEG/JPG: сжатие с сохранением 80% качества
+    - PNG: оптимизация с настройками качества 60-80%
+    - GIF: оптимизация с уровнем 7
+    - SVG: не оптимизируются (для сохранения их структуры и функциональности)
+    
+## ⚙️ Установка
+
+```bash
+# Клонирование репозитория
+git clone https://github.com/lexa-zxc/viteverst.git
+
+# Установка зависимостей
+npm install
+
+# Запуск режима разработки
+npm run dev
+```
+
+Для удобства в проекте предусмотрены BAT-файлы, которые позволяют запускать команды одним кликом:
+- `dev.bat` - запуск режима разработки
+- `build.bat` - сборка проекта без минификации
+- `build-min.bat` - сборка проекта с минификацией
+- `preview.bat` - предпросмотр собранного проекта
+
+Также можно использовать короткие команды в консоли:
+```bash
+dev       # эквивалентно npm run dev
+build     # эквивалентно npm run build
+build-min # эквивалентно npm run build-min
+preview   # эквивалентно npm run preview
+```
 
 ## 🔄 Адаптивная система REM
 
@@ -100,16 +155,16 @@
 
 ### Запуск проекта
 ```bash
-# Режим разработки
+# Режим разработки (также можно использовать dev.bat или просто команду dev)
 npm run dev
 
-# Сборка проекта без минификации (для отладки)
+# Сборка проекта без минификации (также build.bat или команда build)
 npm run build
 
-# Сборка проекта с минификацией и оптимизацией изображений (для продакшн)
+# Сборка проекта с минификацией и оптимизацией изображений (build-min.bat или команда build-min)
 npm run build-min
 
-# Предпросмотр собранного проекта
+# Предпросмотр собранного проекта (preview.bat или команда preview)
 npm run preview
 ```
 
@@ -161,55 +216,18 @@ npm run preview
 }
 ```
 
-## 📁 Структура проекта
+## 🔥 Почему лучше чем Gulp?
 
-- `app/` - исходные файлы проекта
-  - `html/` - HTML компоненты для включения
-  - `scss/` - SCSS стили
-  - `js/` - JavaScript файлы
-  - `img/` - изображения
-  - `fonts/` - шрифты
-  - `vendor/` - сторонние библиотеки
-  - `files/` - файлы для скачивания (документы, архивы и т.д.)
-- `dist/` - собранный проект
-- `public/` - статические файлы, которые копируются в сборку без изменений
+- **В 10-100 раз быстрее** запуск сервера разработки
+- **Мгновенное** применение изменений благодаря ESM
+- **Нативная поддержка** SCSS, PostCSS из коробки
+- **Никаких длинных цепочек** .pipe().pipe().pipe()...
+- **Меньше зависимостей**, меньше проблем с устареванием плагинов
+- **Простая конфигурация** и расширяемость
 
-## 🛠 Особенности сборки
+## 🎉 Приятного кодинга!
 
-В проекте реализованы следующие функции:
-- ⚡ Обработка директив @@include в HTML файлах
-- 🔄 Преобразование путей к ресурсам (@scss, @js, @img, @files и др.)
-- 📦 Автоматическое копирование изображений, файлов и vendor-файлов в dist
-- 🌐 Вендорные префиксы через Autoprefixer
-- 📱 Сортировка и объединение медиа-запросов
-- 🚄 Параллельная обработка ресурсов для оптимальной скорости сборки
-- 🔥 Горячая перезагрузка при изменении HTML файлов
-- 📂 В стандартной production-сборке (build):
-  - Удаление атрибутов crossorigin и type="module"
-  - Добавление атрибута defer для скриптов
-  - Замена подключений scss на css/app.css
-  - Фиксированные имена файлов (app.js и app.css) без хешей
-- 🚀 В минифицированной production-сборке (build-min):
-  - Все преимущества стандартной сборки
-  - Минификация HTML, CSS и JavaScript
-  - Автоматическая оптимизация растровых изображений:
-    - JPEG/JPG: сжатие с сохранением 80% качества
-    - PNG: оптимизация с настройками качества 60-80%
-    - GIF: оптимизация с уровнем 7
-    - SVG: не оптимизируются (для сохранения их структуры и функциональности)
-    
-## ⚙️ Установка
-
-```bash
-# Клонирование репозитория
-git clone https://github.com/lexa-zxc/viteverst.git
-
-# Установка зависимостей
-npm install
-
-# Запуск режима разработки
-npm run dev
-```
+Надеемся, что эта сборка сделает вашу работу не только эффективнее, но и приятнее! Если у вас есть идеи по улучшению сборки или вы нашли ошибку - создайте issue или присылайте pull request.
 
 ## 📋 Требования
 
@@ -230,16 +248,9 @@ npm run dev
 ![HTML Includes](https://img.shields.io/badge/HTML_Includes-Yes-blue?style=flat-square)
 ![Adaptive REM](https://img.shields.io/badge/Adaptive_REM-Yes-orange?style=flat-square)
 
-A modern **ultra-fast** setup for website development based on Vite with support for file inclusion directives (@@include), like in Gulp, but **100 times faster**! Forget about long compilation times - get instant results.
+A modern **ultra-fast** setup for website development based on Vite with support for file inclusion directives (@@include), like in Gulp, but **10-100x times faster**! Forget about long compilation times - get instant results.
 
 🌐 **[Demo Site](https://web-2112.ru/vite/)**
-
-## 💡 Who Is This Setup For?
-
-- **HTML/CSS developers** who want to speed up their workflow
-- **Frontend developers** who work with multi-page sites
-- **Web studios** that need a reliable setup for HTML/CSS development
-- **Anyone tired** of Gulp's slow performance and Webpack's complexity
 
 ## ✨ Key Features
 
@@ -253,14 +264,76 @@ A modern **ultra-fast** setup for website development based on Vite with support
 - **Clear structure** of the project for convenient development
 - **Support for multi-page** sites out of the box
 
-## 🔥 Why Better Than Gulp?
+## 💡 Who Is This Setup For?
 
-- **10-100x faster** development server startup
-- **Instant** application of changes thanks to ESM
-- **Native support** for SCSS, PostCSS out of the box
-- **No long chains** of .pipe().pipe().pipe()...
-- **Fewer dependencies**, fewer problems with outdated plugins
-- **Simple configuration** and extensibility
+- **HTML/CSS developers** who want to speed up their workflow
+- **Frontend developers** who work with multi-page sites
+- **Web studios** that need a reliable setup for HTML/CSS development
+- **Anyone tired** of Gulp's slow performance and Webpack's complexity
+
+## 📁 Project Structure
+
+- `app/` - source files
+  - `html/` - HTML components for inclusion
+  - `scss/` - SCSS styles
+  - `js/` - JavaScript files
+  - `img/` - images
+  - `fonts/` - fonts
+  - `vendor/` - third-party libraries
+  - `files/` - downloadable files (documents, archives, etc.)
+- `dist/` - compiled project
+- `public/` - static files that are copied to the build without changes
+
+## 🛠 Build Features
+
+The project implements the following features:
+- ⚡ Processing @@include directives in HTML files
+- 🔄 Resource path transformation (@scss, @js, @img, @files, etc.)
+- 📦 Automatic copying of images, files, and vendor files to dist
+- 🌐 Vendor prefixes via Autoprefixer
+- 📱 Sorting and combining media queries
+- 🚄 Parallel resource processing for optimal build speed
+- 🔥 Hot reload when HTML files change
+- 📂 In standard production build (build):
+  - Removal of crossorigin and type="module" attributes
+  - Adding defer attribute to scripts
+  - Replacing scss connections with css/app.css
+  - Fixed file names (app.js and app.css) without hashes
+- 🚀 In minified production build (build-min):
+  - All the benefits of the standard build
+  - HTML, CSS, and JavaScript minification
+  - Automatic optimization of raster images:
+    - JPEG/JPG: compression with 80% quality preservation
+    - PNG: optimization with 60-80% quality settings
+    - GIF: optimization with level 7
+    - SVG: not optimized (to preserve their structure and functionality)
+    
+## ⚙️ Installation
+
+```bash
+# Clone repository
+git clone https://github.com/lexa-zxc/viteverst.git
+
+# Install dependencies
+npm install
+
+# Start development mode
+npm run dev
+```
+
+For convenience, the project includes BAT files that allow you to run commands with a single click:
+- `dev.bat` - start development mode
+- `build.bat` - build project without minification
+- `build-min.bat` - build project with minification
+- `preview.bat` - preview the built project
+
+You can also use short commands in the console:
+```bash
+dev       # equivalent to npm run dev
+build     # equivalent to npm run build
+build-min # equivalent to npm run build-min
+preview   # equivalent to npm run preview
+```
 
 ## 🔄 Adaptive REM System
 
@@ -324,16 +397,16 @@ The build implements a unique adaptive layout system based on REM units, which:
 
 ### Running the Project
 ```bash
-# Development mode
+# Development mode (also can use dev.bat or simply dev command)
 npm run dev
 
-# Build project without minification (for debugging)
+# Build project without minification (also build.bat or build command)
 npm run build
 
-# Build project with minification and image optimization (for production)
+# Build project with minification and image optimization (build-min.bat or build-min command)
 npm run build-min
 
-# Preview the built project
+# Preview the built project (preview.bat or preview command)
 npm run preview
 ```
 
@@ -385,55 +458,18 @@ Aliases are also available in SCSS files for imports:
 }
 ```
 
-## 📁 Project Structure
+## 🔥 Why Better Than Gulp?
 
-- `app/` - source files
-  - `html/` - HTML components for inclusion
-  - `scss/` - SCSS styles
-  - `js/` - JavaScript files
-  - `img/` - images
-  - `fonts/` - fonts
-  - `vendor/` - third-party libraries
-  - `files/` - downloadable files (documents, archives, etc.)
-- `dist/` - compiled project
-- `public/` - static files that are copied to the build without changes
+- **10-100x faster** development server startup
+- **Instant** application of changes thanks to ESM
+- **Native support** for SCSS, PostCSS out of the box
+- **No long chains** of .pipe().pipe().pipe()...
+- **Fewer dependencies**, fewer problems with outdated plugins
+- **Simple configuration** and extensibility
 
-## 🛠 Build Features
+## 🎉 Happy Coding!
 
-The project implements the following features:
-- ⚡ Processing @@include directives in HTML files
-- 🔄 Resource path transformation (@scss, @js, @img, @files, etc.)
-- 📦 Automatic copying of images, files, and vendor files to dist
-- 🌐 Vendor prefixes via Autoprefixer
-- 📱 Sorting and combining media queries
-- 🚄 Parallel resource processing for optimal build speed
-- 🔥 Hot reload when HTML files change
-- 📂 In standard production build (build):
-  - Removal of crossorigin and type="module" attributes
-  - Adding defer attribute to scripts
-  - Replacing scss connections with css/app.css
-  - Fixed file names (app.js and app.css) without hashes
-- 🚀 In minified production build (build-min):
-  - All the benefits of the standard build
-  - HTML, CSS, and JavaScript minification
-  - Automatic optimization of raster images:
-    - JPEG/JPG: compression with 80% quality preservation
-    - PNG: optimization with 60-80% quality settings
-    - GIF: optimization with level 7
-    - SVG: not optimized (to preserve their structure and functionality)
-    
-## ⚙️ Installation
-
-```bash
-# Clone repository
-git clone https://github.com/lexa-zxc/viteverst.git
-
-# Install dependencies
-npm install
-
-# Start development mode
-npm run dev
-```
+We hope this setup will make your work not only more efficient but also more enjoyable! If you have ideas for improving the setup or you find a bug - create an issue or send a pull request.
 
 ## 📋 Requirements
 
