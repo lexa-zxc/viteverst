@@ -1111,6 +1111,7 @@ function createConfig(minify = false, imageOptimization = false) {
           logger: {
             warn: () => {},
           },
+          api: 'modern-compiler',
           // Добавляем глобальные переменные со всеми алиасами для использования в SCSS
           additionalData: Object.entries(SCSS_ALIASES).map(([alias, path]) => {
             const varName = alias.replace('@', '$') + '-path';
