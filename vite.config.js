@@ -1112,6 +1112,8 @@ function createConfig(minify = false, imageOptimization = false) {
             warn: () => {},
           },
           api: 'modern-compiler',
+          sourceMap: false,
+          style: 'compressed', // Даже в dev для ускорения
           // Добавляем глобальные переменные со всеми алиасами для использования в SCSS
           additionalData: Object.entries(SCSS_ALIASES).map(([alias, path]) => {
             const varName = alias.replace('@', '$') + '-path';
