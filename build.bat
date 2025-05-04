@@ -4,5 +4,9 @@ color 0A
 echo.
 echo ^>^>^> СБОРКА ПРОЕКТА (БЕЗ МИНИФИКАЦИИ) ^<^<^<
 echo.
-npm run build
+echo 1. Запускаем сборку Vite с сохранением комментариев...
+call npm run build
+echo.
+echo ^>^>^> СБОРКА ЗАВЕРШЕНА ^<^<^<
+echo.
 pause 

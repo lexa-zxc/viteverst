@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --open --host",
-    "build": "vite build --mode production",
+    "build": "vite build --mode production && node vite-config/scripts/build-js-direct.js",
     "build-min": "vite build --mode production-min",
     "preview": "vite preview --open --host",
     "fonts": "fonts.bat",
@@ -50,6 +50,7 @@
     "postcss": "8.5.3",
     "postcss-sort-media-queries": "5.2.0",
     "sass": "npm:sass-embedded@1.87.0",
+    "terser": "5.39.0",
     "ttf2woff2": "6.0.1",
     "vite": "6.3.4",
     "vite-plugin-imagemin": "0.6.1",

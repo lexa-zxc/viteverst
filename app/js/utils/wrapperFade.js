@@ -1,4 +1,3 @@
-// Импортируем константы
 import { device_width } from '@utils/constants.js';
 
 //======== Анимация wrapper при загрузке страницы =========//
