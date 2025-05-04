@@ -8,7 +8,9 @@
     "dev": "vite --open --host",
     "build": "vite build --mode production",
     "build-min": "vite build --mode production-min",
-    "preview": "vite preview --open --host"
+    "preview": "vite preview --open --host",
+    "fonts": "fonts.bat",
+    "fonts:convert": "node vite-config/scripts/convert-fonts.js"
   },
   "keywords": [
     "vite",
@@ -48,6 +50,7 @@
     "postcss": "8.5.3",
     "postcss-sort-media-queries": "5.2.0",
     "sass": "npm:sass-embedded@1.87.0",
+    "ttf2woff2": "6.0.1",
     "vite": "6.3.4",
     "vite-plugin-imagemin": "0.6.1",
     "vite-plugin-sass-glob-import": "5.0.0"

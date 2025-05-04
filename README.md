@@ -66,6 +66,47 @@
     - GIF: оптимизация с уровнем 7
     - SVG: не оптимизируются (для сохранения их структуры и функциональности)
     
+## 🔡 Конвертация шрифтов
+
+В проекте реализована удобная функция конвертации шрифтов из формата TTF в более оптимизированный WOFF2, который обеспечивает лучшую производительность и меньший размер файлов.
+
+### Как использовать
+
+Для конвертации шрифтов используйте одну из следующих команд:
+
+```bash
+# Через BAT-файл (Windows)
+fonts.bat
+
+# Или через npm скрипт
+npm run fonts:convert
+```
+
+### Что делает конвертер шрифтов
+
+1. Ищет TTF файлы в директории `app/fonts/`
+2. Для каждого TTF файла создаёт соответствующий WOFF2 файл рядом с ним
+3. Если WOFF2 файл уже существует, он не будет создан повторно (чтобы перезаписать существующие файлы, используйте опцию `--force`)
+
+### Дополнительные опции
+
+При использовании команды `npm run fonts:convert` можно указать дополнительные параметры:
+
+```bash
+# Указать другую директорию шрифтов
+npm run fonts:convert -- --fonts-dir путь/к/шрифтам
+
+# Принудительная конвертация (перезаписать существующие WOFF2 файлы)
+npm run fonts:convert -- --force
+```
+
+### Преимущества WOFF2
+
+- **Меньший размер файлов**: в среднем на 30-50% меньше, чем TTF
+- **Быстрая загрузка**: ускоряет загрузку страниц
+- **Широкая поддержка**: поддерживается всеми современными браузерами
+- **Оптимизированный рендеринг**: быстрее обрабатывается браузерами
+
 ## ⚙️ Установка
 
 ```bash
@@ -84,6 +125,7 @@ npm run dev
 - `build.bat` - сборка проекта без минификации
 - `build-min.bat` - сборка проекта с минификацией
 - `preview.bat` - предпросмотр собранного проекта
+- `fonts.bat` - конвертация TTF шрифтов в WOFF2
 
 Также можно использовать короткие команды в консоли:
 ```bash
@@ -91,6 +133,7 @@ dev       # эквивалентно npm run dev
 build     # эквивалентно npm run build
 build-min # эквивалентно npm run build-min
 preview   # эквивалентно npm run preview
+fonts     # эквивалентно npm run fonts
 ```
 
 ## 🔄 Адаптивная система REM
@@ -308,6 +351,47 @@ The project implements the following features:
     - GIF: optimization with level 7
     - SVG: not optimized (to preserve their structure and functionality)
     
+## 🔡 Конвертация шрифтов
+
+The project implements a convenient function for converting fonts from the TTF format to a more optimized WOFF2 format, which provides better performance and smaller file size.
+
+### How to use
+
+To convert fonts, use one of the following commands:
+
+```bash
+# Through BAT file (Windows)
+fonts.bat
+
+# Or through npm script
+npm run fonts:convert
+```
+
+### What the font converter does
+
+1. Searches for TTF files in the `app/fonts/` directory
+2. For each TTF file, creates a corresponding WOFF2 file next to it
+3. If a WOFF2 file already exists, it will not be created again (to overwrite existing files, use the `--force` option)
+
+### Additional options
+
+When using the `npm run fonts:convert` command, you can specify additional parameters:
+
+```bash
+# Specify a different fonts directory
+npm run fonts:convert -- --fonts-dir path/to/fonts
+
+# Force conversion (overwrite existing WOFF2 files)
+npm run fonts:convert -- --force
+```
+
+### Advantages of WOFF2
+
+- **Smaller file size**: on average, 30-50% smaller than TTF
+- **Fast loading**: speeds up page loading
+- **Wide support**: supported by all modern browsers
+- **Optimized rendering**: processed faster by browsers
+
 ## ⚙️ Installation
 
 ```bash
@@ -326,6 +410,7 @@ For convenience, the project includes BAT files that allow you to run commands w
 - `build.bat` - build project without minification
 - `build-min.bat` - build project with minification
 - `preview.bat` - preview the built project
+- `fonts.bat` - convert TTF fonts to WOFF2
 
 You can also use short commands in the console:
 ```bash
@@ -333,6 +418,7 @@ dev       # equivalent to npm run dev
 build     # equivalent to npm run build
 build-min # equivalent to npm run build-min
 preview   # equivalent to npm run preview
+fonts     # equivalent to npm run fonts
 ```
 
 ## 🔄 Adaptive REM System
