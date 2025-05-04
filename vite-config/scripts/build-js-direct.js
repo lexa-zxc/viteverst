@@ -6,7 +6,6 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import path from 'path';
 import fs from 'fs';
-import { minify } from 'terser';
 
 // Получаем dirname для ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -19,18 +18,7 @@ const DIST_DIR = path.join(PROJECT_ROOT, 'dist', 'js');
 const MAIN_JS = path.join(SRC_DIR, 'app.js');
 const OUTPUT_JS = path.join(DIST_DIR, 'app.js');
 
-// Опции командной строки
-const processArgs = process.argv.slice(2);
-const shouldMinify = processArgs.includes('--minify');
-const commentLevel = processArgs.find(arg => arg.startsWith('--comments=')) 
-  ? processArgs.find(arg => arg.startsWith('--comments=')).split('=')[1] 
-  : 'important';
-
 console.log('🚀 Прямая сборка JS с сохранением комментариев...');
-console.log(`💬 Режим сохранения комментариев: ${commentLevel}`);
-if (shouldMinify) {
-  console.log('📦 Режим с минификацией активирован!');
-}
 
 // Убеждаемся, что выходная директория существует
 if (!fs.existsSync(DIST_DIR)) {
@@ -105,9 +93,6 @@ async function build() {
   try {
     const processedFiles = new Map(); // Кеш для предотвращения дублирования
     
-    // Собираем список всех файлов для обработки
-    const allFiles = new Set();
-    
     // Сначала обрабатываем главный файл для построения полного дерева зависимостей
     const processedContent = await processFile(MAIN_JS, new Set(), processedFiles);
     
@@ -138,61 +123,6 @@ async function build() {
     
     // Оборачиваем в IIFE
     let wrappedContent = `(function() {\n${finalContent}\n})();`;
-    
-    // Минифицируем если нужно
-    if (shouldMinify) {
-      // Настраиваем опции Terser
-      const terserOptions = {
-        compress: {
-          drop_console: false,
-        },
-        mangle: false,
-        format: {
-          beautify: !shouldMinify,
-          // Настраиваем сохранение комментариев
-          comments: commentLevel === 'all' 
-            ? 'all' 
-            : commentLevel === 'none' 
-              ? false 
-              : function(node, comment) {
-                  const text = comment.value;
-                  
-                  // Если комментарий содержит Инлайн импорт, сохраняем
-                  if (text.includes('Инлайн импорт из')) {
-                    return true;
-                  }
-                  
-                  // Важные комментарии
-                  if (/^\**!|@preserve|@license/i.test(text)) {
-                    return true;
-                  }
-                  
-                  // JSDoc комментарии (/**/)
-                  if (comment.type === 'comment2' && text.startsWith('*')) {
-                    return true;
-                  }
-                  
-                  // Комментарии с тегами
-                  if (text.includes('KEEP:') || text.includes('!!') || 
-                      /TODO|FIXME|HACK|XXX|BUG|NOTE|IMPORTANT/.test(text)) {
-                    return true;
-                  }
-                  
-                  // Большие комментарии
-                  if (comment.type === 'comment2' && text.length > 80) {
-                    return true;
-                  }
-                  
-                  // Удаляем остальные комментарии
-                  return false;
-                }
-        }
-      };
-      
-      // Выполняем минификацию
-      const result = await minify(wrappedContent, terserOptions);
-      wrappedContent = result.code || wrappedContent;
-    }
     
     // Добавляем заголовок
     const header = '// Код собран и оптимизирован. Сборка ViteVerst.\n\n';
