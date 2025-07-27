@@ -2,10 +2,10 @@
   Адаптивный размер шрифта для rem единиц
   
   initRes - базовое разрешение (1920x1080) для расчета масштаба
-  w - ширина окна браузера (window.innerWidth)
-  h - высота окна браузера (window.innerHeight)
-  k - коэффициент масштабирования относительно базового разрешения
-  size - итоговый размер шрифта в px для html элемента
+  width - ширина окна браузера (window.innerWidth)
+  height - высота окна браузера (window.innerHeight)
+  koeff - коэффициент масштабирования относительно базового разрешения
+  fontSize - итоговый размер шрифта в px для html элемента
   
   Функция rem() пересчитывает базовый размер шрифта при изменении размера окна,
   что позволяет использовать rem единицы для адаптивной верстки
@@ -14,29 +14,30 @@
 const initRes = 1920 * 1080;
 const html = document.documentElement;
 
-const scale = (w, h) => Math.sqrt((w * h) / initRes);
-const setFontSize = size => html.style.fontSize = `${size.toFixed(1)}px`;
+const calculateScale = (width, height) => Math.sqrt((width * height) / initRes);
+const setFontSize = fontSize => html.style.fontSize = `${fontSize.toFixed(1)}px`;
 
 function rem() {
-  const w = window.innerWidth, h = window.innerHeight;
-  const k = scale(w, h);
+  const width = window.innerWidth, height = window.innerHeight;
+  const koeff = calculateScale(width, height);
+
   // Стандартное масштабирование
-  let size = 10.8 * k; // Базовый размер для десктопов (1920x1080 в большую и меньшую сторону)
+  let fontSize = 10.8 * koeff; // Базовый размер для десктопов (1920x1080 в большую и меньшую сторону)
 
   // Кастомное мастшабирование для определенных устройств
-  if (w <= 1600) size = 11 * k;    // Большие ноутбуки
-  if (w <= 1400) size = 12.5 * k;  // Средние ноутбуки
-  if (w <= 1300) size = 10.5 * k;  // Маленькие ноутбуки
-  if (w <= 1200) size = 13 * k;    // Большие планшеты
-  if (w <= 1100) size = 12 * k;    // Средние планшеты
-  if (w <= 960) size = 10 * k;     // Маленькие планшеты
-  if (w <= 767) size = 10;         // Мобильные устройства (фиксированный размер)
+  if (width <= 1600) fontSize = 11 * koeff;    // Большие ноутбуки
+  if (width <= 1400) fontSize = 12.5 * koeff;  // Средние ноутбуки
+  if (width <= 1300) fontSize = 10.5 * koeff;  // Маленькие ноутбуки
+  if (width <= 1200) fontSize = 13 * koeff;    // Большие планшеты
+  if (width <= 1100) fontSize = 12 * koeff;    // Средние планшеты
+  if (width <= 960) fontSize = 10 * koeff;     // Маленькие планшеты
+  if (width <= 767) fontSize = 10;             // Мобильные устройства (фиксированный размер)
 
   // Для примера
-  // if (w <= 1920 && h <= 1080) size = 15 * k;  // С высотой
-  // if (w > 2560) size = 12 * k;  // Кастомная настройка для 2K+
+  // if (width <= 1920 && height <= 1080) fontSize = 15 * koeff;  // С высотой
+  // if (width > 2560) fontSize = 12 * koeff;  // Кастомная настройка для 2K+
 
-  setFontSize(size);
+  setFontSize(fontSize);
 }
 
 rem();

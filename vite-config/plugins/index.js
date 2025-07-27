@@ -2,16 +2,17 @@ import sassGlobImports from 'vite-plugin-sass-glob-import';
 import { fileIncludePlugin } from './file-include-plugin.js';
 import { htmlAliasPlugin } from './html-alias-plugin.js';
 import { copyResourcesPlugin } from './copy-resources-plugin.js';
-import { 
+import {
   fixFontPathsPlugin,
   processHtmlPlugin,
   fixAssetsPathsPlugin,
   renameJsPlugin
 } from './html-processing-plugins.js';
-import { 
+import {
   scssEntryPlugin,
   htmlReloadPlugin,
-  scssAliasPlugin
+  scssAliasPlugin,
+  scssFileWatcherPlugin
 } from './scss-plugins.js';
 import { imageOptimizationPlugin } from './image-optimization-plugin.js';
 import { HTML_ALIASES } from '../config/paths.js';
@@ -27,7 +28,8 @@ export async function getBasePlugins() {
     htmlAliasPlugin(HTML_ALIASES),
     scssEntryPlugin(),
     scssAliasPlugin(),
-    htmlReloadPlugin()
+    htmlReloadPlugin(),
+    scssFileWatcherPlugin()
   ];
 }
 

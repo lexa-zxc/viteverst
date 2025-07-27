@@ -110,9 +110,9 @@ fonts     # эквивалентно npm run fonts
 1. **Интеллектуальное масштабирование**: Скрипт `app/vendor/rem/rem.js` автоматически устанавливает размер шрифта для тега `<html>` в зависимости от разрешения экрана:
    ```javascript
    // Примеры коэффициентов масштабирования для разных устройств
-   if (w > 2000) size = 12 * k;  // 2K+ разрешения
-   if (w <= 1600) size = 10.8 * k;  // Большие ноутбуки
-   if (w <= 1400) size = 12.5 * k;  // Маленькие ноутбуки
+   if (width > 2000) fontSize = 12 * koeff;  // 2K+ разрешения
+   if (width <= 1600) fontSize = 10.8 * koeff;  // Большие ноутбуки
+   if (width <= 1400) fontSize = 12.5 * koeff;  // Маленькие ноутбуки
    // ...и т.д. для других размеров экранов
    ```
 
@@ -388,9 +388,9 @@ The build implements a unique adaptive layout system based on REM units, which:
 1. **Intelligent scaling**: The `app/vendor/rem/rem.js` script automatically sets the font size for the `<html>` tag based on screen resolution:
    ```javascript
    // Examples of scaling coefficients for different devices
-   if (w > 2000) size = 12 * k; // 2K+ resolutions
-   if (w <= 1600) size = 10.8 * k; // Large laptops
-   if (w <= 1400) size = 12.5 * k; // Small laptops
+   if (width > 2000) fontSize = 12 * koeff;  // 2K+ resolutions
+   if (width <= 1600) fontSize = 10.8 * koeff;  // Large laptops
+   if (width <= 1400) fontSize = 12.5 * koeff;  // Small laptops
    // ...and so on for other screen sizes
    ```
 
