@@ -20,11 +20,30 @@ export function htmlAliasPlugin(aliases) {
       Object.keys(aliases).forEach((alias) => {
         const escapedAlias = alias.replace('@', '\\@');
         const aliasRegex = new RegExp(
-          `(src|href|url|poster|data-src|data-background)=["']${escapedAlias}/([^"']+)["']`,
+          `(src|href|url|poster|data-src|data-background|srcset)=["']${escapedAlias}/([^"']+)["']`,
           'g'
         );
         result = result.replace(aliasRegex, (match, attr, path) => {
           return `${attr}="${aliases[alias]}/${path}"`;
+        });
+        
+        // Отдельная обработка для атрибута srcset с множественными значениями
+        const srcsetRegex = new RegExp(
+          `srcset=["']([^"']*?)${escapedAlias}/([^"'\\s]+)([^"']*?)["']`,
+          'g'
+        );
+        result = result.replace(srcsetRegex, (match, before, path, after) => {
+          return `srcset="${before}${aliases[alias]}/${path}${after}"`;
+        });
+        
+        // Обработка нескольких алиасов в одном атрибуте srcset
+        const multiSrcsetRegex = new RegExp(
+          `${escapedAlias}/([^"'\\s,]+)`,
+          'g'
+        );
+        result = result.replace(/srcset=["']([^"']+)["']/g, (match, content) => {
+          const replacedContent = content.replace(multiSrcsetRegex, `${aliases[alias]}/$1`);
+          return `srcset="${replacedContent}"`;
         });
       });
 
