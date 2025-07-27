@@ -31,48 +31,18 @@ export function scssEntryPlugin() {
 }
 
 /**
- * Улучшенный плагин для обработки горячей перезагрузки HTML и SCSS
+ * Плагин для обработки горячей перезагрузки при изменении HTML
  * @returns {Object} Vite плагин
  */
 export function htmlReloadPlugin() {
   return {
-    name: 'enhanced-reload-plugin',
+    name: 'html-reload',
     handleHotUpdate({ file, server }) {
-      // Полная перезагрузка для HTML файлов
       if (file.endsWith('.html')) {
         server.ws.send({
           type: 'full-reload',
           path: '*',
         });
-        return [];
-      }
-      
-      // Улучшенная обработка SCSS файлов
-      if (file.endsWith('.scss') || file.endsWith('.sass')) {
-        // Принудительно инвалидируем все CSS модули для обновления
-        const moduleGraph = server.moduleGraph;
-        const cssModules = [];
-        
-        for (const [url, module] of moduleGraph.urlToModuleMap) {
-          if (url.includes('.scss') || url.includes('.sass') || url.includes('.css')) {
-            moduleGraph.invalidateModule(module);
-            cssModules.push(module);
-          }
-        }
-        
-        // Отправляем CSS update для всех найденных модулей
-        if (cssModules.length > 0) {
-          server.ws.send({
-            type: 'update',
-            updates: cssModules.map(module => ({
-              type: 'css-update',
-              path: module.url,
-              acceptedPath: module.url,
-              timestamp: Date.now()
-            }))
-          });
-        }
-        
         return [];
       }
     }
