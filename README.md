@@ -111,8 +111,8 @@ fonts     # эквивалентно npm run fonts
    ```javascript
    // Примеры коэффициентов масштабирования для разных устройств
    if (w > 2000) size = 12 * k;  // 2K+ разрешения
-   if (w &lt;= 1600) size = 10.8 * k;  // Большие ноутбуки
-   if (w &lt;= 1400) size = 12.5 * k;  // Маленькие ноутбуки
+   if (w <= 1600) size = 10.8 * k;  // Большие ноутбуки
+   if (w <= 1400) size = 12.5 * k;  // Маленькие ноутбуки
    // ...и т.д. для других размеров экранов
    ```
 
@@ -389,8 +389,8 @@ The build implements a unique adaptive layout system based on REM units, which:
    ```javascript
    // Examples of scaling coefficients for different devices
    if (w > 2000) size = 12 * k; // 2K+ resolutions
-   if (w &lt;= 1600) size = 10.8 * k; // Large laptops
-   if (w &lt;= 1400) size = 12.5 * k; // Small laptops
+   if (w <= 1600) size = 10.8 * k; // Large laptops
+   if (w <= 1400) size = 12.5 * k; // Small laptops
    // ...and so on for other screen sizes
    ```
 
