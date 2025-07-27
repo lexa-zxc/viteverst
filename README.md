@@ -66,47 +66,6 @@
     - GIF: оптимизация с уровнем 7
     - SVG: не оптимизируются (для сохранения их структуры и функциональности)
     
-## 🔡 Конвертация шрифтов
-
-В проекте реализована удобная функция конвертации шрифтов из формата TTF в более оптимизированный WOFF2, который обеспечивает лучшую производительность и меньший размер файлов.
-
-### Как использовать
-
-Для конвертации шрифтов используйте одну из следующих команд:
-
-```bash
-# Через BAT-файл (Windows)
-fonts.bat
-
-# Или через npm скрипт
-npm run fonts:convert
-```
-
-### Что делает конвертер шрифтов
-
-1. Ищет TTF файлы в директории `app/fonts/`
-2. Для каждого TTF файла создаёт соответствующий WOFF2 файл рядом с ним
-3. Если WOFF2 файл уже существует, он не будет создан повторно (чтобы перезаписать существующие файлы, используйте опцию `--force`)
-
-### Дополнительные опции
-
-При использовании команды `npm run fonts:convert` можно указать дополнительные параметры:
-
-```bash
-# Указать другую директорию шрифтов
-npm run fonts:convert -- --fonts-dir путь/к/шрифтам
-
-# Принудительная конвертация (перезаписать существующие WOFF2 файлы)
-npm run fonts:convert -- --force
-```
-
-### Преимущества WOFF2
-
-- **Меньший размер файлов**: в среднем на 30-50% меньше, чем TTF
-- **Быстрая загрузка**: ускоряет загрузку страниц
-- **Широкая поддержка**: поддерживается всеми современными браузерами
-- **Оптимизированный рендеринг**: быстрее обрабатывается браузерами
-
 ## ⚙️ Установка
 
 ```bash
@@ -151,9 +110,9 @@ fonts     # эквивалентно npm run fonts
 1. **Интеллектуальное масштабирование**: Скрипт `app/vendor/rem/rem.js` автоматически устанавливает размер шрифта для тега `<html>` в зависимости от разрешения экрана:
    ```javascript
    // Примеры коэффициентов масштабирования для разных устройств
-   { minWidth: 2560, maxWidth: Infinity, coefficient: 10.8 }, // 2K+ разрешения
-   { minWidth: 1600, maxWidth: 2560, coefficient: 10.8 }, // Десктоп (стандартный)
-   { minWidth: 1400, maxWidth: 1600, coefficient: 12.5 }, // Большие ноутбуки
+   if (w > 2000) size = 12 * k;  // 2K+ разрешения
+   if (w &lt;= 1600) size = 10.8 * k;  // Большие ноутбуки
+   if (w &lt;= 1400) size = 12.5 * k;  // Маленькие ноутбуки
    // ...и т.д. для других размеров экранов
    ```
 
@@ -259,6 +218,40 @@ npm run preview
 }
 ```
 
+## 🔡 Конвертация шрифтов
+
+В проекте реализована удобная функция конвертации шрифтов из формата TTF в более оптимизированный WOFF2, который обеспечивает лучшую производительность и меньший размер файлов.
+
+### Как использовать
+
+Для конвертации шрифтов используйте одну из следующих команд:
+
+```bash
+# Через BAT-файл (Windows)
+fonts.bat
+
+# Или через npm скрипт
+npm run fonts:convert
+```
+
+### Что делает конвертер шрифтов
+
+1. Ищет TTF файлы в директории `app/fonts/`
+2. Для каждого TTF файла создаёт соответствующий WOFF2 файл рядом с ним
+3. Если WOFF2 файл уже существует, он не будет создан повторно (чтобы перезаписать существующие файлы, используйте опцию `--force`)
+
+### Дополнительные опции
+
+При использовании команды `npm run fonts:convert` можно указать дополнительные параметры:
+
+```bash
+# Указать другую директорию шрифтов
+npm run fonts:convert -- --fonts-dir путь/к/шрифтам
+
+# Принудительная конвертация (перезаписать существующие WOFF2 файлы)
+npm run fonts:convert -- --force
+```
+
 ## 🔥 Почему лучше чем Gulp?
 
 - **В 10-100 раз быстрее** запуск сервера разработки
@@ -351,47 +344,6 @@ The project implements the following features:
     - GIF: optimization with level 7
     - SVG: not optimized (to preserve their structure and functionality)
     
-## 🔡 Конвертация шрифтов
-
-The project implements a convenient function for converting fonts from the TTF format to a more optimized WOFF2 format, which provides better performance and smaller file size.
-
-### How to use
-
-To convert fonts, use one of the following commands:
-
-```bash
-# Through BAT file (Windows)
-fonts.bat
-
-# Or through npm script
-npm run fonts:convert
-```
-
-### What the font converter does
-
-1. Searches for TTF files in the `app/fonts/` directory
-2. For each TTF file, creates a corresponding WOFF2 file next to it
-3. If a WOFF2 file already exists, it will not be created again (to overwrite existing files, use the `--force` option)
-
-### Additional options
-
-When using the `npm run fonts:convert` command, you can specify additional parameters:
-
-```bash
-# Specify a different fonts directory
-npm run fonts:convert -- --fonts-dir path/to/fonts
-
-# Force conversion (overwrite existing WOFF2 files)
-npm run fonts:convert -- --force
-```
-
-### Advantages of WOFF2
-
-- **Smaller file size**: on average, 30-50% smaller than TTF
-- **Fast loading**: speeds up page loading
-- **Wide support**: supported by all modern browsers
-- **Optimized rendering**: processed faster by browsers
-
 ## ⚙️ Installation
 
 ```bash
@@ -436,9 +388,9 @@ The build implements a unique adaptive layout system based on REM units, which:
 1. **Intelligent scaling**: The `app/vendor/rem/rem.js` script automatically sets the font size for the `<html>` tag based on screen resolution:
    ```javascript
    // Examples of scaling coefficients for different devices
-   { minWidth: 2560, maxWidth: Infinity, coefficient: 10.8 }, // 2K+ resolutions
-   { minWidth: 1600, maxWidth: 2560, coefficient: 10.8 }, // Desktop (standard)
-   { minWidth: 1400, maxWidth: 1600, coefficient: 12.5 }, // Large laptops
+   if (w > 2000) size = 12 * k; // 2K+ resolutions
+   if (w &lt;= 1600) size = 10.8 * k; // Large laptops
+   if (w &lt;= 1400) size = 12.5 * k; // Small laptops
    // ...and so on for other screen sizes
    ```
 
@@ -542,6 +494,40 @@ Aliases are also available in SCSS files for imports:
 .element {
   background-image: url("@img/background.jpg");
 }
+```
+
+## 🔡 Font Conversion
+
+The project implements a convenient function for converting fonts from the TTF format to a more optimized WOFF2 format, which provides better performance and smaller file size.
+
+### How to use
+
+To convert fonts, use one of the following commands:
+
+```bash
+# Through BAT file (Windows)
+fonts.bat
+
+# Or through npm script
+npm run fonts:convert
+```
+
+### What the font converter does
+
+1. Searches for TTF files in the `app/fonts/` directory
+2. For each TTF file, creates a corresponding WOFF2 file next to it
+3. If a WOFF2 file already exists, it will not be created again (to overwrite existing files, use the `--force` option)
+
+### Additional options
+
+When using the `npm run fonts:convert` command, you can specify additional parameters:
+
+```bash
+# Specify a different fonts directory
+npm run fonts:convert -- --fonts-dir path/to/fonts
+
+# Force conversion (overwrite existing WOFF2 files)
+npm run fonts:convert -- --force
 ```
 
 ## 🔥 Why Better Than Gulp?
