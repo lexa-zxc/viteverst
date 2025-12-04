@@ -94,16 +94,23 @@ export function getFileContent(filePath, params = {}, parentPath = null, filenam
 
     let content = fs.readFileSync(fullPath, 'utf-8');
 
-    // Заменяем параметры в шаблоне
+    // Рекурсивно обрабатываем вложенные include СНАЧАЛА
+    content = processIncludes(content, dirname(fullPath), filename);
+    
+    // Заменяем параметры в шаблоне ПОСЛЕ обработки вложенных include
     Object.keys(params).forEach((key) => {
+      const value = params[key] !== undefined ? params[key] : '';
       content = content.replace(
         new RegExp(`@@${key}`, 'g'),
-        params[key]
+        value
       );
     });
+    
+    // Удаляем все оставшиеся одиночные директивы @@, которые не были заменены
+    // Но НЕ трогаем @@include(...)
+    content = content.replace(/@@([a-zA-Z0-9_-]+)(?!\()/g, '');
 
-    // Рекурсивно обрабатываем вложенные include
-    return processIncludes(content, dirname(fullPath), filename);
+    return content;
   } catch (error) {
     console.error(`Ошибка при чтении файла ${filePath}:`, error);
     return `<!-- Ошибка: не удалось включить файл ${filePath} -->`;
@@ -118,6 +125,12 @@ export function getFileContent(filePath, params = {}, parentPath = null, filenam
  * @returns {string} Обработанное содержимое
  */
 export function processIncludes(content, currentPath = null, filename) {
+  // Сначала извлекаем слоты (контент между @@slot и -@@slot)
+  const slots = extractSlots(content);
+  
+  // Удаляем слоты из контента (они будут подставлены в include)
+  let processedContent = removeSlots(content);
+  
   // Разбиваем контент на части (ignored и не ignored)
   const parts = [];
   const regex = /<!-- VITE_IGNORE_START -->[\s\S]*?<!-- VITE_IGNORE_END -->/g;
@@ -125,11 +138,11 @@ export function processIncludes(content, currentPath = null, filename) {
   let match;
 
   // Собираем все игнорируемые части
-  while ((match = regex.exec(content)) !== null) {
+  while ((match = regex.exec(processedContent)) !== null) {
     // Добавляем часть до игнорируемого участка
     if (match.index > lastIndex) {
       parts.push({
-        text: content.substring(lastIndex, match.index),
+        text: processedContent.substring(lastIndex, match.index),
         ignore: false
       });
     }
@@ -144,9 +157,9 @@ export function processIncludes(content, currentPath = null, filename) {
   }
   
   // Добавляем оставшуюся часть после последнего игнорируемого участка
-  if (lastIndex < content.length) {
+  if (lastIndex < processedContent.length) {
     parts.push({
-      text: content.substring(lastIndex),
+      text: processedContent.substring(lastIndex),
       ignore: false
     });
   }
@@ -168,6 +181,9 @@ export function processIncludes(content, currentPath = null, filename) {
             params = JSON.parse(paramsStr.replace(/^\s*,\s*/, ''));
           }
           
+          // Добавляем слоты в параметры
+          params = { ...params, ...slots };
+          
           // Получаем содержимое файла
           const fileContent = getFileContent(filePath, params, currentPath, filename);
           
@@ -188,4 +204,35 @@ export function processIncludes(content, currentPath = null, filename) {
   
   // Собираем все части обратно
   return parts.map(part => part.text).join('');
+}
+
+/**
+ * Извлечение слотов из контента
+ * @param {string} content - Содержимое для обработки
+ * @returns {Object} Объект со слотами
+ */
+function extractSlots(content) {
+  const slots = {};
+  // Ищем паттерн: @@slotName\n...контент...\n-@@slotName
+  const slotRegex = /@@([a-zA-Z0-9_-]+)\s*([\s\S]*?)\s*-@@\1/g;
+  
+  let match;
+  while ((match = slotRegex.exec(content)) !== null) {
+    const slotName = match[1];
+    const slotContent = match[2].trim();
+    slots[slotName] = slotContent;
+  }
+  
+  return slots;
+}
+
+/**
+ * Удаление слотов из контента
+ * @param {string} content - Содержимое для обработки
+ * @returns {string} Контент без слотов
+ */
+function removeSlots(content) {
+  // Удаляем все слоты из контента
+  const slotRegex = /@@([a-zA-Z0-9_-]+)\s*[\s\S]*?\s*-@@\1/g;
+  return content.replace(slotRegex, '');
 } 

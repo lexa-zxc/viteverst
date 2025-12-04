@@ -14,6 +14,7 @@
 
 - **Молниеносная скорость** разработки, моментальный Hot Reload
 - **Поддержка @@include** - работайте с компонентами без фреймворков
+- **Система слотов** - передавайте HTML-блоки в компоненты как в Vue/React
 - **Алиасы для путей** (@scss, @js, @img) - никакой путаницы с ../../../../
 - **Автоматическая оптимизация** изображений, CSS и JS
 - **Адаптивная система REM** - верстайте без медиа-запросов под любые разрешения
@@ -46,11 +47,12 @@
 
 В проекте реализованы следующие функции:
 - ⚡ Обработка директив @@include в HTML файлах
-- 🔄 Преобразование путей к ресурсам (@scss, @js, @img, @files и др.)
+- 🎯 Система слотов для передачи HTML-блоков в компоненты
+- � Пртеобразование путей к ресурсам (@scss, @js, @img, @files и др.)
 - 📦 Автоматическое копирование изображений, файлов и vendor-файлов в dist
 - 🌐 Вендорные префиксы через Autoprefixer
-- 📱 Сортировка и объединение медиа-запросов
-- 🚄 Параллельная обработка ресурсов для оптимальной скорости сборки
+- �  Сортировка и объединение медиа-запросов
+- � Паралалельная обработка ресурсов для оптимальной скорости сборки
 - 🔥 Горячая перезагрузка при изменении HTML файлов
 - 📂 В стандартной production-сборке (build):
   - Удаление атрибутов crossorigin и type="module"
@@ -189,6 +191,66 @@ npm run preview
 <title>@@title</title>
 ```
 
+#### Использование слотов
+
+Слоты позволяют передавать целые блоки HTML-кода в компоненты, что делает их максимально гибкими и переиспользуемыми.
+
+**Пример использования:**
+
+```html
+<!-- В основном файле index.html -->
+@@include('html/card.html')
+  @@content
+    <h2>Заголовок карточки</h2>
+    <p>Описание карточки с любым HTML-кодом</p>
+    <button>Подробнее</button>
+  -@@content
+  
+  @@footer
+    <span>Дополнительная информация</span>
+  -@@footer
+```
+
+```html
+<!-- В компоненте html/card.html -->
+<div class="card">
+  <div class="card__body">
+    @@content
+  </div>
+  <div class="card__footer">
+    @@footer
+  </div>
+</div>
+```
+
+**Результат:**
+```html
+<div class="card">
+  <div class="card__body">
+    <h2>Заголовок карточки</h2>
+    <p>Описание карточки с любым HTML-кодом</p>
+    <button>Подробнее</button>
+  </div>
+  <div class="card__footer">
+    <span>Дополнительная информация</span>
+  </div>
+</div>
+```
+
+**Преимущества слотов:**
+- Передача сложного HTML-кода в компоненты
+- Создание гибких и переиспользуемых компонентов
+- Возможность использовать несколько слотов в одном компоненте
+- Чистый и читаемый код без экранирования HTML
+
+**Комбинирование параметров и слотов:**
+```html
+@@include('html/modal.html', {"title":"Заголовок модалки"})
+  @@body
+    <p>Содержимое модального окна</p>
+  -@@body
+```
+
 ### Пути к ресурсам
 
 Вы можете использовать специальные префиксы для указания путей к ресурсам:
@@ -272,7 +334,7 @@ npm run fonts:convert -- --force
 
 ## 🏷️ Теги
 
-`vite` `vite-config` `vite-for-html` `html-include` `file-include` `vite-file-include` `верстка` `сборка для верстки` `frontend` `html-components` `scss` `sass` `web-dev` `imagemin` `multi-page` `web-optimization` `adaptive-rem` `responsive` `no-media-queries` `fluid-layout` `rem-based` `auto-adaptive` `ttf-to-woff2` `font-converter`
+`vite` `vite-config` `vite-for-html` `html-include` `file-include` `vite-file-include` `html-slots` `component-slots` `верстка` `сборка для верстки` `frontend` `html-components` `scss` `sass` `web-dev` `imagemin` `multi-page` `web-optimization` `adaptive-rem` `responsive` `no-media-queries` `fluid-layout` `rem-based` `auto-adaptive` `ttf-to-woff2` `font-converter`
 
 ---
 
@@ -292,6 +354,7 @@ A modern **ultra-fast** setup for website development based on Vite with support
 
 - **Lightning-fast** development, instant Hot Reload
 - **@@include support** - work with components without frameworks
+- **Slots system** - pass HTML blocks to components like in Vue/React
 - **Path aliases** (@scss, @js, @img) - no more confusion with ../../../../
 - **Automatic optimization** of images, CSS, and JS
 - **Adaptive REM system** - build responsive websites without media queries for any resolution
@@ -324,11 +387,12 @@ A modern **ultra-fast** setup for website development based on Vite with support
 
 The project implements the following features:
 - ⚡ Processing @@include directives in HTML files
-- 🔄 Resource path transformation (@scss, @js, @img, @files, etc.)
+- 🎯 Slots system for passing HTML blocks to components
+- � Resouarce path transformation (@scss, @js, @img, @files, etc.)
 - 📦 Automatic copying of images, files, and vendor files to dist
 - 🌐 Vendor prefixes via Autoprefixer
-- 📱 Sorting and combining media queries
-- 🚄 Parallel resource processing for optimal build speed
+- � Saorting and combining media queries
+- � Par allel resource processing for optimal build speed
 - 🔥 Hot reload when HTML files change
 - 📂 In standard production build (build):
   - Removal of crossorigin and type="module" attributes
@@ -467,6 +531,66 @@ In the `header.html` file, you can use parameters with the `@@parameter_name` sy
 <title>@@title</title>
 ```
 
+#### Using Slots
+
+Slots allow you to pass entire blocks of HTML code to components, making them maximally flexible and reusable.
+
+**Usage example:**
+
+```html
+<!-- In main file index.html -->
+@@include('html/card.html')
+  @@content
+    <h2>Card Title</h2>
+    <p>Card description with any HTML code</p>
+    <button>Read More</button>
+  -@@content
+  
+  @@footer
+    <span>Additional information</span>
+  -@@footer
+```
+
+```html
+<!-- In component html/card.html -->
+<div class="card">
+  <div class="card__body">
+    @@content
+  </div>
+  <div class="card__footer">
+    @@footer
+  </div>
+</div>
+```
+
+**Result:**
+```html
+<div class="card">
+  <div class="card__body">
+    <h2>Card Title</h2>
+    <p>Card description with any HTML code</p>
+    <button>Read More</button>
+  </div>
+  <div class="card__footer">
+    <span>Additional information</span>
+  </div>
+</div>
+```
+
+**Advantages of slots:**
+- Pass complex HTML code to components
+- Create flexible and reusable components
+- Use multiple slots in one component
+- Clean and readable code without HTML escaping
+
+**Combining parameters and slots:**
+```html
+@@include('html/modal.html', {"title":"Modal Title"})
+  @@body
+    <p>Modal window content</p>
+  -@@body
+```
+
 ### Resource Paths
 
 You can use special prefixes to specify paths to resources:
@@ -550,4 +674,4 @@ We hope this setup will make your work not only more efficient but also more enj
 
 ## 🏷️ Tags
 
-`vite` `vite-config` `vite-for-html` `html-include` `file-include` `vite-file-include` `html-css` `frontend-build` `frontend` `html-components` `scss` `sass` `web-dev` `imagemin` `multi-page` `web-optimization` `adaptive-rem` `responsive` `no-media-queries` `fluid-layout` `rem-based` `auto-adaptive` `ttf-to-woff2` `font-converter`
+`vite` `vite-config` `vite-for-html` `html-include` `file-include` `vite-file-include` `html-slots` `component-slots` `html-css` `frontend-build` `frontend` `html-components` `scss` `sass` `web-dev` `imagemin` `multi-page` `web-optimization` `adaptive-rem` `responsive` `no-media-queries` `fluid-layout` `rem-based` `auto-adaptive` `ttf-to-woff2` `font-converter`
