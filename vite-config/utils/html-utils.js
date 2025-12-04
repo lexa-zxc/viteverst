@@ -125,12 +125,6 @@ export function getFileContent(filePath, params = {}, parentPath = null, filenam
  * @returns {string} Обработанное содержимое
  */
 export function processIncludes(content, currentPath = null, filename) {
-  // Сначала извлекаем слоты (контент между @@slot и -@@slot)
-  const slots = extractSlots(content);
-  
-  // Удаляем слоты из контента (они будут подставлены в include)
-  let processedContent = removeSlots(content);
-  
   // Разбиваем контент на части (ignored и не ignored)
   const parts = [];
   const regex = /<!-- VITE_IGNORE_START -->[\s\S]*?<!-- VITE_IGNORE_END -->/g;
@@ -138,11 +132,11 @@ export function processIncludes(content, currentPath = null, filename) {
   let match;
 
   // Собираем все игнорируемые части
-  while ((match = regex.exec(processedContent)) !== null) {
+  while ((match = regex.exec(content)) !== null) {
     // Добавляем часть до игнорируемого участка
     if (match.index > lastIndex) {
       parts.push({
-        text: processedContent.substring(lastIndex, match.index),
+        text: content.substring(lastIndex, match.index),
         ignore: false
       });
     }
@@ -157,9 +151,9 @@ export function processIncludes(content, currentPath = null, filename) {
   }
   
   // Добавляем оставшуюся часть после последнего игнорируемого участка
-  if (lastIndex < processedContent.length) {
+  if (lastIndex < content.length) {
     parts.push({
-      text: processedContent.substring(lastIndex),
+      text: content.substring(lastIndex),
       ignore: false
     });
   }
@@ -168,17 +162,42 @@ export function processIncludes(content, currentPath = null, filename) {
   for (let i = 0; i < parts.length; i++) {
     if (!parts[i].ignore) {
       let part = parts[i].text;
-      const includeRegex = /@@include\(['"]([^'"]+)['"](,\s*({[^}]+}))?\)/g;
+      let hasChanges = true;
       
-      let includeMatch;
-      while ((includeMatch = includeRegex.exec(part)) !== null) {
-        try {
-          const [fullMatch, filePath, _, paramsStr] = includeMatch;
+      // Повторяем обработку пока есть изменения (для вложенных include)
+      while (hasChanges) {
+        hasChanges = false;
+        
+        // Ищем первый @@include с его слотами
+        const includeMatch = part.match(/@@include\(['"]([^'"]+)['"](,\s*({[^}]+}))?\)/);
+        
+        if (includeMatch) {
+          const fullInclude = includeMatch[0];
+          const filePath = includeMatch[1];
+          const paramsStr = includeMatch[3];
+          const includeIndex = part.indexOf(fullInclude);
           
-          // Парсим параметры, если они есть
+          // Находим контент после @@include до следующего @@include или конца
+          const afterInclude = part.substring(includeIndex + fullInclude.length);
+          const nextIncludeIndex = afterInclude.search(/@@include\(/);
+          const contentToCheck = nextIncludeIndex >= 0 
+            ? afterInclude.substring(0, nextIncludeIndex)
+            : afterInclude;
+          
+          // Извлекаем слоты из этого контента
+          const slots = extractSlots(contentToCheck);
+          
+          // Удаляем слоты из контента
+          const contentWithoutSlots = removeSlots(contentToCheck);
+          
+          // Парсим параметры
           let params = {};
           if (paramsStr) {
-            params = JSON.parse(paramsStr.replace(/^\s*,\s*/, ''));
+            try {
+              params = JSON.parse(paramsStr);
+            } catch (e) {
+              console.error('Ошибка парсинга параметров:', e);
+            }
           }
           
           // Добавляем слоты в параметры
@@ -187,13 +206,14 @@ export function processIncludes(content, currentPath = null, filename) {
           // Получаем содержимое файла
           const fileContent = getFileContent(filePath, params, currentPath, filename);
           
-          // Заменяем в текущей части
-          part = part.replace(fullMatch, fileContent);
+          // Собираем новый контент
+          const beforeInclude = part.substring(0, includeIndex);
+          const afterContent = nextIncludeIndex >= 0 
+            ? afterInclude.substring(nextIncludeIndex)
+            : '';
           
-          // Сбрасываем индекс для нового поиска
-          includeRegex.lastIndex = 0;
-        } catch (error) {
-          console.error('Ошибка при обработке вложенного @@include:', error);
+          part = beforeInclude + fileContent + contentWithoutSlots + afterContent;
+          hasChanges = true;
         }
       }
       

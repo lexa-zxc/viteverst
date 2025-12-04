@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тест слотов</title>
+  <style>
+    .test-card {
+      border: 2px solid #333;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px;
+      max-width: 400px;
+    }
+    .test-card__header {
+      background: #f0f0f0;
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+    .test-card__body {
+      padding: 15px;
+      background: #fff;
+    }
+    .test-card__footer {
+      padding: 10px;
+      background: #e0e0e0;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Тест системы слотов</h1>
+  
+  <h2>Пример 1: Карточка со слотами</h2>
+  @@include('test-card.html', {"title":"Заголовок карточки"})
+    @@content
+      <h2>Заголовок из слота</h2>
+      <p>Описание карточки с <strong>любым HTML-кодом</strong></p>
+      <button>Подробнее</button>
+    -@@content
+    
+    @@footer
+      <span>Дополнительная информация в футере</span>
+    -@@footer
+  
+  <h2>Пример 2: Карточка с другим контентом</h2>
+  @@include('test-card.html', {"title":"Вторая карточка"})
+    @@content
+      <ul>
+        <li>Пункт 1</li>
+        <li>Пункт 2</li>
+        <li>Пункт 3</li>
+      </ul>
+    -@@content
+    
+    @@footer
+      <a href="#">Ссылка в футере</a>
+    -@@footer
+
+  <h2>Пример 3: Карточка без футера</h2>
+  @@include('test-card.html', {"title":"Третья карточка"})
+    @@content
+      <p>Эта карточка без футера - он должен удалиться</p>
+    -@@content
+
+</body>
+</html>
